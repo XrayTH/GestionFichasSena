@@ -1,21 +1,22 @@
 import React from 'react';
 import { TextField, Button, TextareaAutosize, MenuItem, Select } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import ImageList from '../components/ImageList'; // Componente para manejar la lista de imágenes SVG
+import ImageList from '../components/ImageList';
 
 const Email = () => {
   const classes = useStyles();
 
   return (
     <div className={classes.container}>
-      {/* Contenedor principal */}
       <div className={classes.formContainer}>
-        {/* Sección Izquierda */}
-        <div className={classes.leftSection}>
-          <label className={classes.label}>Asunto:</label><br/>
-          <TextField variant="outlined" className={classes.textField} /><br/>
 
-          <label className={classes.label}>Contenido:</label><br/>
+        <div className={classes.leftSection}>
+          <label className={classes.label}>Asunto:</label>
+          <br/>
+          <TextField variant="outlined" className={classes.textField} />
+          <br/>
+
+          <label className={classes.label}>Contenido:</label>
           <TextareaAutosize
             className={classes.textAreaEditable}
             minRows={6}
@@ -29,7 +30,6 @@ const Email = () => {
           </div>
         </div>
 
-        {/* Sección Derecha */}
         <div className={classes.rightSection}>
           <label className={classes.label}>Enviar a:</label>
           <div className={classes.dropdownWrapper}>
@@ -38,7 +38,6 @@ const Email = () => {
               className={classes.dropdown}
               displayEmpty
             >
-              {/* Opciones vacías por ahora */}
               <MenuItem value="">
                 <em>Seleccionar destinatario</em>
               </MenuItem>
@@ -50,7 +49,7 @@ const Email = () => {
             className={classes.textAreaReadOnly}
             minRows={6}
             maxRows={6}
-            placeholder="Texto no editable"
+            placeholder="Correos"
             disabled
           />
 
@@ -63,7 +62,6 @@ const Email = () => {
   );
 };
 
-// useStyles definido debajo del componente
 const useStyles = makeStyles(() => ({
   container: {
     display: 'flex',
@@ -71,6 +69,7 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     height: '100vh',
     backgroundColor: '#f5f5f5',
+    padding: '20px', 
   },
   formContainer: {
     display: 'flex',
@@ -79,48 +78,61 @@ const useStyles = makeStyles(() => ({
     padding: '20px',
     borderRadius: '8px',
     boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-    width: '90%',
+    width: '100%',
     maxWidth: '1000px',
+    flexWrap: 'wrap', 
   },
   leftSection: {
     flex: 1,
     marginRight: '20px',
+    marginBottom: '20px',
+    '@media (max-width: 600px)': {
+      marginRight: '0',
+    },
   },
   rightSection: {
     flex: 1,
     marginLeft: '20px',
     display: 'flex',
     flexDirection: 'column',
+    '@media (max-width: 600px)': {
+      marginLeft: '0',
+    },
   },
   label: {
     marginBottom: '8px',
     fontWeight: 'bold',
-    color: '#333',
+    color: '#5eb219',
   },
   textField: {
     marginBottom: '20px',
+    borderColor: '#5eb219',
   },
   textAreaEditable: {
     borderRadius: '4px',
     padding: '10px',
-    border: '1px solid #ccc',
+    border: '1px solid #5eb219',
     marginBottom: '20px',
     resize: 'none',
     fontSize: '16px',
-    width: '100%',
+    width: '95%',
   },
   textAreaReadOnly: {
     borderRadius: '4px',
     padding: '10px',
     border: '1px solid #ccc',
     marginBottom: '20px',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#e8f5e9',
     resize: 'none',
     fontSize: '16px',
   },
   imageListWrapper: {
     display: 'flex',
     alignItems: 'center',
+    overflowX: 'auto',
+    marginBottom: '20px',
+    border: '1px solid #5eb219',
+    padding: '10px',
   },
   addButton: {
     width: '40px',
@@ -142,6 +154,7 @@ const useStyles = makeStyles(() => ({
   },
   dropdown: {
     flexGrow: 1,
+    borderColor: '#5eb219',
   },
   sendButton: {
     backgroundColor: '#5eb219',
@@ -154,4 +167,5 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default Email;
+
 
