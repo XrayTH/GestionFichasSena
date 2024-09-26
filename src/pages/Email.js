@@ -86,18 +86,12 @@ const useStyles = makeStyles(() => ({
     flex: 1,
     marginRight: '20px',
     marginBottom: '20px',
-    '@media (max-width: 600px)': {
-      marginRight: '0',
-    },
   },
   rightSection: {
     flex: 1,
     marginLeft: '20px',
     display: 'flex',
     flexDirection: 'column',
-    '@media (max-width: 600px)': {
-      marginLeft: '0',
-    },
   },
   label: {
     marginBottom: '8px',
@@ -157,7 +151,7 @@ const useStyles = makeStyles(() => ({
     borderColor: '#5eb219',
   },
   sendButton: {
-    backgroundColor: '#5eb219',
+    backgroundColor: '#7614ae',
     '&:hover': {
       backgroundColor: '#4cae14',
     },
