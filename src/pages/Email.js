@@ -44,7 +44,7 @@ const Email = () => {
             />
   
             <div className={classes.imageListWrapper}>
-              <ImageList />
+              <ImageList/>
               <Button className={classes.addButton}>+</Button>
             </div>
           </div>
@@ -128,6 +128,7 @@ const useStyles = makeStyles(() => ({
   textField: {
     marginBottom: '20px',
     borderColor: '#5eb219',
+    width: "100%"
   },
   textAreaEditable: {
     borderRadius: '4px',
@@ -176,6 +177,7 @@ const useStyles = makeStyles(() => ({
   dropdown: {
     flexGrow: 1,
     borderColor: '#5eb219',
+    marginRight: '10px',
   },
   sendButton: {
     backgroundColor: '#7614ae',

@@ -11,7 +11,6 @@ const ImageList = () => {
   );
 };
 
-// Estilos para el ImageList
 const useStyles = makeStyles(() => ({
   imageListContainer: {
     display: 'flex',
@@ -22,6 +21,7 @@ const useStyles = makeStyles(() => ({
     borderRadius: '4px',
     padding: '5px',
     width: '100%',
+    marginRight: '10px',
   },
   imageItem: {
     display: 'flex',
