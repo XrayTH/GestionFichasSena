@@ -1,66 +1,71 @@
-import React from 'react';
 import { TextField, Button, TextareaAutosize, MenuItem, Select } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import ImageList from '../components/ImageList';
+import { useState } from 'react';
 
 const Email = () => {
-  const classes = useStyles();
-
-  return (
-    <div className={classes.container}>
-      <div className={classes.formContainer}>
-
-        <div className={classes.leftSection}>
-          <label className={classes.label}>Asunto:</label>
-          <br/>
-          <TextField variant="outlined" className={classes.textField} />
-          <br/>
-
-          <label className={classes.label}>Contenido:</label>
-          <TextareaAutosize
-            className={classes.textAreaEditable}
-            minRows={6}
-            maxRows={6}
-            placeholder="Escribe el contenido aquí"
-          />
-
-          <div className={classes.imageListWrapper}>
-            <ImageList />
-            <Button className={classes.addButton}>+</Button>
+    const classes = useStyles();
+  
+    // Estado para el valor seleccionado en el dropdown
+    const [selectedValue, setSelectedValue] = useState('');
+  
+    return (
+      <div className={classes.container}>
+        <div className={classes.formContainer}>
+  
+          <div className={classes.leftSection}>
+            <label className={classes.label}>Asunto:</label>
+            <br/>
+            <TextField variant="outlined" className={classes.textField} />
+            <br/>
+  
+            <label className={classes.label}>Contenido:</label>
+            <TextareaAutosize
+              className={classes.textAreaEditable}
+              minRows={6}
+              maxRows={6}
+              placeholder="Escribe el contenido aquí"
+            />
+  
+            <div className={classes.imageListWrapper}>
+              <ImageList />
+              <Button className={classes.addButton}>+</Button>
+            </div>
           </div>
-        </div>
-
-        <div className={classes.rightSection}>
-          <label className={classes.label}>Enviar a:</label>
-          <div className={classes.dropdownWrapper}>
-            <Select
-              variant="outlined"
-              className={classes.dropdown}
-              displayEmpty
-            >
-              <MenuItem value="">
-                <em>Seleccionar destinatario</em>
-              </MenuItem>
-            </Select>
-            <Button className={classes.addButton}>+</Button>
+  
+          <div className={classes.rightSection}>
+            <label className={classes.label}>Enviar a:</label>
+            <div className={classes.dropdownWrapper}>
+              <Select
+                variant="outlined"
+                className={classes.dropdown}
+                displayEmpty
+                value={selectedValue} // Aquí usamos el estado para el valor seleccionado
+                onChange={(e) => setSelectedValue(e.target.value)} // Actualizamos el valor seleccionado
+              >
+                <MenuItem value="">
+                  <em>Seleccionar destinatario</em>
+                </MenuItem>
+              </Select>
+              <Button className={classes.addButton}>+</Button>
+            </div>
+  
+            <TextareaAutosize
+              className={classes.textAreaReadOnly}
+              minRows={6}
+              maxRows={6}
+              placeholder="Correos"
+              disabled
+            />
+  
+            <Button variant="contained" color="primary" className={classes.sendButton}>
+              Enviar
+            </Button>
           </div>
-
-          <TextareaAutosize
-            className={classes.textAreaReadOnly}
-            minRows={6}
-            maxRows={6}
-            placeholder="Correos"
-            disabled
-          />
-
-          <Button variant="contained" color="primary" className={classes.sendButton}>
-            Enviar
-          </Button>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 const useStyles = makeStyles(() => ({
   container: {
