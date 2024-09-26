@@ -6,8 +6,24 @@ import { useState } from 'react';
 const Email = () => {
     const classes = useStyles();
   
-    // Estado para el valor seleccionado en el dropdown
     const [selectedValue, setSelectedValue] = useState('');
+    const [recipients, setRecipients] = useState('');
+  
+    const recipientOptions = [
+        'correo1@example.com',
+        'correo2@example.com',
+        'correo3@example.com',
+    ];
+
+    const handleAddRecipient = () => {
+        if (selectedValue) {
+            const recipientList = recipients.split('\n');
+            if (!recipientList.includes(selectedValue)) {
+                setRecipients((prev) => (prev ? `${prev}\n${selectedValue}` : selectedValue));
+            }
+            setSelectedValue('');
+        }
+    };
   
     return (
       <div className={classes.container}>
@@ -40,14 +56,19 @@ const Email = () => {
                 variant="outlined"
                 className={classes.dropdown}
                 displayEmpty
-                value={selectedValue} // Aquí usamos el estado para el valor seleccionado
-                onChange={(e) => setSelectedValue(e.target.value)} // Actualizamos el valor seleccionado
+                value={selectedValue} 
+                onChange={(e) => setSelectedValue(e.target.value)} 
               >
                 <MenuItem value="">
                   <em>Seleccionar destinatario</em>
                 </MenuItem>
+                {recipientOptions.map((option, index) => (
+                  <MenuItem key={index} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
               </Select>
-              <Button className={classes.addButton}>+</Button>
+              <Button className={classes.addButton} onClick={handleAddRecipient}>+</Button>
             </div>
   
             <TextareaAutosize
@@ -55,6 +76,7 @@ const Email = () => {
               minRows={6}
               maxRows={6}
               placeholder="Correos"
+              value={recipients}
               disabled
             />
   
@@ -65,7 +87,7 @@ const Email = () => {
         </div>
       </div>
     );
-  };
+};
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -166,5 +188,4 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default Email;
-
 
