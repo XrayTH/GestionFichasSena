@@ -28,31 +28,20 @@ const UserComponent = ({ user }) => {
         <label className={classes.label}>Usuario</label>
         <TextField
           className={classes.textField}
-          name="username" 
+          name="username"
           value={formState.username}
           variant="outlined"
           InputProps={{
             readOnly: !isEditable,
           }}
-          onChange={handleChange} 
+          onChange={handleChange}
         />
       </div>
 
       {/* 2. Contraseña */}
       <div className={classes.fieldContainer}>
-        <label className={classes.label}>Contraseña</label>
-        <div className={classes.passwordWrapper}>
-          <TextField
-            className={classes.textField}
-            name="password" 
-            type={showPassword ? 'text' : 'password'}
-            value={formState.password}
-            variant="outlined"
-            InputProps={{
-              readOnly: !isEditable,
-            }}
-            onChange={handleChange} 
-          />
+        <div className={classes.labelWithButton}>
+          <label className={classes.label}>Contraseña</label>
           <Button
             onMouseDown={() => setShowPassword(true)}
             onMouseUp={() => setShowPassword(false)}
@@ -61,6 +50,17 @@ const UserComponent = ({ user }) => {
             👁️
           </Button>
         </div>
+        <TextField
+          className={classes.textField}
+          name="password"
+          type={showPassword ? 'text' : 'password'}
+          value={formState.password}
+          variant="outlined"
+          InputProps={{
+            readOnly: !isEditable,
+          }}
+          onChange={handleChange}
+        />
       </div>
 
       {/* 3. Rol */}
@@ -68,13 +68,13 @@ const UserComponent = ({ user }) => {
         <label className={classes.label}>Rol</label>
         <TextField
           className={classes.textField}
-          name="role" 
+          name="role"
           value={formState.role}
           variant="outlined"
           InputProps={{
             readOnly: !isEditable,
           }}
-          onChange={handleChange} 
+          onChange={handleChange}
         />
       </div>
 
@@ -106,7 +106,7 @@ const UserComponent = ({ user }) => {
 
       {/* 6. Gestionar Usuarios */}
       <div className={classes.fieldContainer}>
-        <label className={classes.label}>Gestionar Usuarios</label>
+        <label className={classes.label}>GestiónUsuarios</label>
         <Switch
           className={classes.switch}
           checked={formState.canManageUsers}
@@ -122,10 +122,7 @@ const UserComponent = ({ user }) => {
 
       {/* 7. Botones */}
       <div className={classes.fieldContainer}>
-        <Button
-          className={classes.button}
-          onClick={handleEditClick}
-        >
+        <Button className={classes.button} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}
         </Button>
         <Button className={classes.deleteButton}>Borrar</Button>
@@ -142,37 +139,38 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#f5f5f5',
     padding: '20px',
     borderRadius: '8px',
-    border: '2px solid black', 
+    border: '2px solid black',
   },
   fieldContainer: {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    alignItems: 'center', 
+    alignItems: 'center',
   },
   buttonContainer: {
     display: 'flex',
     flexDirection: 'column',
-    gridColumn: 'span 7', 
-    alignItems: 'center', 
+    gridColumn: 'span 7',
+    alignItems: 'center',
   },
   label: {
     fontWeight: 'bold',
     color: '#2914ae',
-    alignSelf: 'center', 
+    alignSelf: 'center',
     marginBottom: '5px',
+  },
+  labelWithButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
   },
   textField: {
     width: '100%',
   },
-  passwordWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-  },
   button: {
     backgroundColor: '#2914ae',
     color: '#fff',
-    marginTop: '10px', 
     '&:hover': {
       backgroundColor: '#4cae14',
     },
@@ -191,3 +189,4 @@ const useStyles = makeStyles(() => ({
 }))
 
 export default UserComponent
+
