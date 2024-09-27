@@ -106,7 +106,7 @@ const UserComponent = ({ user }) => {
 
       {/* 6. Gestionar Usuarios */}
       <div className={classes.fieldContainer}>
-        <label className={classes.label}>GestiónUsuarios</label>
+        <label className={classes.label}>Gestión Usuarios</label>
         <Switch
           className={classes.switch}
           checked={formState.canManageUsers}
@@ -134,7 +134,7 @@ const UserComponent = ({ user }) => {
 const useStyles = makeStyles(() => ({
   container: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(7, 1fr)',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', // Ajusta el tamaño mínimo de las columnas
     gridGap: '10px',
     backgroundColor: '#f5f5f5',
     padding: '20px',
@@ -145,12 +145,6 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    alignItems: 'center',
-  },
-  buttonContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    gridColumn: 'span 7',
     alignItems: 'center',
   },
   label: {
@@ -189,4 +183,3 @@ const useStyles = makeStyles(() => ({
 }))
 
 export default UserComponent
-
