@@ -28,96 +28,107 @@ const NewFichaBasica = ({ onSave, onCancel }) => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>ID</label>
-        <TextField
-          className={classes.textField}
-          name="id"
-          type="text"
-          inputMode="numeric"
-          value={formState.id}
-          variant="outlined"
-          onChange={handleChange}
-        />
+      {/* Campos en una fila */}
+      <div className={classes.fieldsRow}>
+        {/* 1. ID */}
+        <div className={classes.fieldContainer}>
+          <label className={classes.label}>ID</label>
+          <TextField
+            className={classes.textField}
+            name="id"
+            type="text"
+            inputMode="numeric"
+            value={formState.id}
+            variant="outlined"
+            onChange={handleChange}
+          />
+        </div>
+
+        {/* 2. Coordinador */}
+        <div className={classes.fieldContainer}>
+          <label className={classes.label}>Coordinador</label>
+          <TextField
+            className={classes.textField}
+            name="coordinador"
+            value={formState.coordinador}
+            variant="outlined"
+            onChange={handleChange}
+          />
+        </div>
+
+        {/* 3. Programa */}
+        <div className={classes.fieldContainer}>
+          <label className={classes.label}>Programa</label>
+          <TextField
+            className={classes.textField}
+            name="programa"
+            value={formState.programa}
+            variant="outlined"
+            onChange={handleChange}
+          />
+        </div>
+
+        {/* 4. Ambiente */}
+        <div className={classes.fieldContainer}>
+          <label className={classes.label}>Ambiente</label>
+          <TextField
+            className={classes.textField}
+            name="ambiente"
+            value={formState.ambiente}
+            variant="outlined"
+            onChange={handleChange}
+          />
+        </div>
+
+        {/* 5. Inicio */}
+        <div className={classes.fieldContainer}>
+          <label className={classes.label}>Inicio</label>
+          <TextField
+            className={classes.textField}
+            name="inicio"
+            type="date"
+            value={formState.inicio}
+            variant="outlined"
+            onChange={handleChange}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </div>
+
+        {/* 6. Fin */}
+        <div className={classes.fieldContainer}>
+          <label className={classes.label}>Fin</label>
+          <TextField
+            className={classes.textField}
+            name="fin"
+            type="date"
+            value={formState.fin}
+            variant="outlined"
+            onChange={handleChange}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </div>
       </div>
 
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Coordinador</label>
-        <TextField
-          className={classes.textField}
-          name="coordinador"
-          value={formState.coordinador}
-          variant="outlined"
-          onChange={handleChange}
-        />
-      </div>
-
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Programa</label>
-        <TextField
-          className={classes.textField}
-          name="programa"
-          value={formState.programa}
-          variant="outlined"
-          onChange={handleChange}
-        />
-      </div>
-
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Ambiente</label>
-        <TextField
-          className={classes.textField}
-          name="ambiente"
-          value={formState.ambiente}
-          variant="outlined"
-          onChange={handleChange}
-        />
-      </div>
-
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Inicio</label>
-        <TextField
-          className={classes.textField}
-          name="inicio"
-          type="date"
-          value={formState.inicio}
-          variant="outlined"
-          onChange={handleChange}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-      </div>
-
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Fin</label>
-        <TextField
-          className={classes.textField}
-          name="fin"
-          type="date"
-          value={formState.fin}
-          variant="outlined"
-          onChange={handleChange}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-      </div>
-
-      <div className={classes.fieldContainer}>
+      {/* Requerimientos centrado */}
+      <div className={classes.fieldContainerLarge}>
         <label className={classes.label}>Requerimientos</label>
         <TextField
-          className={classes.textField}
+          className={classes.textFieldLarge}
           name="requerimientos"
           value={formState.requerimientos}
           multiline
-          rows={3}
+          rows={4}
           variant="outlined"
           onChange={handleChange}
         />
       </div>
 
-      <div className={classes.fieldContainer}>
+      {/* Botones centrados */}
+      <div className={classes.buttonContainer}>
         <Button className={classes.button} onClick={handleSave}>
           Guardar
         </Button>
@@ -131,33 +142,54 @@ const NewFichaBasica = ({ onSave, onCancel }) => {
 
 const useStyles = makeStyles(() => ({
   container: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-    gridGap: '10px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     backgroundColor: '#f5f5f5',
     padding: '20px',
     borderRadius: '8px',
     border: '2px solid black',
   },
+  fieldsRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    width: '100%',
+    gap: '15px', // Espacio entre los campos
+    marginBottom: '20px', // Espacio entre la fila de campos y el campo de Requerimientos
+  },
   fieldContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '15%',
+    alignItems: 'center',
+  },
+  fieldContainerLarge: {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
     alignItems: 'center',
+    marginBottom: '20px',
   },
   label: {
     fontWeight: 'bold',
     color: '#5eb219',
-    alignSelf: 'center',
     marginBottom: '5px',
   },
   textField: {
     width: '100%',
   },
+  textFieldLarge: {
+    width: '80%', // Más espacio para Requerimientos
+  },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '10px',
+  },
   button: {
     backgroundColor: '#5eb219',
     color: '#fff',
-    marginTop: '10px',
     '&:hover': {
       backgroundColor: '#4cae14',
     },
@@ -165,7 +197,6 @@ const useStyles = makeStyles(() => ({
   cancelButton: {
     backgroundColor: '#b2195e',
     color: '#fff',
-    marginTop: '10px',
     '&:hover': {
       backgroundColor: '#d81b60',
     },
