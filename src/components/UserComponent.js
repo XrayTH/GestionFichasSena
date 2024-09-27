@@ -20,6 +20,14 @@ const UserComponent = () => {
     setIsEditable(!isEditable)
   }
 
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }))
+  }
+
   return (
     <div className={classes.container}>
       {/* 1. Usuario */}
@@ -27,11 +35,13 @@ const UserComponent = () => {
         <label className={classes.label}>Usuario</label>
         <TextField
           className={classes.textField}
+          name="username" 
           value={formState.username}
           variant="outlined"
           InputProps={{
             readOnly: !isEditable,
           }}
+          onChange={handleChange} 
         />
       </div>
 
@@ -41,12 +51,14 @@ const UserComponent = () => {
         <div className={classes.passwordWrapper}>
           <TextField
             className={classes.textField}
+            name="password" 
             type={showPassword ? 'text' : 'password'}
             value={formState.password}
             variant="outlined"
             InputProps={{
               readOnly: !isEditable,
             }}
+            onChange={handleChange} 
           />
           <Button
             onMouseDown={() => setShowPassword(true)}
@@ -63,11 +75,13 @@ const UserComponent = () => {
         <label className={classes.label}>Rol</label>
         <TextField
           className={classes.textField}
+          name="role" 
           value={formState.role}
           variant="outlined"
           InputProps={{
             readOnly: !isEditable,
           }}
+          onChange={handleChange} 
         />
       </div>
 
