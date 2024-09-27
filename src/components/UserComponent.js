@@ -24,7 +24,7 @@ const UserComponent = () => {
     <div className={classes.container}>
       {/* 1. Usuario */}
       <div className={classes.fieldContainer}>
-        <label className={classes.label}>Usuario:</label>
+        <label className={classes.label}>Usuario</label>
         <TextField
           className={classes.textField}
           value={formState.username}
@@ -37,7 +37,7 @@ const UserComponent = () => {
 
       {/* 2. Contraseña */}
       <div className={classes.fieldContainer}>
-        <label className={classes.label}>Contraseña:</label>
+        <label className={classes.label}>Contraseña</label>
         <div className={classes.passwordWrapper}>
           <TextField
             className={classes.textField}
@@ -60,7 +60,7 @@ const UserComponent = () => {
 
       {/* 3. Rol */}
       <div className={classes.fieldContainer}>
-        <label className={classes.label}>Rol:</label>
+        <label className={classes.label}>Rol</label>
         <TextField
           className={classes.textField}
           value={formState.role}
@@ -73,7 +73,7 @@ const UserComponent = () => {
 
       {/* 4. Editar */}
       <div className={classes.fieldContainer}>
-        <label className={classes.label}>Editar:</label>
+        <label className={classes.label}>Editar</label>
         <Switch
           className={classes.switch}
           checked={formState.canEdit}
@@ -86,7 +86,7 @@ const UserComponent = () => {
 
       {/* 5. Crear */}
       <div className={classes.fieldContainer}>
-        <label className={classes.label}>Crear:</label>
+        <label className={classes.label}>Crear</label>
         <Switch
           className={classes.switch}
           checked={formState.canCreate}
@@ -99,7 +99,7 @@ const UserComponent = () => {
 
       {/* 6. Gestionar Usuarios */}
       <div className={classes.fieldContainer}>
-        <label className={classes.label}>Gestionar Usuarios:</label>
+        <label className={classes.label}>Gestionar Usuarios</label>
         <Switch
           className={classes.switch}
           checked={formState.canManageUsers}
@@ -135,21 +135,24 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#f5f5f5',
     padding: '20px',
     borderRadius: '8px',
+    border: '2px solid black', 
   },
   fieldContainer: {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
+    alignItems: 'center', 
   },
   buttonContainer: {
     display: 'flex',
     flexDirection: 'column',
-    gridColumn: 'span 7', // Ocupa las 7 columnas
+    gridColumn: 'span 7', 
+    alignItems: 'center', 
   },
   label: {
     fontWeight: 'bold',
     color: '#2914ae',
-    alignSelf: 'flex-start', // Alinea las etiquetas al inicio
+    alignSelf: 'center', 
     marginBottom: '5px',
   },
   textField: {
@@ -162,7 +165,7 @@ const useStyles = makeStyles(() => ({
   button: {
     backgroundColor: '#2914ae',
     color: '#fff',
-    marginTop: '10px', // Espaciado superior para los botones
+    marginTop: '10px', 
     '&:hover': {
       backgroundColor: '#4cae14',
     },
@@ -170,7 +173,7 @@ const useStyles = makeStyles(() => ({
   deleteButton: {
     backgroundColor: '#ae1499',
     color: '#fff',
-    marginTop: '10px', // Espaciado superior para el botón de borrar
+    marginTop: '10px',
     '&:hover': {
       backgroundColor: '#d81b60',
     },
