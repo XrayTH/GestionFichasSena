@@ -15,6 +15,7 @@ const GestionUsuarios = () => {
   
   const [showNewUserForm, setShowNewUserForm] = useState(false)
   const [searchText, setSearchText] = useState('')
+  const [selectedRole, setSelectedRole] = useState('')
 
   const handleNewUserClick = () => setShowNewUserForm(true)
   const handleSaveNewUser = (newUser) => {
@@ -23,11 +24,18 @@ const GestionUsuarios = () => {
   }
   const handleCancelNewUser = () => setShowNewUserForm(false)
 
+  const roles = useMemo(() => {
+    const uniqueRoles = new Set(users.map(user => user.role));
+    return Array.from(uniqueRoles);
+  }, [users]);
+
   const filteredUsers = useMemo(() => {
-    return users.filter((user) =>
-      user.username.toLowerCase().includes(searchText.toLowerCase())
-    )
-  }, [users, searchText])
+    return users.filter((user) => {
+      const matchesSearch = user.username.toLowerCase().includes(searchText.toLowerCase());
+      const matchesRole = selectedRole ? user.role === selectedRole : true;
+      return matchesSearch && matchesRole;
+    });
+  }, [users, searchText, selectedRole]);
 
   return (
     <div className={classes.container}>
@@ -35,16 +43,22 @@ const GestionUsuarios = () => {
         <div className={classes.filterLeft}>
           <TextField
             fullWidth
-            placeholder="Filtar por usuario"
+            placeholder="Filtrar por usuario"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
         </div>
         <div className={classes.filterRight}>
           <FormControl fullWidth>
-            <Select value="" displayEmpty>
+            <Select 
+              value={selectedRole} 
+              onChange={(e) => setSelectedRole(e.target.value)} 
+              displayEmpty
+            >
               <MenuItem value=""><em>Todos los roles</em></MenuItem>
-              {/* Dropdown vacío, sin funcionalidad */}
+              {roles.map((role) => (
+                <MenuItem key={role} value={role}>{role}</MenuItem>
+              ))}
             </Select>
           </FormControl>
         </div>
@@ -66,7 +80,6 @@ const GestionUsuarios = () => {
           <p>No se encontraron usuarios</p>
         )}
       </div>
-
     </div>
   )
 }
