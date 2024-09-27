@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Button, TextField, MenuItem, Select, InputLabel, FormControl } from '@mui/material'
+import { Button, TextField, MenuItem, Select, FormControl } from '@mui/material'
 import UserComponent from '../components/UserComponent'
 import NewUserForm from '../components/NewUserForm'
 import { makeStyles } from '@mui/styles'
@@ -15,7 +15,6 @@ const GestionUsuarios = () => {
   
   const [showNewUserForm, setShowNewUserForm] = useState(false)
   const [searchText, setSearchText] = useState('')
-  const [selectedRole, setSelectedRole] = useState('')
 
   const handleNewUserClick = () => setShowNewUserForm(true)
   const handleSaveNewUser = (newUser) => {
@@ -26,31 +25,26 @@ const GestionUsuarios = () => {
 
   const filteredUsers = useMemo(() => {
     return users.filter((user) =>
-      user.username.toLowerCase().includes(searchText.toLowerCase()) &&
-      (selectedRole ? user.role === selectedRole : true)
+      user.username.toLowerCase().includes(searchText.toLowerCase())
     )
-  }, [users, searchText, selectedRole])
-
-  const roles = useMemo(() => [...new Set(users.map((user) => user.role))], [users])
+  }, [users, searchText])
 
   return (
     <div className={classes.container}>
       <div className={classes.filters}>
         <div className={classes.filterLeft}>
-          <InputLabel>Filtrar Usuario:</InputLabel>
           <TextField
             fullWidth
-            placeholder="Buscar por nombre"
+            placeholder="Filtar por usuario"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
         </div>
         <div className={classes.filterRight}>
           <FormControl fullWidth>
-            <InputLabel>Filtrar por rol</InputLabel>
-            <Select value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)} displayEmpty>
+            <Select value="" displayEmpty>
               <MenuItem value=""><em>Todos los roles</em></MenuItem>
-              {roles.map((role, index) => <MenuItem key={index} value={role}>{role}</MenuItem>)}
+              {/* Dropdown vacío, sin funcionalidad */}
             </Select>
           </FormControl>
         </div>
@@ -63,8 +57,8 @@ const GestionUsuarios = () => {
 
       <div className={classes.userList}>
         {filteredUsers.length > 0 ? (
-          filteredUsers.map((user, index) => (
-            <div key={index} className={classes.userComponent}>
+          filteredUsers.map((user) => (
+            <div key={user.username} className={classes.userComponent}>
               <UserComponent user={user} />
             </div>
           ))
@@ -72,14 +66,15 @@ const GestionUsuarios = () => {
           <p>No se encontraron usuarios</p>
         )}
       </div>
+
     </div>
   )
 }
 
 const useStyles = makeStyles(() => ({
   container: {
-    maxWidth: '1200px', // Aumentar el ancho máximo del contenedor
-    width: '100%', // Asegurar que el contenedor use el ancho completo disponible
+    maxWidth: '1200px', 
+    width: '100%', 
     margin: 'auto',
     padding: '20px',
   },
@@ -108,6 +103,5 @@ const useStyles = makeStyles(() => ({
     marginBottom: '15px',
   },
 }))
-
 
 export default GestionUsuarios
