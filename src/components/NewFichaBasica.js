@@ -28,7 +28,7 @@ const NewFichaBasica = ({ onSave, onCancel }) => {
 
   return (
     <div className={classes.container}>
-      {/* Campos en una fila */}
+      {/* Campos en una fila, pero con flex-wrap y centrado */}
       <div className={classes.fieldsRow}>
         {/* 1. ID */}
         <div className={classes.fieldContainer}>
@@ -152,16 +152,18 @@ const useStyles = makeStyles(() => ({
   },
   fieldsRow: {
     display: 'flex',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
+    justifyContent: 'center', // Centramos los campos
+    alignItems: 'center',
+    flexWrap: 'wrap', // Hace que los campos se adapten en responsividad
     width: '100%',
     gap: '15px', // Espacio entre los campos
-    marginBottom: '20px', // Espacio entre la fila de campos y el campo de Requerimientos
+    marginBottom: '20px',
   },
   fieldContainer: {
     display: 'flex',
     flexDirection: 'column',
     width: '15%',
+    minWidth: '200px', // Define un ancho mínimo para que los campos se reorganicen correctamente
     alignItems: 'center',
   },
   fieldContainerLarge: {
