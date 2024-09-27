@@ -24,8 +24,7 @@ const GestionFichas = () => {
   const handleNewFichaClick = () => setShowNewFichaForm(true);
 
   const handleSaveNewFicha = (newFicha) => {
-    const newId = fichas.length > 0 ? Math.max(...fichas.map(ficha => ficha.id)) + 1 : 1;
-    const fichaWithId = { ...newFicha, id: newId };
+    const fichaWithId = { ...newFicha }; // Asigna el ID directamente desde el nuevo formulario
     setFichas((prevFichas) => [...prevFichas, fichaWithId]);
     setShowNewFichaForm(false);
   };
@@ -77,10 +76,10 @@ const GestionFichas = () => {
           filteredFichas.map((ficha) => (
             <div key={ficha.id} className={classes.fichaComponent}>
               <FichaBasica 
-              ficha={ficha}
-              coordinadores={coordinadores}
-              gestores={instructores}
-            programas={programas} />
+                ficha={ficha}
+                coordinadores={coordinadores}
+                gestores={instructores}
+                programas={programas} />
             </div>
           ))
         ) : (
@@ -131,3 +130,4 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default GestionFichas;
+
