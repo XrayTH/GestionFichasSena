@@ -1,28 +1,31 @@
-import { useState, useMemo } from 'react'
-import { Button, TextField, MenuItem, Select, FormControl } from '@mui/material'
-import UserComponent from '../components/UserComponent'
-import NewUserForm from '../components/NewUserForm'
-import { makeStyles } from '@mui/styles'
+import { useState, useMemo } from 'react';
+import { Button, TextField, MenuItem, Select, FormControl } from '@mui/material';
+import UserComponent from '../components/UserComponent';
+import NewUserForm from '../components/NewUserForm';
+import { makeStyles } from '@mui/styles';
 
 const GestionUsuarios = () => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   const [users, setUsers] = useState([
-    { username: 'user123', password: 'password123', role: 'Admin', canEdit: false, canCreate: false, canManageUsers: false },
-    { username: 'user456', password: 'password123', role: 'Editor', canEdit: true, canCreate: false, canManageUsers: false },
-    { username: 'user789', password: 'password123', role: 'Viewer', canEdit: false, canCreate: false, canManageUsers: false },
-  ])
+    { id: 1, username: 'user123', password: 'password123', role: 'Admin', canEdit: false, canCreate: false, canManageUsers: false },
+    { id: 2, username: 'user456', password: 'password123', role: 'Editor', canEdit: true, canCreate: false, canManageUsers: false },
+    { id: 3, username: 'user789', password: 'password123', role: 'Viewer', canEdit: false, canCreate: false, canManageUsers: false },
+  ]);
   
-  const [showNewUserForm, setShowNewUserForm] = useState(false)
-  const [searchText, setSearchText] = useState('')
-  const [selectedRole, setSelectedRole] = useState('')
+  const [showNewUserForm, setShowNewUserForm] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [selectedRole, setSelectedRole] = useState('');
 
-  const handleNewUserClick = () => setShowNewUserForm(true)
+  const handleNewUserClick = () => setShowNewUserForm(true);
+  
   const handleSaveNewUser = (newUser) => {
-    setUsers((prevUsers) => [...prevUsers, newUser])
-    setShowNewUserForm(false)
-  }
-  const handleCancelNewUser = () => setShowNewUserForm(false)
+    const newUserWithId = { ...newUser, id: users.length + 1 }; // Asignar un ID único
+    setUsers((prevUsers) => [...prevUsers, newUserWithId]);
+    setShowNewUserForm(false);
+  };
+
+  const handleCancelNewUser = () => setShowNewUserForm(false);
 
   const roles = useMemo(() => {
     const uniqueRoles = new Set(users.map(user => user.role));
@@ -78,7 +81,7 @@ const GestionUsuarios = () => {
       <div className={classes.userList}>
         {filteredUsers.length > 0 ? (
           filteredUsers.map((user) => (
-            <div key={user.username} className={classes.userComponent}>
+            <div key={user.id} className={classes.userComponent}>
               <UserComponent user={user} />
             </div>
           ))
@@ -87,8 +90,8 @@ const GestionUsuarios = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -160,6 +163,6 @@ const useStyles = makeStyles(() => ({
   errorText: {
     color: '#ae144c', 
   },
-}))
+}));
 
-export default GestionUsuarios
+export default GestionUsuarios;
