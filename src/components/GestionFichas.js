@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Button, MenuItem, Select, FormControl } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import FichaBasica from './FichaBasica';
 import NewFichaBasica from './NewFichaBasica';
 import { makeStyles } from '@mui/styles';
@@ -8,17 +8,18 @@ const GestionFichas = () => {
   const classes = useStyles();
 
   const [fichas, setFichas] = useState([
-    { id: 1, coordinador: 'Juan Perez', programa: 'Programación', ambiente: 'Laboratorio 101', inicio: '2024-10-01', fin: '2024-12-15', requerimientos: 'Proyector, PC con software especializado' },
-    { id: 2, coordinador: 'Maria Gómez', programa: 'Diseño Gráfico', ambiente: 'Laboratorio 202', inicio: '2024-09-01', fin: '2024-11-30', requerimientos: 'Mesa de trabajo, iMac' },
-    { id: 3, coordinador: 'Carlos Rodriguez', programa: 'Redes', ambiente: 'Laboratorio 303', inicio: '2024-08-15', fin: '2024-12-01', requerimientos: 'Router, Switch' },
-    { id: 4, coordinador: 'Lucía López', programa: 'Marketing', ambiente: 'Laboratorio 404', inicio: '2024-09-15', fin: '2024-12-01', requerimientos: 'Proyector, Computadora' },
-  ]);
+    { id: 1, coordinador: 'Juan Perez', gestor: 'Diego Torres', programa: 'Programación', ambiente: 'Laboratorio 101', inicio: '2024-10-01', fin: '2024-12-15', requerimientos: 'Proyector, PC con software especializado' },
+    { id: 2, coordinador: 'Maria Gómez', gestor: 'Ana Martínez', programa: 'Diseño Gráfico', ambiente: 'Laboratorio 202', inicio: '2024-09-01', fin: '2024-11-30', requerimientos: 'Mesa de trabajo, iMac' },
+    { id: 3, coordinador: 'Carlos Rodriguez', gestor: 'Luis Fernández', programa: 'Redes', ambiente: 'Laboratorio 303', inicio: '2024-08-15', fin: '2024-12-01', requerimientos: 'Router, Switch' },
+    { id: 4, coordinador: 'Lucía López', gestor: 'Diego Torres', programa: 'Marketing', ambiente: 'Laboratorio 404', inicio: '2024-09-15', fin: '2024-12-01', requerimientos: 'Proyector, Computadora' },
+]);
+
 
   const [coordinadores] = useState(['Juan Perez', 'Maria Gómez', 'Carlos Rodriguez', 'Lucía López']);
   const [instructores] = useState(['Diego Torres', 'Ana Martínez', 'Luis Fernández']);
   const [programas] = useState(['Programación', 'Diseño Gráfico', 'Redes', 'Marketing']);
 
-  const [selectedFichaId, setSelectedFichaId] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [showNewFichaForm, setShowNewFichaForm] = useState(false);
 
   const handleNewFichaClick = () => setShowNewFichaForm(true);
@@ -27,6 +28,7 @@ const GestionFichas = () => {
     const fichaWithId = { ...newFicha, id: newFicha.id }; // Usa el ID asignado
     setFichas((prevFichas) => [...prevFichas, fichaWithId]);
     setShowNewFichaForm(false);
+    console.log(fichas);
   };
 
   const handleCancelNewFicha = () => setShowNewFichaForm(false);
@@ -38,27 +40,24 @@ const GestionFichas = () => {
   };
 
   const filteredFichas = useMemo(() => {
-    return selectedFichaId
-      ? fichas.filter((ficha) => ficha.id === parseInt(selectedFichaId))
-      : fichas;
-  }, [fichas, selectedFichaId]);
+    return fichas.filter((ficha) =>
+      ficha.coordinador.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ficha.programa.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ficha.ambiente.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ficha.gestor.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [fichas, searchTerm]);
 
   return (
     <div className={classes.container}>
       <div className={classes.filters}>
-        <FormControl fullWidth>
-          <Select 
-            value={selectedFichaId} 
-            onChange={(e) => setSelectedFichaId(e.target.value)} 
-            displayEmpty
-            className={classes.selectField}
-          >
-            <MenuItem value=""><em>Todas las fichas</em></MenuItem>
-            {fichas.map((ficha) => (
-              <MenuItem key={ficha.id} value={ficha.id}>{`${ficha.id}`}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <TextField
+          variant="outlined"
+          placeholder="Buscar por Coordinador, Programa o Ambiente"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className={classes.searchField}
+        />
 
         <div className={classes.newFichaButton}>
           <Button variant="contained" onClick={handleNewFichaClick} className={classes.newFichaButtonStyle}>
@@ -113,8 +112,9 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     marginBottom: '20px',
   },
-  selectField: {
-    backgroundColor: '#ffffff',
+  searchField: {
+    flexGrow: 1,
+    marginRight: '20px',
   },
   newFichaButton: {
     textAlign: 'right',
@@ -138,5 +138,3 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default GestionFichas;
-
-
