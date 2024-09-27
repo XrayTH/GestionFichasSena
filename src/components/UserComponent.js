@@ -134,7 +134,7 @@ const UserComponent = ({ user }) => {
 const useStyles = makeStyles(() => ({
   container: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', // Ajusta el tamaño mínimo de las columnas
+    gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
     gridGap: '10px',
     backgroundColor: '#f5f5f5',
     padding: '20px',
@@ -149,7 +149,7 @@ const useStyles = makeStyles(() => ({
   },
   label: {
     fontWeight: 'bold',
-    color: '#2914ae',
+    color: '#5eb219', 
     alignSelf: 'center',
     marginBottom: '5px',
   },
@@ -163,10 +163,10 @@ const useStyles = makeStyles(() => ({
     width: '100%',
   },
   button: {
-    backgroundColor: '#2914ae',
+    backgroundColor: '#5eb219', 
     color: '#fff',
     '&:hover': {
-      backgroundColor: '#4cae14',
+      backgroundColor: '#4cae14', 
     },
   },
   deleteButton: {

@@ -8,7 +8,7 @@ const GestionUsuarios = () => {
   const classes = useStyles()
 
   const [users, setUsers] = useState([
-    { username: 'user123', password: 'password123', role: 'Admin', canEdit: false, canCreate: false, canManageUsers: false},
+    { username: 'user123', password: 'password123', role: 'Admin', canEdit: false, canCreate: false, canManageUsers: false },
     { username: 'user456', password: 'password123', role: 'Editor', canEdit: true, canCreate: false, canManageUsers: false },
     { username: 'user789', password: 'password123', role: 'Viewer', canEdit: false, canCreate: false, canManageUsers: false },
   ])
@@ -46,6 +46,9 @@ const GestionUsuarios = () => {
             placeholder="Filtrar por usuario"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
+            InputProps={{
+              className: classes.inputField,
+            }}
           />
         </div>
         <div className={classes.filterRight}>
@@ -54,6 +57,7 @@ const GestionUsuarios = () => {
               value={selectedRole} 
               onChange={(e) => setSelectedRole(e.target.value)} 
               displayEmpty
+              className={classes.selectField}
             >
               <MenuItem value=""><em>Todos los roles</em></MenuItem>
               {roles.map((role) => (
@@ -63,7 +67,9 @@ const GestionUsuarios = () => {
           </FormControl>
         </div>
         <div className={classes.newUserButton}>
-          <Button variant="contained" onClick={handleNewUserClick}>Nuevo Usuario</Button>
+          <Button variant="contained" onClick={handleNewUserClick} className={classes.newUserButtonStyle}>
+            Nuevo Usuario
+          </Button>
         </div>
       </div>
 
@@ -86,34 +92,73 @@ const GestionUsuarios = () => {
 
 const useStyles = makeStyles(() => ({
   container: {
-    maxWidth: '1200px', 
-    width: '100%', 
+    maxWidth: '1200px',
+    width: '100%',
     margin: 'auto',
     padding: '20px',
+    backgroundColor: '#f4f4f4', 
   },
   filters: {
     display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: '20px',
+    '@media (max-width: 600px)': {
+      flexDirection: 'column',
+      alignItems: 'stretch',
+      marginLeft: '20px',
+      marginRight: '20px',
+    },
   },
   filterLeft: {
     flex: '1',
     marginRight: '20px',
+    '@media (max-width: 600px)': {
+      marginRight: '0',
+      marginBottom: '10px',
+    },
   },
   filterRight: {
     flex: '1',
     marginRight: '20px',
+    '@media (max-width: 600px)': {
+      marginRight: '0',
+      marginBottom: '10px',
+    },
   },
   newUserButton: {
     flex: 'none',
     textAlign: 'right',
+    '@media (max-width: 600px)': {
+      width: '100%',
+      textAlign: 'left',
+    },
+  },
+  newUserButtonStyle: {
+    backgroundColor: '#5eb219', 
+    '&:hover': {
+      backgroundColor: '#4cae14', 
+    },
+  },
+  inputField: {
+    backgroundColor: '#ffffff', 
+  },
+  selectField: {
+    backgroundColor: '#ffffff', 
   },
   userList: {
     marginTop: '20px',
   },
   userComponent: {
     marginBottom: '15px',
+    border: `1px solid #144cae`, 
+    borderRadius: '5px',
+    padding: '10px',
+    backgroundColor: '#ffffff', 
+  },
+  errorText: {
+    color: '#ae144c', 
   },
 }))
 
