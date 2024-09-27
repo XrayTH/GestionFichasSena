@@ -2,19 +2,12 @@ import React, { useState } from 'react'
 import { TextField, Button, Switch } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 
-const UserComponent = () => {
+const UserComponent = ({ user }) => {
   const classes = useStyles()
 
   const [isEditable, setIsEditable] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const [formState, setFormState] = useState({
-    username: 'user123',
-    password: 'password123',
-    role: 'Admin',
-    canEdit: false,
-    canCreate: false,
-    canManageUsers: false,
-  })
+  const [formState, setFormState] = useState(user)
 
   const handleEditClick = () => {
     setIsEditable(!isEditable)
