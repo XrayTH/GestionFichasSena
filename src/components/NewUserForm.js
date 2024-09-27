@@ -80,7 +80,7 @@ const NewUserForm = ({ onSave, onCancel }) => {
 const useStyles = makeStyles(() => ({
   container: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(7, 1fr)',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', // Cambiado para ser responsivo
     gridGap: '10px',
     backgroundColor: '#f5f5f5',
     padding: '20px',
@@ -121,3 +121,4 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default NewUserForm;
+

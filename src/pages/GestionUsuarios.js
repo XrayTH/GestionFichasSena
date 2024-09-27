@@ -78,7 +78,8 @@ const GestionUsuarios = () => {
 
 const useStyles = makeStyles(() => ({
   container: {
-    maxWidth: '1000px', // Ampliación del ancho del contenedor
+    maxWidth: '1200px', // Aumentar el ancho máximo del contenedor
+    width: '100%', // Asegurar que el contenedor use el ancho completo disponible
     margin: 'auto',
     padding: '20px',
   },
@@ -108,6 +109,5 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
+
 export default GestionUsuarios
-
-
