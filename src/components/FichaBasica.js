@@ -1,27 +1,27 @@
-import React, { useState } from 'react'
-import { TextField, Button, MenuItem } from '@mui/material'
-import { makeStyles } from '@mui/styles'
+import React, { useState } from 'react';
+import { TextField, Button, MenuItem } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
-const FichaBasica = ({ ficha, onUpdate }) => {
-  const classes = useStyles()
+const FichaBasica = ({ ficha, onUpdate, coordinadores = [], programas = [], gestores = [] }) => {
+  const classes = useStyles();
 
-  const [isEditable, setIsEditable] = useState(false)
-  const [formState, setFormState] = useState(ficha)
+  const [isEditable, setIsEditable] = useState(false);
+  const [formState, setFormState] = useState(ficha || {});
 
   const handleEditClick = () => {
     if (isEditable) {
-      onUpdate(formState)
+      onUpdate(formState);
     }
-    setIsEditable(!isEditable)
-  }
+    setIsEditable(!isEditable);
+  };
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormState((prevState) => ({
       ...prevState,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   return (
     <div className={classes.container}>
@@ -31,7 +31,7 @@ const FichaBasica = ({ ficha, onUpdate }) => {
         <TextField
           className={classes.textField}
           name="id"
-          value={formState.id}
+          value={formState.id || ''}
           variant="outlined"
           InputProps={{
             readOnly: true,
@@ -45,7 +45,7 @@ const FichaBasica = ({ ficha, onUpdate }) => {
         <TextField
           className={classes.textField}
           name="coordinador"
-          value={formState.coordinador}
+          value={formState.coordinador || ''}
           select
           variant="outlined"
           InputProps={{
@@ -53,7 +53,45 @@ const FichaBasica = ({ ficha, onUpdate }) => {
           }}
           onChange={handleChange}
         >
-          {/* Opciones vacías por ahora */}
+          {coordinadores.length > 0 ? (
+            coordinadores.map((coordinador) => (
+              <MenuItem key={coordinador} value={coordinador}>
+                {coordinador}
+              </MenuItem>
+            ))
+          ) : (
+            <MenuItem value="">
+              <em>No hay coordinadores disponibles</em>
+            </MenuItem>
+          )}
+        </TextField>
+      </div>
+
+      {/* Gestor */}
+      <div className={classes.fieldContainer}>
+        <label className={classes.label}>Gestor</label>
+        <TextField
+          className={classes.textField}
+          name="gestor"
+          value={formState.gestor || ''}
+          select
+          variant="outlined"
+          InputProps={{
+            readOnly: !isEditable,
+          }}
+          onChange={handleChange}
+        >
+          {gestores.length > 0 ? (
+            gestores.map((gestor) => (
+              <MenuItem key={gestor} value={gestor}>
+                {gestor}
+              </MenuItem>
+            ))
+          ) : (
+            <MenuItem value="">
+              <em>No hay gestores disponibles</em>
+            </MenuItem>
+          )}
         </TextField>
       </div>
 
@@ -63,7 +101,7 @@ const FichaBasica = ({ ficha, onUpdate }) => {
         <TextField
           className={classes.textField}
           name="programa"
-          value={formState.programa}
+          value={formState.programa || ''}
           select
           variant="outlined"
           InputProps={{
@@ -71,27 +109,17 @@ const FichaBasica = ({ ficha, onUpdate }) => {
           }}
           onChange={handleChange}
         >
-          {/* Opciones vacías por ahora */}
-        </TextField>
-      </div>
-
-      {/* Jornada */}
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Jornada</label>
-        <TextField
-          className={classes.textField}
-          name="jornada"
-          value={formState.jornada}
-          select
-          variant="outlined"
-          InputProps={{
-            readOnly: !isEditable,
-          }}
-          onChange={handleChange}
-        >
-          <MenuItem value="Mañana">Mañana</MenuItem>
-          <MenuItem value="Tarde">Tarde</MenuItem>
-          <MenuItem value="Noche">Noche</MenuItem>
+          {programas.length > 0 ? (
+            programas.map((programa) => (
+              <MenuItem key={programa} value={programa}>
+                {programa}
+              </MenuItem>
+            ))
+          ) : (
+            <MenuItem value="">
+              <em>No hay programas disponibles</em>
+            </MenuItem>
+          )}
         </TextField>
       </div>
 
@@ -101,7 +129,7 @@ const FichaBasica = ({ ficha, onUpdate }) => {
         <TextField
           className={classes.textField}
           name="ambiente"
-          value={formState.ambiente}
+          value={formState.ambiente || ''}
           variant="outlined"
           InputProps={{
             readOnly: !isEditable,
@@ -117,14 +145,14 @@ const FichaBasica = ({ ficha, onUpdate }) => {
           className={classes.textField}
           name="inicio"
           type="date"
-          value={formState.inicio}
+          value={formState.inicio || ''}
           variant="outlined"
           InputProps={{
             readOnly: !isEditable,
           }}
           onChange={handleChange}
           InputLabelProps={{
-            shrink: true, // Mantiene el label visible cuando se selecciona la fecha
+            shrink: true,
           }}
         />
       </div>
@@ -136,14 +164,14 @@ const FichaBasica = ({ ficha, onUpdate }) => {
           className={classes.textField}
           name="fin"
           type="date"
-          value={formState.fin}
+          value={formState.fin || ''}
           variant="outlined"
           InputProps={{
             readOnly: !isEditable,
           }}
           onChange={handleChange}
           InputLabelProps={{
-            shrink: true, // Mantiene el label visible cuando se selecciona la fecha
+            shrink: true,
           }}
         />
       </div>
@@ -154,7 +182,7 @@ const FichaBasica = ({ ficha, onUpdate }) => {
         <TextField
           className={classes.textField}
           name="requerimientos"
-          value={formState.requerimientos}
+          value={formState.requerimientos || ''}
           variant="outlined"
           multiline
           rows={4}
@@ -173,8 +201,8 @@ const FichaBasica = ({ ficha, onUpdate }) => {
         <Button className={classes.deleteButton}>Borrar</Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -224,8 +252,7 @@ const useStyles = makeStyles(() => ({
       backgroundColor: '#d81b60',
     },
   },
-}))
+}));
 
-export default FichaBasica
-
+export default FichaBasica;
 

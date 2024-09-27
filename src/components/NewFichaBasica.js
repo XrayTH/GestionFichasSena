@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, MenuItem } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-const NewFichaBasica = ({ onSave, onCancel }) => {
+const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], gestores = [] }) => {
   const classes = useStyles();
   const [formState, setFormState] = useState({
     id: '',
     coordinador: '',
     programa: '',
+    gestor: '', // Nuevo campo gestor
     ambiente: '',
     inicio: '',
     fin: '',
@@ -51,9 +52,20 @@ const NewFichaBasica = ({ onSave, onCancel }) => {
             className={classes.textField}
             name="coordinador"
             value={formState.coordinador}
+            select
             variant="outlined"
             onChange={handleChange}
-          />
+          >
+            {coordinadores.length > 0 ? (
+              coordinadores.map((coordinador) => (
+                <MenuItem key={coordinador} value={coordinador}>
+                  {coordinador}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem disabled>No hay coordinadores disponibles</MenuItem>
+            )}
+          </TextField>
         </div>
 
         {/* 3. Programa */}
@@ -63,12 +75,46 @@ const NewFichaBasica = ({ onSave, onCancel }) => {
             className={classes.textField}
             name="programa"
             value={formState.programa}
+            select
             variant="outlined"
             onChange={handleChange}
-          />
+          >
+            {programas.length > 0 ? (
+              programas.map((programa) => (
+                <MenuItem key={programa} value={programa}>
+                  {programa}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem disabled>No hay programas disponibles</MenuItem>
+            )}
+          </TextField>
         </div>
 
-        {/* 4. Ambiente */}
+        {/* 4. Gestor */}
+        <div className={classes.fieldContainer}>
+          <label className={classes.label}>Gestor</label>
+          <TextField
+            className={classes.textField}
+            name="gestor"
+            value={formState.gestor}
+            select
+            variant="outlined"
+            onChange={handleChange}
+          >
+            {gestores.length > 0 ? (
+              gestores.map((gestor) => (
+                <MenuItem key={gestor} value={gestor}>
+                  {gestor}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem disabled>No hay gestores disponibles</MenuItem>
+            )}
+          </TextField>
+        </div>
+
+        {/* 5. Ambiente */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Ambiente</label>
           <TextField
@@ -80,7 +126,7 @@ const NewFichaBasica = ({ onSave, onCancel }) => {
           />
         </div>
 
-        {/* 5. Inicio */}
+        {/* 6. Inicio */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Inicio</label>
           <TextField
@@ -96,7 +142,7 @@ const NewFichaBasica = ({ onSave, onCancel }) => {
           />
         </div>
 
-        {/* 6. Fin */}
+        {/* 7. Fin */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Fin</label>
           <TextField
