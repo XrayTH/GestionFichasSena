@@ -24,12 +24,18 @@ const GestionFichas = () => {
   const handleNewFichaClick = () => setShowNewFichaForm(true);
 
   const handleSaveNewFicha = (newFicha) => {
-    const fichaWithId = { ...newFicha }; // Asigna el ID directamente desde el nuevo formulario
+    const fichaWithId = { ...newFicha, id: newFicha.id }; // Usa el ID asignado
     setFichas((prevFichas) => [...prevFichas, fichaWithId]);
     setShowNewFichaForm(false);
   };
 
   const handleCancelNewFicha = () => setShowNewFichaForm(false);
+
+  const handleUpdateFicha = (updatedFicha) => {
+    setFichas((prevFichas) =>
+      prevFichas.map((ficha) => (ficha.id === updatedFicha.id ? updatedFicha : ficha))
+    );
+  };
 
   const filteredFichas = useMemo(() => {
     return selectedFichaId
@@ -49,7 +55,7 @@ const GestionFichas = () => {
           >
             <MenuItem value=""><em>Todas las fichas</em></MenuItem>
             {fichas.map((ficha) => (
-              <MenuItem key={ficha.id} value={ficha.id}>{`Ficha ID ${ficha.id}`}</MenuItem>
+              <MenuItem key={ficha.id} value={ficha.id}>{`${ficha.id}`}</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -77,9 +83,11 @@ const GestionFichas = () => {
             <div key={ficha.id} className={classes.fichaComponent}>
               <FichaBasica 
                 ficha={ficha}
+                onUpdate={handleUpdateFicha} // Pasa el método de actualización
                 coordinadores={coordinadores}
                 gestores={instructores}
-                programas={programas} />
+                programas={programas}
+              />
             </div>
           ))
         ) : (
@@ -130,4 +138,5 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default GestionFichas;
+
 
