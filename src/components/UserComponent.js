@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextField, Button, Switch } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 
-const UserComponent = ({ user }) => {
+const UserComponent = ({ user, onUpdate }) => {
   const classes = useStyles()
 
   const [isEditable, setIsEditable] = useState(false)
@@ -10,6 +10,10 @@ const UserComponent = ({ user }) => {
   const [formState, setFormState] = useState(user)
 
   const handleEditClick = () => {
+    if (isEditable) {
+      // Llama a onUpdate cuando se guarda
+      onUpdate(formState)
+    }
     setIsEditable(!isEditable)
   }
 
@@ -20,6 +24,11 @@ const UserComponent = ({ user }) => {
       [name]: value,
     }))
   }
+
+  // Actualiza formState cuando el usuario prop cambia
+  useEffect(() => {
+    setFormState(user);
+  }, [user]);
 
   return (
     <div className={classes.container}>
@@ -149,7 +158,7 @@ const useStyles = makeStyles(() => ({
   },
   label: {
     fontWeight: 'bold',
-    color: '#5eb219', 
+    color: '#5eb219',
     alignSelf: 'center',
     marginBottom: '5px',
   },
@@ -163,10 +172,10 @@ const useStyles = makeStyles(() => ({
     width: '100%',
   },
   button: {
-    backgroundColor: '#5eb219', 
+    backgroundColor: '#5eb219',
     color: '#fff',
     '&:hover': {
-      backgroundColor: '#4cae14', 
+      backgroundColor: '#4cae14',
     },
   },
   deleteButton: {
