@@ -114,7 +114,7 @@ const UserComponent = () => {
       </div>
 
       {/* 7. Botones */}
-      <div className={classes.buttonContainer}>
+      <div className={classes.fieldContainer}>
         <Button
           className={classes.button}
           onClick={handleEditClick}
