@@ -1,34 +1,38 @@
-import { useState, useMemo } from 'react'
-import { Button, TextField, MenuItem, Select, FormControl } from '@mui/material'
-import UserComponent from '../components/UserComponent'
-import NewUserForm from '../components/NewUserForm'
-import { makeStyles } from '@mui/styles'
+import { useState, useMemo } from 'react';
+import { Button, TextField, MenuItem, Select, FormControl } from '@mui/material';
+import UserComponent from '../components/UserComponent';
+import NewUserForm from '../components/NewUserForm';
+import { makeStyles } from '@mui/styles';
 
 const GestionUsuarios = () => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   const [users, setUsers] = useState([
     { id: 1, username: 'user123', password: 'password123', role: 'Admin', canEdit: false, canCreate: false, canManageUsers: false },
     { id: 2, username: 'user456', password: 'password123', role: 'Editor', canEdit: true, canCreate: false, canManageUsers: false },
     { id: 3, username: 'user789', password: 'password123', role: 'Viewer', canEdit: false, canCreate: false, canManageUsers: false },
-  ])
+  ]);
   
-  const [showNewUserForm, setShowNewUserForm] = useState(false)
-  const [searchText, setSearchText] = useState('')
-  const [selectedRole, setSelectedRole] = useState('')
+  const [showNewUserForm, setShowNewUserForm] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [selectedRole, setSelectedRole] = useState('');
 
-  const handleNewUserClick = () => setShowNewUserForm(true)
+  const handleNewUserClick = () => setShowNewUserForm(true);
+  
   const handleSaveNewUser = (newUser) => {
-    setUsers((prevUsers) => [...prevUsers, newUser])
-    setShowNewUserForm(false)
+    const newId = users.length > 0 ? Math.max(...users.map(user => user.id)) + 1 : 1; // Obtiene el ID más alto y le suma 1
+    const userWithId = { ...newUser, id: newId }; // Crea el nuevo usuario con el ID asignado
+    setUsers((prevUsers) => [...prevUsers, userWithId]); // Agrega el nuevo usuario al estado
+    setShowNewUserForm(false);
   }
-  const handleCancelNewUser = () => setShowNewUserForm(false)
+  
+  const handleCancelNewUser = () => setShowNewUserForm(false);
 
   const handleUpdateUser = (updatedUser) => {
     setUsers((prevUsers) =>
       prevUsers.map(user => (user.id === updatedUser.id ? updatedUser : user))
-    )
-  }
+    );
+  };
 
   const roles = useMemo(() => {
     const uniqueRoles = new Set(users.map(user => user.role));
@@ -93,8 +97,8 @@ const GestionUsuarios = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -166,7 +170,6 @@ const useStyles = makeStyles(() => ({
   errorText: {
     color: '#ae144c', 
   },
-}))
+}));
 
-export default GestionUsuarios
-
+export default GestionUsuarios;
