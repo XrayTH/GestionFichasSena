@@ -19,7 +19,7 @@ function GestionFichas() {
   return (
     <div>
     
-        <NewFichaBasica/>
+        <FichaBasica ficha={fichaPrueba}/>
 
     </div>
   )

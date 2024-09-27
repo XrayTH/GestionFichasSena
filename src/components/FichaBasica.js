@@ -116,12 +116,16 @@ const FichaBasica = ({ ficha, onUpdate }) => {
         <TextField
           className={classes.textField}
           name="inicio"
+          type="date"
           value={formState.inicio}
           variant="outlined"
           InputProps={{
             readOnly: !isEditable,
           }}
           onChange={handleChange}
+          InputLabelProps={{
+            shrink: true, // Mantiene el label visible cuando se selecciona la fecha
+          }}
         />
       </div>
 
@@ -131,12 +135,16 @@ const FichaBasica = ({ ficha, onUpdate }) => {
         <TextField
           className={classes.textField}
           name="fin"
+          type="date"
           value={formState.fin}
           variant="outlined"
           InputProps={{
             readOnly: !isEditable,
           }}
           onChange={handleChange}
+          InputLabelProps={{
+            shrink: true, // Mantiene el label visible cuando se selecciona la fecha
+          }}
         />
       </div>
 
@@ -219,4 +227,5 @@ const useStyles = makeStyles(() => ({
 }))
 
 export default FichaBasica
+
 
