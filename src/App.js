@@ -5,11 +5,12 @@ import Email from '../src/pages/Email'
 import GesUsu from '../src/pages/GestionUsuarios'
 import GesFicha from '../src/components/GestionFichas'
 import GesCoo from '../src/components/GestionCoordinadores'
+import GesIns from '../src/components/GestionInstructores'
 
 function App() {
   return (
     <div >
-      <GesCoo/>
+      <GesIns/>
     </div>
   );
 }
