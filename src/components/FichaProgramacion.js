@@ -49,6 +49,7 @@ function FichaProgramacion({ ficha, instructores, onInstructorChange }) {
                                     labelId={`select-${day}-${time}`}
                                     value={ficha[`${day.toLowerCase()}_${time}`] || ''}
                                     onChange={handleInstructorChange(day.toLowerCase(), time)}
+                                    className={classes.select}
                                 >
                                     {instructores.map((instructor) => (
                                         <MenuItem key={instructor} value={instructor}>
@@ -71,17 +72,33 @@ const useStyles = makeStyles(() => ({
         margin: '8px 0',
         backgroundColor: '#f0f0f0',
     },
+    header: {
+        marginBottom: '16px',
+    },
     dayLabel: {
         textAlign: 'center',
         fontWeight: 'bold',
+        color: '#5eb219', // Color principal
     },
     label: {
         textAlign: 'center',
         marginBottom: '8px',
+        color: '#195eb2', // Color secundario
     },
     instructorSelect: {
         width: '100%',
-        marginTop: '8px', // Añadir margen superior para separación
+        marginTop: '8px',
+    },
+    select: {
+        '&.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#b2195e', // Color terciario
+        },
+        '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#5eb219', // Color principal al hacer hover
+        },
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#5eb219', // Color principal cuando está enfocado
+        },
     },
 }));
 
