@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import FichaProgramacion from '../components/FichaProgramacion';
 import { Grid, TextField } from '@mui/material';
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from '@mui/styles';
 
 function Programar() {
     const classes = useStyles();
@@ -14,7 +14,7 @@ function Programar() {
     ]);
 
     const [jornadas, setJornadas] = useState([
-        { id: 1, ficha: 1, dia: "Lunes", jornada: "Mañana", instructor: "Luis Fernandez" },
+        { id: 1, ficha: 1, dia: "Lunes", jornada: "Mañana", instructor: "Luis Fernández" },
         { id: 2, ficha: 2, dia: "Martes", jornada: "Tarde", instructor: "Ana Martínez" },
         { id: 3, ficha: 3, dia: "Miércoles", jornada: "Noche", instructor: "Luis Fernández" },
         { id: 4, ficha: 4, dia: "Jueves", jornada: "Mañana", instructor: "Diego Torres" },
@@ -33,27 +33,29 @@ function Programar() {
             coordinador: ficha.coordinador,
             gestor: ficha.gestor,
             programa: ficha.programa,
-            Lunes_mañana: null,
-            Lunes_tarde: null,
-            Lunes_noche: null,
-            Martes_mañana: null,
-            Martes_tarde: null,
-            Martes_noche: null,
-            Miércoles_mañana: null,
-            Miércoles_tarde: null,
-            Miércoles_noche: null,
-            Jueves_mañana: null,
-            Jueves_tarde: null,
-            Jueves_noche: null,
-            Viernes_mañana: null,
-            Viernes_tarde: null,
-            Viernes_noche: null,
+            lunes_mañana: null,
+            lunes_tarde: null,
+            lunes_noche: null,
+            martes_mañana: null,
+            martes_tarde: null,
+            martes_noche: null,
+            miércoles_mañana: null,
+            miércoles_tarde: null,
+            miércoles_noche: null,
+            jueves_mañana: null,
+            jueves_tarde: null,
+            jueves_noche: null,
+            viernes_mañana: null,
+            viernes_tarde: null,
+            viernes_noche: null,
         };
 
         jornadas.forEach(jornada => {
             if (jornada.ficha === ficha.id) {
-                const key = `${jornada.dia}_${jornada.jornada}`;
-                fichaJornadas[key] = jornada.instructor;
+                const key = `${jornada.dia.toLowerCase()}_${jornada.jornada.toLowerCase()}`;
+                if (key in fichaJornadas) {
+                    fichaJornadas[key] = jornada.instructor;
+                }
             }
         });
 
