@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FichaProgramacion from '../components/FichaProgramacion';
-import { Grid } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 
 function Programar() {
     const [fichas, setFichas] = useState([
@@ -21,6 +21,8 @@ function Programar() {
     const [Instructores, setInstructores] = useState([
         "Diego Torres", 'Ana Martínez', 'Luis Fernández'
     ]);
+
+    const [filter, setFilter] = useState(''); // Estado para el filtro
 
     const schedule = fichas.map(ficha => {
         const fichaJornadas = {
@@ -55,6 +57,19 @@ function Programar() {
         return fichaJornadas;
     });
 
+    // Filtra las fichas según el texto ingresado
+    const filteredFichas = schedule.filter(ficha => 
+        ficha.id.toString().includes(filter) ||
+        ficha.coordinador.toLowerCase().includes(filter.toLowerCase()) ||
+        ficha.programa.toLowerCase().includes(filter.toLowerCase()) ||
+        ficha.gestor.toLowerCase().includes(filter.toLowerCase())
+    );
+
+    // Maneja el cambio en el filtro
+    const handleFilterChange = (event) => {
+        setFilter(event.target.value);
+    };
+
     // Maneja el cambio en el dropdown
     const handleInstructorChange = (fichaId, dia, jornada, instructor) => {
         setJornadas((prevJornadas) => {
@@ -69,8 +84,16 @@ function Programar() {
 
     return (
         <div>
+            <TextField
+                label="Buscar por ID, Coordinador, Programa o Gestor"
+                variant="outlined"
+                fullWidth
+                onChange={handleFilterChange}
+                value={filter}
+                style={{ marginBottom: '16px' }} // Margen inferior para separación
+            />
             <Grid container spacing={2}>
-                {schedule.map((ficha) => (
+                {filteredFichas.map((ficha) => (
                     <Grid item xs={12} key={ficha.id}>
                         <FichaProgramacion
                             ficha={ficha}
@@ -85,6 +108,5 @@ function Programar() {
 }
 
 export default Programar;
-
 
 
