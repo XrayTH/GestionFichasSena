@@ -44,7 +44,8 @@ const GestionFichas = () => {
       ficha.coordinador.toLowerCase().includes(searchTerm.toLowerCase()) ||
       ficha.programa.toLowerCase().includes(searchTerm.toLowerCase()) ||
       ficha.ambiente.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ficha.gestor.toLowerCase().includes(searchTerm.toLowerCase())
+      ficha.gestor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ficha.id.toString().includes(searchTerm)
     );
   }, [fichas, searchTerm]);
 
