@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Button, TextField } from '@mui/material';
 import Coordinador from './Coordinador';
-import NewCoordinador from './newCoordinador';
+import NewCoordinador from './NewCoordinador';
 import { makeStyles } from '@mui/styles';
 
 const GestionCoordinadores = () => {
