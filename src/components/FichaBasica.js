@@ -194,7 +194,7 @@ const FichaBasica = ({ ficha, onUpdate, coordinadores = [], programas = [], gest
       </div>
 
       {/* Botones */}
-      <div className={classes.buttonContainer}>
+      <div className={classes.buttonRow}>
         <Button className={classes.button} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}
         </Button>
@@ -232,10 +232,12 @@ const useStyles = makeStyles(() => ({
   textField: {
     width: '100%',
   },
-  buttonContainer: {
+  buttonRow: {
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: '10px',
+    gridColumn: '1 / -1', // Asegúrate de que ocupe toda la fila
   },
   button: {
     backgroundColor: '#5eb219',
@@ -243,7 +245,7 @@ const useStyles = makeStyles(() => ({
     '&:hover': {
       backgroundColor: '#4cae14',
     },
-    marginBottom: '10px',
+    marginRight: '10px', // Espaciado entre botones
   },
   deleteButton: {
     backgroundColor: '#b2195e',
@@ -255,4 +257,3 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default FichaBasica;
-

@@ -54,7 +54,7 @@ const GestionFichas = () => {
       <div className={classes.filters}>
         <TextField
           variant="outlined"
-          placeholder="Buscar por Coordinador, Programa o Ambiente"
+          placeholder="Buscar por ID de Ficha, Coordinador, Programa o Ambiente"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className={classes.searchField}
@@ -100,7 +100,7 @@ const GestionFichas = () => {
 
 const useStyles = makeStyles(() => ({
   container: {
-    maxWidth: '1200px',
+    maxWidth: '1400px', // Ajusta el valor a lo que necesites
     width: '100%',
     margin: 'auto',
     padding: '20px',
@@ -137,5 +137,6 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#ffffff',
   },
 }));
+
 
 export default GestionFichas;
