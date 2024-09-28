@@ -6,11 +6,12 @@ import GesUsu from '../src/pages/GestionUsuarios'
 import GesFicha from '../src/components/GestionFichas'
 import GesCoo from '../src/components/GestionCoordinadores'
 import GesIns from '../src/components/GestionInstructores'
+import Programar from '../src/pages/Programar'
 
 function App() {
   return (
     <div >
-      <GesIns/>
+      <Programar/>
     </div>
   );
 }
