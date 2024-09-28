@@ -75,14 +75,35 @@ function Programar() {
 
     const handleInstructorChange = (fichaId, dia, jornada, instructor) => {
         setJornadas((prevJornadas) => {
-            return prevJornadas.map(jornadaItem => {
-                if (jornadaItem.ficha === fichaId && jornadaItem.dia === dia && jornadaItem.jornada === jornada) {
-                    return { ...jornadaItem, instructor };
-                }
-                return jornadaItem;
-            });
+            // Verifica si la jornada ya existe
+            const existingJornadaIndex = prevJornadas.findIndex(
+                (jornadaItem) => 
+                    jornadaItem.ficha === fichaId && 
+                    jornadaItem.dia === dia && 
+                    jornadaItem.jornada === jornada
+            );
+    
+            if (existingJornadaIndex !== -1) {
+                // Si existe, actualiza la jornada
+                return prevJornadas.map((jornadaItem, index) => {
+                    if (index === existingJornadaIndex) {
+                        return { ...jornadaItem, instructor }; // Actualiza el instructor
+                    }
+                    return jornadaItem; // Devuelve el item sin cambios
+                });
+            } else {
+                // Si no existe, agrega una nueva jornada
+                const newJornada = {
+                    id: prevJornadas.length + 1, // O una lógica para generar IDs únicos
+                    ficha: fichaId,
+                    dia,
+                    jornada,
+                    instructor,
+                };
+                return [...prevJornadas, newJornada]; // Agrega la nueva jornada al array
+            }
         });
-    };
+    };    
 
     return (
         <div className={classes.container}>
