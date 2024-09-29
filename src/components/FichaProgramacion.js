@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@mui/styles';
 import { FormControl, InputLabel, Select, MenuItem, Grid, Typography, TextField } from '@mui/material';
 
-function FichaProgramacion({ ficha, instructores, onInstructorChange }) {
+const FichaProgramacion = ({ ficha, instructores, onInstructorChange }) => {
     const classes = useStyles();
 
     // Maneja el cambio en el dropdown

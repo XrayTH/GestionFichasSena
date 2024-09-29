@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
 
-function Home() {
+const Home = () => {
   const classes = useStyles();
 
   return (

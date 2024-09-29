@@ -3,7 +3,7 @@ import FichaProgramacion from '../components/FichaProgramacion';
 import { Grid, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-function Programar() {
+const Programar = () => {
     const classes = useStyles();
 
     const [fichas, setFichas] = useState([

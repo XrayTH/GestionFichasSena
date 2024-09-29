@@ -7,11 +7,12 @@ import GesFicha from '../src/components/GestionFichas'
 import GesCoo from '../src/components/GestionCoordinadores'
 import GesIns from '../src/components/GestionInstructores'
 import Programar from '../src/pages/Programar'
+import Consultas from './pages/Consultas';
 
 function App() {
   return (
     <div >
-      <Programar/>
+      <Consultas/>
     </div>
   );
 }
