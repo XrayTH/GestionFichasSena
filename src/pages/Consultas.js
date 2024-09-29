@@ -15,9 +15,11 @@ const Consultas = () => {
           <FormControl fullWidth className={classes.dropdown}>
             <InputLabel id="filter1-label">Filtro 1</InputLabel>
             <Select labelId="filter1-label" defaultValue="">
-              <MenuItem value={10}>Opción 1</MenuItem>
-              <MenuItem value={20}>Opción 2</MenuItem>
-              <MenuItem value={30}>Opción 3</MenuItem>
+              <MenuItem value={10}>Ficha</MenuItem>
+              <MenuItem value={20}>Instructor</MenuItem>
+              <MenuItem value={30}>Coordinador</MenuItem>
+              <MenuItem value={30}>Gestor</MenuItem>
+              <MenuItem value={30}>Programa</MenuItem>
             </Select>
           </FormControl>
           <FormControl fullWidth className={classes.dropdown}>
@@ -44,6 +46,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
+    alignItems: 'center',
   },
   panel: {
     display: 'flex',
@@ -70,6 +73,7 @@ const useStyles = makeStyles({
   },
   content: {
     flex: '1 1 40%', // El contenido del calendario ocupa el resto
+    minWidth: '80%'
   },
 })
 
