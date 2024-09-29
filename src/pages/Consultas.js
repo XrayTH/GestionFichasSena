@@ -10,6 +10,9 @@ const Consultas = () => {
   return (
     <div className={classes.root}>
       <Box className={classes.panel}>
+        <div className={classes.gestion}>
+          <PanelGestion />
+        </div>
         <div className={classes.filtros}>
           <label className={classes.label}>Filtrar por:</label>
           <FormControl fullWidth className={classes.dropdown}>
@@ -25,13 +28,9 @@ const Consultas = () => {
           <FormControl fullWidth className={classes.dropdown}>
             <InputLabel id="filter2-label">Filtro 2</InputLabel>
             <Select labelId="filter2-label" defaultValue="">
-              <MenuItem value={10}>Opción A</MenuItem>
-              <MenuItem value={20}>Opción B</MenuItem>
-              <MenuItem value={30}>Opción C</MenuItem>
             </Select>
           </FormControl>
         </div>
-        <PanelGestion />
       </Box>
 
       <div className={classes.content}>
@@ -55,13 +54,19 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     padding: '20px',
     gap: '20px',
+    alignItems: 'center',
+    '@media (max-width: 600px)': { // Cambia a columna en pantallas pequeñas
+      flexDirection: 'column',
+    },
   },
   filtros: {
-    flex: '1 1 60%', // Permite que ocupe del 60% al 80% del espacio
-    minWidth: '500px',
-    backgroundColor: '#f0f0f0', // Color de fondo para diferenciar
+    flex: '1 1 60%',
+    backgroundColor: '#f0f0f0',
     padding: '15px',
     borderRadius: '8px',
+  },
+  gestion: {
+    //maxWidth: '50%',
   },
   label: {
     marginBottom: '10px',
@@ -71,9 +76,10 @@ const useStyles = makeStyles({
     marginTop: '10px',
   },
   content: {
-    flex: '1 1 40%', // El contenido del calendario ocupa el resto
-    minWidth: '80%'
+    flex: '1 1 40%',
+    minWidth: '80%',
   },
 })
 
 export default Consultas
+
