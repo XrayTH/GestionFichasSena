@@ -2,7 +2,7 @@ import React from 'react'
 import Calendario from './../components/Calendario'
 import PanelGestion from './../components/PanelGestion'
 import { makeStyles } from '@mui/styles'
-import { FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material'
+import { FormControl, InputLabel, Select, MenuItem, Box, Button } from '@mui/material'
 
 const Consultas = () => {
   const classes = useStyles()
@@ -10,9 +10,7 @@ const Consultas = () => {
   return (
     <div className={classes.root}>
       <Box className={classes.panel}>
-        <div className={classes.gestion}>
           <PanelGestion />
-        </div>
         <div className={classes.filtros}>
           <label className={classes.label}>Filtrar por:</label>
           <FormControl fullWidth className={classes.dropdown}>
@@ -36,6 +34,10 @@ const Consultas = () => {
       <div className={classes.content}>
         <Calendario />
       </div>
+
+      <Button variant="contained" className={classes.enviarButton}>
+        Enviar por correo
+      </Button>
     </div>
   )
 }
@@ -46,6 +48,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     height: '100vh',
     alignItems: 'center',
+    position: 'relative', // Añadido para posicionar el botón
   },
   panel: {
     display: 'flex',
@@ -65,9 +68,6 @@ const useStyles = makeStyles({
     padding: '15px',
     borderRadius: '8px',
   },
-  gestion: {
-    //maxWidth: '50%',
-  },
   label: {
     marginBottom: '10px',
     fontWeight: 'bold',
@@ -79,7 +79,11 @@ const useStyles = makeStyles({
     flex: '1 1 40%',
     minWidth: '80%',
   },
+  enviarButton: {
+    margin: '20px',  // Espaciado desde la derecha
+  },
 })
 
 export default Consultas
+
 
