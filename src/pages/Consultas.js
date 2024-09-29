@@ -8,6 +8,7 @@ const Consultas = () => {
   const classes = useStyles();
 
   const [selectedFilter1, setSelectedFilter1] = useState('');
+  const [selectedFilter2, setSelectedFilter2] = useState('');
   const [filter2Options, setFilter2Options] = useState([]);
 
   const [fichas, setFichas] = useState([
@@ -17,65 +18,56 @@ const Consultas = () => {
     { id: 4, coordinador: 'Lucía López', gestor: 'Diego Torres', programa: 'Marketing', ambiente: 'Laboratorio 404', inicio: '2024-09-15', fin: '2024-12-01', requerimientos: 'Proyector, Computadora' },
   ]);
 
-  const [Instructores, setInstructores] = useState([
-    { Documento: "123456789", Nombre: "Diego Torres", Email: "diego.torres@email.com" },
-    { Documento: "987654321", Nombre: "Ana Martínez", Email: "ana.martinez@email.com" },
-    { Documento: "456789123", Nombre: "Luis Fernández", Email: "luis.fernandez@email.com" }
+  const [jornadas, setJornadas] = useState([
+    { id: 1, ficha: 1, dia: "Lunes", jornada: "Mañana", instructor: "Luis Fernández" },
+    { id: 2, ficha: 2, dia: "Martes", jornada: "Tarde", instructor: "Ana Martínez" },
+    { id: 3, ficha: 3, dia: "Miércoles", jornada: "Noche", instructor: "Luis Fernández" },
+    { id: 4, ficha: 4, dia: "Jueves", jornada: "Mañana", instructor: "Diego Torres" },
+    { id: 5, ficha: 2, dia: "Viernes", jornada: "Tarde", instructor: "Ana Martínez" }
   ]);
 
-  const [coordinadores, setCoordinadores] = useState([
-    { Documento: "321654987", Nombre: "Carlos Mendoza", Email: "carlos.mendoza@email.com" },
-    { Documento: "654987321", Nombre: "Lucía Gómez", Email: "lucia.gomez@email.com" },
-    { Documento: "987321654", Nombre: "Roberto Salinas", Email: "roberto.salinas@email.com" }
-  ]);
-
-  const programas = [
-    "Ingeniería de Sistemas",
-    "Administración de Empresas",
-    "Derecho",
-    "Medicina",
-    "Arquitectura",
-    "Psicología",
-    "Contaduría Pública",
-    "Comunicación Social",
-    "Ingeniería Industrial",
-    "Diseño Gráfico",
-    "Economía",
-    "Ciencias Políticas",
-    "Ingeniería Civil",
-    "Trabajo Social",
-    "Marketing",
-    "Relaciones Internacionales",
-    "Educación",
-    "Biología",
-    "Química",
-    "Filosofía"
-  ];
+  const [calendarEvents, setCalendarEvents] = useState([]);
 
   const handleFilter1Change = (event) => {
     const selectedValue = event.target.value;
     setSelectedFilter1(selectedValue);
 
-    switch (selectedValue) {
-      case 'Ficha':
-        setFilter2Options(fichas.map(ficha => ficha.id)); 
-        break;
-      case 'Instructor':
-        setFilter2Options(Instructores.map(inst => inst.Nombre)); 
-        break;
-      case 'Coordinador':
-        setFilter2Options(coordinadores.map(coord => coord.Nombre)); 
-        break;
-      case 'Gestor':
-        setFilter2Options(Instructores.map(inst => inst.Nombre)); 
-        break;
-      case 'Programa':
-        setFilter2Options(programas); 
-        break;
-      default:
-        setFilter2Options([]);
-        break;
+    if (selectedValue === 'Ficha') {
+      setFilter2Options(fichas.map(ficha => ficha.id)); 
+    } else {
+      setFilter2Options([]);
     }
+  };
+
+  const handleFilter2Change = (event) => {
+    const selectedValue = event.target.value;
+    setSelectedFilter2(selectedValue);
+
+    // Obtener los datos de la ficha seleccionada
+    const fichaId = parseInt(selectedValue);
+    const fichaSeleccionada = fichas.find(ficha => ficha.id === fichaId);
+    
+    // Definir fechas de inicio y fin
+    const inicio = new Date(fichaSeleccionada.inicio);
+    const fin = new Date(fichaSeleccionada.fin);
+    const eventos = [];
+
+    // Generar eventos para cada día de lunes a viernes
+    let fechaActual = new Date(inicio);
+    while (fechaActual <= fin) {
+      const diaSemana = fechaActual.getDay(); // 0=Domingo, 1=Lunes, ..., 6=Sábado
+      if (diaSemana >= 1 && diaSemana <= 5) { // Lunes a Viernes
+        eventos.push({
+          title: `Ficha ${selectedValue}`,
+          start: new Date(fechaActual),
+          end: new Date(fechaActual),
+          allDay: true,
+        });
+      }
+      fechaActual.setDate(fechaActual.getDate() + 1); // Avanzar un día
+    }
+
+    setCalendarEvents(eventos);
   };
 
   return (
@@ -89,18 +81,14 @@ const Consultas = () => {
             <Select
               labelId="filter1-label"
               value={selectedFilter1}
-              onChange={handleFilter1Change} 
+              onChange={handleFilter1Change}
             >
               <MenuItem value="Ficha">Ficha</MenuItem>
-              <MenuItem value="Instructor">Instructor</MenuItem>
-              <MenuItem value="Coordinador">Coordinador</MenuItem>
-              <MenuItem value="Gestor">Gestor</MenuItem>
-              <MenuItem value="Programa">Programa</MenuItem>
             </Select>
           </FormControl>
           <FormControl fullWidth className={classes.dropdown}>
             <InputLabel id="filter2-label">Elemento</InputLabel>
-            <Select labelId="filter2-label">
+            <Select labelId="filter2-label" onChange={handleFilter2Change}>
               {filter2Options.map((option, index) => (
                 <MenuItem key={index} value={option}>{option}</MenuItem>
               ))}
@@ -110,7 +98,7 @@ const Consultas = () => {
       </Box>
 
       <div className={classes.content}>
-        <Calendario />
+        <Calendario events={calendarEvents} />
       </div>
 
       <Button variant="contained" className={classes.enviarButton}>
@@ -163,6 +151,3 @@ const useStyles = makeStyles({
 });
 
 export default Consultas;
-
-
-
