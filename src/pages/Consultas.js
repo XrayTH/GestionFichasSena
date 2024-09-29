@@ -58,8 +58,7 @@ const useStyles = makeStyles({
   },
   filtros: {
     flex: '1 1 60%', // Permite que ocupe del 60% al 80% del espacio
-    minWidth: '300px',
-    maxWidth: '400px',
+    minWidth: '500px',
     backgroundColor: '#f0f0f0', // Color de fondo para diferenciar
     padding: '15px',
     borderRadius: '8px',
