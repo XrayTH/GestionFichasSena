@@ -19,11 +19,12 @@ const Consultas = () => {
   ]);
 
   const [jornadas, setJornadas] = useState([
-    { id: 1, ficha: 1, dia: "Lunes", jornada: "Mañana", instructor: "Luis Fernández" },
-    { id: 2, ficha: 2, dia: "Martes", jornada: "Tarde", instructor: "Ana Martínez" },
-    { id: 3, ficha: 3, dia: "Miércoles", jornada: "Noche", instructor: "Luis Fernández" },
-    { id: 4, ficha: 4, dia: "Jueves", jornada: "Mañana", instructor: "Diego Torres" },
-    { id: 5, ficha: 2, dia: "Viernes", jornada: "Tarde", instructor: "Ana Martínez" }
+    { id: 1, ficha: 1, dia: "lunes", jornada: "Mañana", instructor: "Luis Fernández" },
+    { id: 2, ficha: 2, dia: "martes", jornada: "Tarde", instructor: "Ana Martínez" },
+    { id: 3, ficha: 3, dia: "miércoles", jornada: "Noche", instructor: "Luis Fernández" },
+    { id: 4, ficha: 4, dia: "jueves", jornada: "Mañana", instructor: "Diego Torres" },
+    { id: 5, ficha: 2, dia: "viernes", jornada: "Tarde", instructor: "Diego Torres" },
+    { id: 6, ficha: 1, dia: "lunes", jornada: "Noche", instructor: "Ana Martínez" },
   ]);
 
   const [calendarEvents, setCalendarEvents] = useState([]);
@@ -98,7 +99,7 @@ const Consultas = () => {
       </Box>
 
       <div className={classes.content}>
-        <Calendario events={calendarEvents} />
+      <Calendario events={calendarEvents} jornadas={jornadas} fichas={fichas} />
       </div>
 
       <Button variant="contained" className={classes.enviarButton}>
