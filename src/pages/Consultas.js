@@ -11,7 +11,7 @@ const Consultas = () => {
   const [selectedFilter1, setSelectedFilter1] = useState('');
   const [selectedFilter2, setSelectedFilter2] = useState('');
   const [filter2Options, setFilter2Options] = useState([]);
-  const [day, setDay] = useState(["", ""]);
+  const [day, setDay] = useState(["", ""]); // fecha, dia semana
 
   const [fichas, setFichas] = useState([
     { id: 1, coordinador: 'Juan Perez', gestor: 'Diego Torres', programa: 'Programación', ambiente: 'Laboratorio 101', inicio: '2024-10-01', fin: '2024-12-15', requerimientos: 'Proyector, PC con software especializado' },
@@ -153,10 +153,24 @@ const Consultas = () => {
       </Box>
 
       <div className={classes.content}>
-      {day[0] !== "" && selectedFilter1 === "Ficha" ? (
-          fichasConJornadas.map(ficha => (
-            <PreViewFicha key={ficha.id} ficha={ficha} selectedDay={day[1]}/>
-          ))
+        {day[0] !== "" && selectedFilter1 === "Ficha" ? (
+          fichasConJornadas
+            .filter(ficha => {
+              const fechaInicio = new Date(ficha.inicio);
+              const fechaFin = new Date(ficha.fin);
+              const fechaSeleccionada = new Date(day[0]); // Usar la fecha en day[0]
+
+              // Verificar si la fecha seleccionada está dentro del rango de fechas de la ficha
+              return fechaSeleccionada >= fechaInicio && fechaSeleccionada <= fechaFin;
+            })
+            .map(ficha => (
+              <PreViewFicha
+                key={ficha.id}
+                ficha={ficha}
+                selectedDay={day[1]}
+                inDay={ficha.id === parseInt(selectedFilter2)} // Verificar si coincide el ID con selectedFilter2
+              />
+            ))
         ) : (
           <Calendario
             events={calendarEvents}
@@ -166,6 +180,8 @@ const Consultas = () => {
           />
         )}
       </div>
+
+
 
       <Button variant="contained" className={classes.enviarButton}>
         Enviar por correo

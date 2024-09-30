@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@mui/styles';
 import { Grid2, Typography, TextField } from '@mui/material';
 
-const PreViewFicha = ({ ficha, inDay, selectedDay }) => {  // Añadido 'selectedDay' como prop
+const PreViewFicha = ({ ficha, inDay, selectedDay }) => {  
     const classes = useStyles(inDay);
     console.log(selectedDay)
 
