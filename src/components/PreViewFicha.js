@@ -3,11 +3,13 @@ import { makeStyles } from '@mui/styles';
 import { Grid2, Typography, TextField } from '@mui/material';
 
 const PreViewFicha = ({ ficha, inDay, selectedDay }) => {  
-    const classes = useStyles(inDay);
-    console.log(selectedDay)
+    const classes = useStyles();
+
+    // Determina el color del borde según inDay
+    const borderColor = inDay ? '#195eb2' : '#b2195e';
 
     return (
-        <div className={classes.container}>
+        <div className={classes.container} style={{ border: `2px solid ${borderColor}` }}> {/* Estilo inline para el borde */}
             <div className={classes.header}>
                 <Grid2 container spacing={2}>
                     <Grid2 item xs={12} sm={6} md={3}>
@@ -31,7 +33,7 @@ const PreViewFicha = ({ ficha, inDay, selectedDay }) => {
 
             <Grid2 container spacing={2} justifyContent="center">
                 {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']
-                    .filter(day => selectedDay.toLowerCase() === day.toLowerCase())  // Filtra solo el día seleccionado a través de selectedDay
+                    .filter(day => selectedDay.toLowerCase() === day.toLowerCase())  // Filtra solo el día seleccionado
                     .map((day) => (
                         <Grid2 item xs={12} sm={6} md={2} key={day}>
                             <Typography className={classes.dayLabel}>{day}</Typography>
@@ -54,12 +56,12 @@ const PreViewFicha = ({ ficha, inDay, selectedDay }) => {
 };
 
 const useStyles = makeStyles(() => ({
-    container: (inDay) => ({
+    container: {
         padding: '16px',
         margin: '8px 0',
         backgroundColor: '#f0f0f0',
-        border: `2px solid ${inDay ? '#195eb2' : '#b2195e'}`,
-    }),
+        alignItems: "center",
+    },
     header: {
         marginBottom: '16px',
     },
@@ -79,4 +81,3 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default PreViewFicha;
-

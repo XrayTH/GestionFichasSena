@@ -225,7 +225,7 @@ const useStyles = makeStyles({
   },
   content: {
     flex: '1 1 40%',
-    minWidth: '80%',
+    minWidth: '70%',
   },
   enviarButton: {
     marginTop: '20px',
