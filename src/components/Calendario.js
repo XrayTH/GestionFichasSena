@@ -45,7 +45,6 @@ const Calendario = ({ events, jornadas, fichas }) => {
     );
   };
 
-
   return (
     <div style={{ height: 600 }}>
       <Calendar
@@ -54,7 +53,7 @@ const Calendario = ({ events, jornadas, fichas }) => {
         startAccessor="start"
         endAccessor="end"
         style={{ height: '100%' }}
-        views={['month', 'week', 'day']}
+        views={['month']}
         defaultView="month"
         selectable
         onSelectEvent={event => alert(event.title)}
@@ -79,9 +78,25 @@ const Calendario = ({ events, jornadas, fichas }) => {
             );
           }
         }}
+        messages={{
+          allDay: 'Todo el día',
+          previous: 'Atrás',
+          next: 'Siguiente',
+          today: 'Hoy',
+          month: 'Mes',
+          week: 'Semana',
+          day: 'Día',
+          agenda: 'Agenda',
+          date: 'Fecha',
+          time: 'Hora',
+          event: 'Evento',
+          noEventsInRange: 'No hay eventos en este rango.',
+          showMore: (total) => `+ Ver más (${total})`,
+        }}
       />
     </div>
   );
 };
 
 export default Calendario;
+
