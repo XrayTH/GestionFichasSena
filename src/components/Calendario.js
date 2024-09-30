@@ -9,20 +9,15 @@ moment.locale('es');
 
 const localizer = momentLocalizer(moment);
 
-const Calendario = ({ events, jornadas, fichas }) => {
+const Calendario = ({ events, jornadas, fichas, onDayClick }) => {
   // Función para obtener el contenido del tooltip
   const getTooltipContent = (event) => {
     const fichaId = parseInt(event.title.split(' ')[1]);
     const fichaData = fichas.find(ficha => ficha.id === fichaId);
     const diaEvento = moment(event.start).format('dddd'); // Obtener el día de la semana
 
-    // Verificaciones de depuración
-    console.log(`Ficha ID: ${fichaId}, Día del evento: ${diaEvento}`);
-    console.log('Jornadas disponibles:', jornadas);
-
     // Filtrar las jornadas que corresponden al día del evento
     const jornadaData = jornadas.filter(jornada => jornada.ficha === fichaId && jornada.dia === diaEvento);
-    console.log('Jornada Data:', jornadaData); // Verificar qué se filtra
 
     // Crear contenido del tooltip
     return (
@@ -56,8 +51,12 @@ const Calendario = ({ events, jornadas, fichas }) => {
         views={['month']}
         defaultView="month"
         selectable
-        onSelectEvent={event => alert(event.title)}
-        onSelectSlot={slotInfo => alert(`Selected slot: \n\nstart ${slotInfo.start.toLocaleString()}\nend: ${slotInfo.end.toLocaleString()}`)}
+        // Al seleccionar un slot, invocamos la función onDayClick
+        onSelectSlot={slotInfo => {
+          const diaSeleccionado = moment(slotInfo.start).format('YYYY-MM-DD'); // Formato de la fecha
+          const diaSemana = moment(slotInfo.start).format('dddd'); // Nombre del día de la semana
+          onDayClick(diaSeleccionado, diaSemana);
+        }}
         eventPropGetter={(event) => {
           let backgroundColor = '#fff';
           if (event.title.includes('Ficha')) {
@@ -66,17 +65,15 @@ const Calendario = ({ events, jornadas, fichas }) => {
           return { style: { backgroundColor } };
         }}
         components={{
-          event: (eventProps) => {
-            return (
-              <Tooltip
-                title={getTooltipContent(eventProps.event)}
-                arrow
-                placement="top"
-              >
-                <div>{eventProps.event.title}</div>
-              </Tooltip>
-            );
-          }
+          event: (eventProps) => (
+            <Tooltip
+              title={getTooltipContent(eventProps.event)}
+              arrow
+              placement="top"
+            >
+              <div>{eventProps.event.title}</div>
+            </Tooltip>
+          )
         }}
         messages={{
           allDay: 'Todo el día',

@@ -2,7 +2,8 @@ import Calendario from './../components/Calendario';
 import PanelGestion from './../components/PanelGestion';
 import { makeStyles } from '@mui/styles';
 import { FormControl, InputLabel, Select, MenuItem, Box, Button } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import PreViewFicha from './../components/PreViewFicha';
 
 const Consultas = () => {
   const classes = useStyles();
@@ -10,6 +11,7 @@ const Consultas = () => {
   const [selectedFilter1, setSelectedFilter1] = useState('');
   const [selectedFilter2, setSelectedFilter2] = useState('');
   const [filter2Options, setFilter2Options] = useState([]);
+  const [day, setDay] = useState(["", ""]);
 
   const [fichas, setFichas] = useState([
     { id: 1, coordinador: 'Juan Perez', gestor: 'Diego Torres', programa: 'Programación', ambiente: 'Laboratorio 101', inicio: '2024-10-01', fin: '2024-12-15', requerimientos: 'Proyector, PC con software especializado' },
@@ -28,6 +30,50 @@ const Consultas = () => {
   ]);
 
   const [calendarEvents, setCalendarEvents] = useState([]);
+  const [fichasConJornadas, setFichasConJornadas] = useState([]);
+
+  // Función para combinar fichas y jornadas
+  const combinarFichasYJornadas = () => {
+    const nuevasFichasConJornadas = fichas.map(ficha => {
+      const jornadasPorFicha = jornadas.filter(jornada => jornada.ficha === ficha.id);
+      const jornadaPorDia = {};
+      
+      jornadasPorFicha.forEach(jornada => {
+        const diaSemana = `${jornada.dia}_${jornada.jornada.toLowerCase()}`;
+        jornadaPorDia[diaSemana] = jornada.instructor;
+      });
+
+      return {
+        id: ficha.id,
+        coordinador: ficha.coordinador,
+        gestor: ficha.gestor,
+        programa: ficha.programa,
+        inicio: ficha.inicio,
+        fin: ficha.fin,
+        lunes_mañana: jornadaPorDia['lunes_mañana'] || null,
+        lunes_tarde: jornadaPorDia['lunes_tarde'] || null,
+        lunes_noche: jornadaPorDia['lunes_noche'] || null,
+        martes_mañana: jornadaPorDia['martes_mañana'] || null,
+        martes_tarde: jornadaPorDia['martes_tarde'] || null,
+        martes_noche: jornadaPorDia['martes_noche'] || null,
+        miércoles_mañana: jornadaPorDia['miércoles_mañana'] || null,
+        miércoles_tarde: jornadaPorDia['miércoles_tarde'] || null,
+        miércoles_noche: jornadaPorDia['miércoles_noche'] || null,
+        jueves_mañana: jornadaPorDia['jueves_mañana'] || null,
+        jueves_tarde: jornadaPorDia['jueves_tarde'] || null,
+        jueves_noche: jornadaPorDia['jueves_noche'] || null,
+        viernes_mañana: jornadaPorDia['viernes_mañana'] || null,
+        viernes_tarde: jornadaPorDia['viernes_tarde'] || null,
+        viernes_noche: jornadaPorDia['viernes_noche'] || null,
+      };
+    });
+
+    setFichasConJornadas(nuevasFichasConJornadas);
+  };
+
+  useEffect(() => {
+    combinarFichasYJornadas();
+  }, [fichas, jornadas]); // Se ejecuta cuando cambian fichas o jornadas
 
   const handleFilter1Change = (event) => {
     const selectedValue = event.target.value;
@@ -71,6 +117,14 @@ const Consultas = () => {
     setCalendarEvents(eventos);
   };
 
+  const handleDayClick = (fecha, diaSemana) => {
+    // Verificar si hay una ficha seleccionada
+    if (selectedFilter2 && fichasConJornadas.length > 0) {
+      // Cambiar el estado de day
+      setDay([fecha, diaSemana]);
+    }
+  };
+
   return (
     <div className={classes.root}>
       <Box className={classes.panel}>
@@ -99,7 +153,18 @@ const Consultas = () => {
       </Box>
 
       <div className={classes.content}>
-      <Calendario events={calendarEvents} jornadas={jornadas} fichas={fichas} />
+      {day[0] !== "" && selectedFilter1 === "Ficha" ? (
+          fichasConJornadas.map(ficha => (
+            <PreViewFicha key={ficha.id} ficha={ficha} />
+          ))
+        ) : (
+          <Calendario
+            events={calendarEvents}
+            jornadas={jornadas}
+            fichas={fichasConJornadas}
+            onDayClick={handleDayClick}
+          />
+        )}
       </div>
 
       <Button variant="contained" className={classes.enviarButton}>
@@ -147,7 +212,7 @@ const useStyles = makeStyles({
     minWidth: '80%',
   },
   enviarButton: {
-    margin: '20px',
+    marginTop: '20px',
   },
 });
 

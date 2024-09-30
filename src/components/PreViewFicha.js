@@ -1,8 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
-import { FormControl, InputLabel, Select, MenuItem, Grid2, Typography, TextField } from '@mui/material';
+import { Grid2, Typography, TextField } from '@mui/material';
 
-const PreViewFicha = ({ ficha, instructores, inDay }) => {
+const PreViewFicha = ({ ficha, inDay }) => {
     const classes = useStyles(inDay);
 
     return (
@@ -33,30 +33,22 @@ const PreViewFicha = ({ ficha, instructores, inDay }) => {
                     <Grid2 item xs={12} sm={6} md={2} key={day}>
                         <Typography className={classes.dayLabel}>{day}</Typography>
                         {['mañana', 'tarde', 'noche'].map((time) => (
-                            <FormControl className={classes.instructorSelect} fullWidth key={`${day}-${time}`}>
-                                <InputLabel id={`select-${day}-${time}`} className={classes.label}>
-                                    {time.charAt(0).toUpperCase() + time.slice(1)}
-                                </InputLabel>
-                                <Select
-                                    labelId={`select-${day}-${time}`}
-                                    value={ficha[`${day.toLowerCase()}_${time}`] || ''}
-                                    disabled
-                                    className={classes.select}
-                                >
-                                    {instructores.map((instructor) => (
-                                        <MenuItem key={instructor} value={instructor}>
-                                            {instructor}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
+                            <TextField
+                                key={`${day}-${time}`}
+                                label={time.charAt(0).toUpperCase() + time.slice(1)}
+                                value={ficha[`${day.toLowerCase()}_${time}`] || ''}
+                                variant="outlined"
+                                fullWidth
+                                disabled
+                                className={classes.textField}
+                            />
                         ))}
                     </Grid2>
                 ))}
             </Grid2>
         </div>
     );
-}
+};
 
 const useStyles = makeStyles(() => ({
     container: (inDay) => ({
@@ -78,20 +70,8 @@ const useStyles = makeStyles(() => ({
         marginBottom: '8px',
         color: '#195eb2',
     },
-    instructorSelect: {
-        width: '100%',
+    textField: {
         marginTop: '8px',
-    },
-    select: {
-        '&.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#b2195e',
-        },
-        '&:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#5eb219',
-        },
-        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#5eb219',
-        },
     },
 }));
 
