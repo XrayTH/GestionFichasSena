@@ -95,8 +95,8 @@ const Consultas = () => {
     const fichaSeleccionada = fichas.find(ficha => ficha.id === fichaId);
     
     // Definir fechas de inicio y fin
-    const inicio = new Date(fichaSeleccionada.inicio);
-    const fin = new Date(fichaSeleccionada.fin);
+    const inicio = new Date(new Date(fichaSeleccionada.inicio).setDate(new Date(fichaSeleccionada.inicio).getDate() + 1));
+    const fin = new Date(new Date(fichaSeleccionada.fin).setDate(new Date(fichaSeleccionada.fin).getDate() + 1));
     const eventos = [];
 
     // Generar eventos para cada día de lunes a viernes
