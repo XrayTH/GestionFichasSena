@@ -48,6 +48,7 @@ const Consultas = () => {
         coordinador: ficha.coordinador,
         gestor: ficha.gestor,
         programa: ficha.programa,
+        ambiente: ficha.ambiente,
         inicio: ficha.inicio,
         fin: ficha.fin,
         lunes_mañana: jornadaPorDia['lunes_mañana'] || null,
@@ -125,6 +126,10 @@ const Consultas = () => {
     }
   };
 
+  const handleBackToCalendar = () => {
+    setDay(["", ""]); // Resetear el día para mostrar el calendario
+  };
+
   return (
     <div className={classes.root}>
       <Box className={classes.panel}>
@@ -154,7 +159,11 @@ const Consultas = () => {
 
       <div className={classes.content}>
         {day[0] !== "" && selectedFilter1 === "Ficha" ? (
-          fichasConJornadas
+          <>
+          <Button variant="contained" onClick={handleBackToCalendar} className={classes.backButton}>
+            Regresar al Calendario
+          </Button>
+          {fichasConJornadas
             .filter(ficha => {
               const fechaInicio = new Date(ficha.inicio);
               const fechaFin = new Date(ficha.fin);
@@ -170,7 +179,8 @@ const Consultas = () => {
                 selectedDay={day[1]}
                 inDay={ficha.id === parseInt(selectedFilter2)} // Verificar si coincide el ID con selectedFilter2
               />
-            ))
+            ))}
+        </>
         ) : (
           <Calendario
             events={calendarEvents}
