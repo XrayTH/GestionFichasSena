@@ -2,8 +2,9 @@ import React from 'react';
 import { makeStyles } from '@mui/styles';
 import { Grid2, Typography, TextField } from '@mui/material';
 
-const PreViewFicha = ({ ficha, inDay }) => {
+const PreViewFicha = ({ ficha, inDay, selectedDay }) => {  // Añadido 'selectedDay' como prop
     const classes = useStyles(inDay);
+    console.log(selectedDay)
 
     return (
         <div className={classes.container}>
@@ -29,22 +30,24 @@ const PreViewFicha = ({ ficha, inDay }) => {
             </div>
 
             <Grid2 container spacing={2} justifyContent="center">
-                {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].map((day) => (
-                    <Grid2 item xs={12} sm={6} md={2} key={day}>
-                        <Typography className={classes.dayLabel}>{day}</Typography>
-                        {['mañana', 'tarde', 'noche'].map((time) => (
-                            <TextField
-                                key={`${day}-${time}`}
-                                label={time.charAt(0).toUpperCase() + time.slice(1)}
-                                value={ficha[`${day.toLowerCase()}_${time}`] || ''}
-                                variant="outlined"
-                                fullWidth
-                                disabled
-                                className={classes.textField}
-                            />
-                        ))}
-                    </Grid2>
-                ))}
+                {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']
+                    .filter(day => selectedDay.toLowerCase() === day.toLowerCase())  // Filtra solo el día seleccionado a través de selectedDay
+                    .map((day) => (
+                        <Grid2 item xs={12} sm={6} md={2} key={day}>
+                            <Typography className={classes.dayLabel}>{day}</Typography>
+                            {['mañana', 'tarde', 'noche'].map((time) => (
+                                <TextField
+                                    key={`${day}-${time}`}
+                                    label={time.charAt(0).toUpperCase() + time.slice(1)}
+                                    value={ficha[`${day.toLowerCase()}_${time}`] || ''}
+                                    variant="outlined"
+                                    fullWidth
+                                    disabled
+                                    className={classes.textField}
+                                />
+                            ))}
+                        </Grid2>
+                    ))}
             </Grid2>
         </div>
     );
@@ -76,3 +79,4 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default PreViewFicha;
+

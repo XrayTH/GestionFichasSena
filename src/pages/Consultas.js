@@ -155,7 +155,7 @@ const Consultas = () => {
       <div className={classes.content}>
       {day[0] !== "" && selectedFilter1 === "Ficha" ? (
           fichasConJornadas.map(ficha => (
-            <PreViewFicha key={ficha.id} ficha={ficha} />
+            <PreViewFicha key={ficha.id} ficha={ficha} selectedDay={day[1]}/>
           ))
         ) : (
           <Calendario
