@@ -5,12 +5,12 @@ import { makeStyles } from '@mui/styles';
 const NewUserForm = ({ onSave, onCancel }) => {
   const classes = useStyles();
   const [formState, setFormState] = useState({
-    username: '',
-    password: '',
-    role: '',
-    canEdit: false,
-    canCreate: false,
-    canManageUsers: false,
+    usuario: '',
+    contraseña: '',
+    rol: '',
+    editar: false,
+    crear: false,
+    gestionarUsuarios: false,
   });
 
   const handleChange = (e) => {
@@ -32,8 +32,8 @@ const NewUserForm = ({ onSave, onCancel }) => {
         <label className={classes.label}>Usuario</label>
         <TextField
           className={classes.textField}
-          name="username"
-          value={formState.username}
+          name="usuario"
+          value={formState.usuario}
           variant="outlined"
           onChange={handleChange}
         />
@@ -44,9 +44,9 @@ const NewUserForm = ({ onSave, onCancel }) => {
         <label className={classes.label}>Contraseña</label>
         <TextField
           className={classes.textField}
-          name="password"
+          name="contraseña"
           type="password"
-          value={formState.password}
+          value={formState.contraseña}
           variant="outlined"
           onChange={handleChange}
         />
@@ -57,8 +57,8 @@ const NewUserForm = ({ onSave, onCancel }) => {
         <label className={classes.label}>Rol</label>
         <TextField
           className={classes.textField}
-          name="role"
-          value={formState.role}
+          name="rol"
+          value={formState.rol}
           variant="outlined"
           onChange={handleChange}
         />

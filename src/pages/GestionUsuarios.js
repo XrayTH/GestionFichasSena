@@ -7,45 +7,45 @@ import { makeStyles } from '@mui/styles';
 const GestionUsuarios = () => {
   const classes = useStyles();
 
-  const [users, setUsers] = useState([
-    { id: 1, username: 'user123', password: 'password123', role: 'Admin', canEdit: false, canCreate: false, canManageUsers: false },
-    { id: 2, username: 'user456', password: 'password123', role: 'Editor', canEdit: true, canCreate: false, canManageUsers: false },
-    { id: 3, username: 'user789', password: 'password123', role: 'Viewer', canEdit: false, canCreate: false, canManageUsers: false },
+  const [usuarios, setUsuarios] = useState([
+    { id: 1, usuario: 'user123', contraseña: 'password123', rol: 'Admin', editar: false, crear: false, gestionarUsuarios: false },
+    { id: 2, usuario: 'user456', contraseña: 'password123', rol: 'Editor', editar: true, crear: false, gestionarUsuarios: false },
+    { id: 3, usuario: 'user789', contraseña: 'password123', rol: 'Viewer', editar: false, crear: false, gestionarUsuarios: false },
   ]);
   
-  const [showNewUserForm, setShowNewUserForm] = useState(false);
-  const [searchText, setSearchText] = useState('');
-  const [selectedRole, setSelectedRole] = useState('');
+  const [mostrarFormularioNuevoUsuario, setMostrarFormularioNuevoUsuario] = useState(false);
+  const [textoBusqueda, setTextoBusqueda] = useState('');
+  const [rolSeleccionado, setRolSeleccionado] = useState('');
 
-  const handleNewUserClick = () => setShowNewUserForm(true);
+  const manejarNuevoUsuarioClick = () => setMostrarFormularioNuevoUsuario(true);
   
-  const handleSaveNewUser = (newUser) => {
-    const newId = users.length > 0 ? Math.max(...users.map(user => user.id)) + 1 : 1; // Obtiene el ID más alto y le suma 1
-    const userWithId = { ...newUser, id: newId }; // Crea el nuevo usuario con el ID asignado
-    setUsers((prevUsers) => [...prevUsers, userWithId]); // Agrega el nuevo usuario al estado
-    setShowNewUserForm(false);
+  const manejarGuardarNuevoUsuario = (nuevoUsuario) => {
+    const nuevoId = usuarios.length > 0 ? Math.max(...usuarios.map(usuario => usuario.id)) + 1 : 1; // Obtiene el ID más alto y le suma 1
+    const usuarioConId = { ...nuevoUsuario, id: nuevoId }; // Crea el nuevo usuario con el ID asignado
+    setUsuarios((usuariosPrevios) => [...usuariosPrevios, usuarioConId]); // Agrega el nuevo usuario al estado
+    setMostrarFormularioNuevoUsuario(false);
   }
   
-  const handleCancelNewUser = () => setShowNewUserForm(false);
+  const manejarCancelarNuevoUsuario = () => setMostrarFormularioNuevoUsuario(false);
 
-  const handleUpdateUser = (updatedUser) => {
-    setUsers((prevUsers) =>
-      prevUsers.map(user => (user.id === updatedUser.id ? updatedUser : user))
+  const manejarActualizarUsuario = (usuarioActualizado) => {
+    setUsuarios((usuariosPrevios) =>
+      usuariosPrevios.map(usuario => (usuario.id === usuarioActualizado.id ? usuarioActualizado : usuario))
     );
   };
 
   const roles = useMemo(() => {
-    const uniqueRoles = new Set(users.map(user => user.role));
-    return Array.from(uniqueRoles);
-  }, [users]);
+    const rolesUnicos = new Set(usuarios.map(usuario => usuario.rol));
+    return Array.from(rolesUnicos);
+  }, [usuarios]);
 
-  const filteredUsers = useMemo(() => {
-    return users.filter((user) => {
-      const matchesSearch = user.username.toLowerCase().includes(searchText.toLowerCase());
-      const matchesRole = selectedRole ? user.role === selectedRole : true;
-      return matchesSearch && matchesRole;
+  const usuariosFiltrados = useMemo(() => {
+    return usuarios.filter((usuario) => {
+      const coincideBusqueda = usuario.usuario.toLowerCase().includes(textoBusqueda.toLowerCase());
+      const coincideRol = rolSeleccionado ? usuario.rol === rolSeleccionado : true;
+      return coincideBusqueda && coincideRol;
     });
-  }, [users, searchText, selectedRole]);
+  }, [usuarios, textoBusqueda, rolSeleccionado]);
 
   return (
     <div className={classes.container}>
@@ -54,8 +54,8 @@ const GestionUsuarios = () => {
           <TextField
             fullWidth
             placeholder="Filtrar por usuario"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            value={textoBusqueda}
+            onChange={(e) => setTextoBusqueda(e.target.value)}
             InputProps={{
               className: classes.inputField,
             }}
@@ -64,32 +64,32 @@ const GestionUsuarios = () => {
         <div className={classes.filterRight}>
           <FormControl fullWidth>
             <Select 
-              value={selectedRole} 
-              onChange={(e) => setSelectedRole(e.target.value)} 
+              value={rolSeleccionado} 
+              onChange={(e) => setRolSeleccionado(e.target.value)} 
               displayEmpty
               className={classes.selectField}
             >
               <MenuItem value=""><em>Todos los roles</em></MenuItem>
-              {roles.map((role) => (
-                <MenuItem key={role} value={role}>{role}</MenuItem>
+              {roles.map((rol) => (
+                <MenuItem key={rol} value={rol}>{rol}</MenuItem>
               ))}
             </Select>
           </FormControl>
         </div>
         <div className={classes.newUserButton}>
-          <Button variant="contained" onClick={handleNewUserClick} className={classes.newUserButtonStyle}>
+          <Button variant="contained" onClick={manejarNuevoUsuarioClick} className={classes.newUserButtonStyle}>
             Nuevo Usuario
           </Button>
         </div>
       </div>
 
-      {showNewUserForm && <NewUserForm onSave={handleSaveNewUser} onCancel={handleCancelNewUser} />}
+      {mostrarFormularioNuevoUsuario && <NewUserForm onSave={manejarGuardarNuevoUsuario} onCancel={manejarCancelarNuevoUsuario} />}
 
       <div className={classes.userList}>
-        {filteredUsers.length > 0 ? (
-          filteredUsers.map((user) => (
-            <div key={user.id} className={classes.userComponent}>
-              <UserComponent user={user} onUpdate={handleUpdateUser} />
+        {usuariosFiltrados.length > 0 ? (
+          usuariosFiltrados.map((usuario) => (
+            <div key={usuario.id} className={classes.userComponent}>
+              <UserComponent user={usuario} onUpdate={manejarActualizarUsuario} />
             </div>
           ))
         ) : (
@@ -173,3 +173,4 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default GestionUsuarios;
+

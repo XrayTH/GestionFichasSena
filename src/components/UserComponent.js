@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from 'react'
-import { TextField, Button, Switch } from '@mui/material'
-import { makeStyles } from '@mui/styles'
+import React, { useState, useEffect } from 'react';
+import { TextField, Button, Switch } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 const UserComponent = ({ user, onUpdate }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const [isEditable, setIsEditable] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const [formState, setFormState] = useState(user)
+  const [isEditable, setIsEditable] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [formState, setFormState] = useState(user);
 
   const handleEditClick = () => {
     if (isEditable) {
-      // Llama a onUpdate cuando se guarda
-      onUpdate(formState)
+      onUpdate(formState);
     }
-    setIsEditable(!isEditable)
-  }
+    setIsEditable(!isEditable);
+  };
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormState((prevState) => ({
       ...prevState,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   // Actualiza formState cuando el usuario prop cambia
   useEffect(() => {
@@ -37,8 +36,8 @@ const UserComponent = ({ user, onUpdate }) => {
         <label className={classes.label}>Usuario</label>
         <TextField
           className={classes.textField}
-          name="username"
-          value={formState.username}
+          name="usuario"
+          value={formState.usuario}
           variant="outlined"
           InputProps={{
             readOnly: !isEditable,
@@ -61,9 +60,9 @@ const UserComponent = ({ user, onUpdate }) => {
         </div>
         <TextField
           className={classes.textField}
-          name="password"
+          name="contraseña"
           type={showPassword ? 'text' : 'password'}
-          value={formState.password}
+          value={formState.contraseña}
           variant="outlined"
           InputProps={{
             readOnly: !isEditable,
@@ -77,8 +76,8 @@ const UserComponent = ({ user, onUpdate }) => {
         <label className={classes.label}>Rol</label>
         <TextField
           className={classes.textField}
-          name="role"
-          value={formState.role}
+          name="rol"
+          value={formState.rol}
           variant="outlined"
           InputProps={{
             readOnly: !isEditable,
@@ -92,10 +91,10 @@ const UserComponent = ({ user, onUpdate }) => {
         <label className={classes.label}>Editar</label>
         <Switch
           className={classes.switch}
-          checked={formState.canEdit}
+          checked={formState.editar}
           disabled={!isEditable}
           onChange={() =>
-            setFormState({ ...formState, canEdit: !formState.canEdit })
+            setFormState({ ...formState, editar: !formState.editar })
           }
         />
       </div>
@@ -105,10 +104,10 @@ const UserComponent = ({ user, onUpdate }) => {
         <label className={classes.label}>Crear</label>
         <Switch
           className={classes.switch}
-          checked={formState.canCreate}
+          checked={formState.crear}
           disabled={!isEditable}
           onChange={() =>
-            setFormState({ ...formState, canCreate: !formState.canCreate })
+            setFormState({ ...formState, crear: !formState.crear })
           }
         />
       </div>
@@ -118,12 +117,12 @@ const UserComponent = ({ user, onUpdate }) => {
         <label className={classes.label}>Gestión Usuarios</label>
         <Switch
           className={classes.switch}
-          checked={formState.canManageUsers}
+          checked={formState.gestionarUsuarios}
           disabled={!isEditable}
           onChange={() =>
             setFormState({
               ...formState,
-              canManageUsers: !formState.canManageUsers,
+              gestionarUsuarios: !formState.gestionarUsuarios,
             })
           }
         />
@@ -137,8 +136,8 @@ const UserComponent = ({ user, onUpdate }) => {
         <Button className={classes.deleteButton}>Borrar</Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -189,6 +188,6 @@ const useStyles = makeStyles(() => ({
   switch: {
     alignSelf: 'center',
   },
-}))
+}));
 
-export default UserComponent
+export default UserComponent;
