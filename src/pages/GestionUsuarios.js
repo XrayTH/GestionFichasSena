@@ -4,6 +4,7 @@ import UserComponent from '../components/UserComponent';
 import NewUserForm from '../components/NewUserForm';
 import { makeStyles } from '@mui/styles';
 import { getUsuarios, createUsuario, updateUsuarioById } from '../service/userService'; // Importa la función para actualizar usuarios
+import Sidebar from '../components/Sidebar';
 
 const GestionUsuarios = () => {
   const classes = useStyles();
@@ -73,6 +74,8 @@ const GestionUsuarios = () => {
   }, [usuarios, textoBusqueda, rolSeleccionado]);
 
   return (
+    <>
+    <Sidebar/>
     <div className={classes.container}>
       {/* Componente de mensajes del sistema */}
       {mensaje && (
@@ -131,6 +134,7 @@ const GestionUsuarios = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 
