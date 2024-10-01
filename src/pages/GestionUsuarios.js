@@ -1,21 +1,31 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Button, TextField, MenuItem, Select, FormControl } from '@mui/material';
 import UserComponent from '../components/UserComponent';
 import NewUserForm from '../components/NewUserForm';
 import { makeStyles } from '@mui/styles';
+import { getUsuarios } from '../service/userService'; // Importa la función para obtener usuarios
 
 const GestionUsuarios = () => {
   const classes = useStyles();
 
-  const [usuarios, setUsuarios] = useState([
-    { id: 1, usuario: 'user123', contraseña: 'password123', rol: 'Admin', editar: false, crear: false, gestionarUsuarios: false },
-    { id: 2, usuario: 'user456', contraseña: 'password123', rol: 'Editor', editar: true, crear: false, gestionarUsuarios: false },
-    { id: 3, usuario: 'user789', contraseña: 'password123', rol: 'Viewer', editar: false, crear: false, gestionarUsuarios: false },
-  ]);
-  
+  const [usuarios, setUsuarios] = useState([]);
   const [mostrarFormularioNuevoUsuario, setMostrarFormularioNuevoUsuario] = useState(false);
   const [textoBusqueda, setTextoBusqueda] = useState('');
   const [rolSeleccionado, setRolSeleccionado] = useState('');
+
+  // Efecto para cargar los usuarios al montar el componente
+  useEffect(() => {
+    const cargarUsuarios = async () => {
+      try {
+        const usuariosDesdeApi = await getUsuarios();
+        setUsuarios(usuariosDesdeApi);
+      } catch (error) {
+        console.error("Error al cargar usuarios:", error.message);
+      }
+    };
+
+    cargarUsuarios();
+  }, []); // El array vacío asegura que esto se ejecute solo una vez al montar el componente
 
   const manejarNuevoUsuarioClick = () => setMostrarFormularioNuevoUsuario(true);
   
@@ -173,4 +183,3 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default GestionUsuarios;
-

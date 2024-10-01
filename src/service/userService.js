@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { fichaSenaService } from '../utils/api'; // Asegúrate de que esta ruta sea correcta
 
 // Ruta base del backend
