@@ -4,9 +4,11 @@ import { makeStyles } from '@mui/styles';
 import { FormControl, InputLabel, Select, MenuItem, Box, Button } from '@mui/material';
 import { useState, useEffect } from 'react';
 import PreViewFicha from './../components/PreViewFicha';
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 
 const Consultas = () => {
   const classes = useStyles();
+  const navigate = useNavigate(); // Crear instancia de useNavigate
 
   const [selectedFilter1, setSelectedFilter1] = useState('');
   const [selectedFilter2, setSelectedFilter2] = useState('');
@@ -130,6 +132,10 @@ const Consultas = () => {
     setDay(["", ""]); // Resetear el día para mostrar el calendario
   };
 
+  const handleEmailButtonClick = () => {
+    navigate('/enviar-email');
+  };
+
   return (
     <div className={classes.root}>
       <Box className={classes.panel}>
@@ -193,7 +199,7 @@ const Consultas = () => {
 
 
 
-      <Button variant="contained" className={classes.enviarButton}>
+      <Button variant="contained" color="primary" onClick={handleEmailButtonClick}>
         Enviar por correo
       </Button>
     </div>
