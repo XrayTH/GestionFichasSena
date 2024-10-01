@@ -1,9 +1,9 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Button, TextField, MenuItem, Select, FormControl } from '@mui/material';
+import { Button, TextField, MenuItem, Select, FormControl, Snackbar, Alert } from '@mui/material';
 import UserComponent from '../components/UserComponent';
 import NewUserForm from '../components/NewUserForm';
 import { makeStyles } from '@mui/styles';
-import { getUsuarios } from '../service/userService'; // Importa la función para obtener usuarios
+import { getUsuarios, createUsuario, updateUsuarioById } from '../service/userService'; // Importa la función para actualizar usuarios
 
 const GestionUsuarios = () => {
   const classes = useStyles();
@@ -12,8 +12,8 @@ const GestionUsuarios = () => {
   const [mostrarFormularioNuevoUsuario, setMostrarFormularioNuevoUsuario] = useState(false);
   const [textoBusqueda, setTextoBusqueda] = useState('');
   const [rolSeleccionado, setRolSeleccionado] = useState('');
+  const [mensaje, setMensaje] = useState(null); // Manejar mensajes del sistema
 
-  // Efecto para cargar los usuarios al montar el componente
   useEffect(() => {
     const cargarUsuarios = async () => {
       try {
@@ -21,27 +21,42 @@ const GestionUsuarios = () => {
         setUsuarios(usuariosDesdeApi);
       } catch (error) {
         console.error("Error al cargar usuarios:", error.message);
+        setMensaje({ text: error.message, severity: 'error' });
       }
     };
 
     cargarUsuarios();
-  }, []); // El array vacío asegura que esto se ejecute solo una vez al montar el componente
+  }, []);
 
   const manejarNuevoUsuarioClick = () => setMostrarFormularioNuevoUsuario(true);
   
-  const manejarGuardarNuevoUsuario = (nuevoUsuario) => {
-    const nuevoId = usuarios.length > 0 ? Math.max(...usuarios.map(usuario => usuario.id)) + 1 : 1; // Obtiene el ID más alto y le suma 1
-    const usuarioConId = { ...nuevoUsuario, id: nuevoId }; // Crea el nuevo usuario con el ID asignado
-    setUsuarios((usuariosPrevios) => [...usuariosPrevios, usuarioConId]); // Agrega el nuevo usuario al estado
-    setMostrarFormularioNuevoUsuario(false);
-  }
+  const manejarGuardarNuevoUsuario = async (nuevoUsuario) => {
+    try {
+      await createUsuario(nuevoUsuario); // Llama al método para agregar el nuevo usuario en la base de datos
+      const nuevoId = usuarios.length > 0 ? Math.max(...usuarios.map(usuario => usuario.id)) + 1 : 1; // Obtiene el ID más alto y le suma 1
+      const usuarioConId = { ...nuevoUsuario, id: nuevoId }; // Crea el nuevo usuario con el ID asignado
+      setUsuarios((usuariosPrevios) => [...usuariosPrevios, usuarioConId]); // Agrega el nuevo usuario al estado
+      setMostrarFormularioNuevoUsuario(false);
+      setMensaje({ text: 'Usuario creado con éxito', severity: 'success' });
+    } catch (error) {
+      console.error("Error al guardar el nuevo usuario:", error.message);
+      setMensaje({ text: error.message, severity: 'error' });
+    }
+  };
   
   const manejarCancelarNuevoUsuario = () => setMostrarFormularioNuevoUsuario(false);
 
-  const manejarActualizarUsuario = (usuarioActualizado) => {
-    setUsuarios((usuariosPrevios) =>
-      usuariosPrevios.map(usuario => (usuario.id === usuarioActualizado.id ? usuarioActualizado : usuario))
-    );
+  const manejarActualizarUsuario = async (usuarioActualizado) => {
+    try {
+      await updateUsuarioById(usuarioActualizado.id, usuarioActualizado); // Actualiza en la base de datos
+      setUsuarios((usuariosPrevios) =>
+        usuariosPrevios.map(usuario => (usuario.id === usuarioActualizado.id ? usuarioActualizado : usuario))
+      );
+      setMensaje({ text: 'Usuario actualizado con éxito', severity: 'success' });
+    } catch (error) {
+      console.error("Error al actualizar el usuario:", error.message);
+      setMensaje({ text: error.message, severity: 'error' });
+    }
   };
 
   const roles = useMemo(() => {
@@ -59,6 +74,15 @@ const GestionUsuarios = () => {
 
   return (
     <div className={classes.container}>
+      {/* Componente de mensajes del sistema */}
+      {mensaje && (
+        <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
+          <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
+            {mensaje.text}
+          </Alert>
+        </Snackbar>
+      )}
+
       <div className={classes.filters}>
         <div className={classes.filterLeft}>
           <TextField
