@@ -1,35 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@mui/styles"; 
-import { useNavigate } from "react-router-dom"; // Importa el hook useNavigate
+import { useNavigate } from "react-router-dom"; 
 import logo from "../assets/logo-sena-verde-complementario-svg-2022.svg";
+import { useDispatch } from 'react-redux'; // Importa useDispatch
+import { setUser } from '../features/userSlice';
+import { verificarUsuario } from '../service/userService';
 
 const Login = () => {
   const classes = useStyles();
-  const navigate = useNavigate(); // Inicializa el hook useNavigate
+  const navigate = useNavigate();
+  const dispatch = useDispatch(); // Inicializa el dispatch
+  const [usuario, setUsuario] = useState(''); // Estado para el usuario
+  const [contraseña, setContraseña] = useState(''); // Estado para la contraseña
+  const [error, setError] = useState(''); // Estado para manejar errores
 
-  const handleLoginClick = () => {
-    // Aquí puedes añadir la lógica de autenticación (si es necesario)
-    navigate("/home"); // Navega a la página de inicio
+  const handleLoginClick = async () => {
+    setError(''); // Reinicia el error al hacer clic
+    try {
+      // Verificar el usuario con la función de servicio
+      const userData = await verificarUsuario({ usuario, contraseña });
+      dispatch(setUser(userData.usuario)); // Almacena la información del usuario
+      navigate("/home"); // Navega a la página de inicio
+    } catch (err) {
+      setError(err.message); // Maneja el error
+      console.error("Error de login:", err.message);
+    }
   };
 
   return (
     <div className={classes.container}>
       <img src={logo} alt="Logo" className={classes.logo} />
-      <form className={classes.form}> {/* Quita el onSubmit del form */}
+      <form className={classes.form}>
         <input
           type="text"
           placeholder="Nombre de usuario"
           className={classes.input}
+          value={usuario} // Vincula el estado
+          onChange={(e) => setUsuario(e.target.value)} // Maneja el cambio
         />
         <input
           type="password"
           placeholder="Contraseña"
           className={classes.input}
+          value={contraseña} // Vincula el estado
+          onChange={(e) => setContraseña(e.target.value)} // Maneja el cambio
         />
+        {error && <p className={classes.error}>{error}</p>} {/* Muestra el error */}
         <button 
-          type="button" // Cambia el tipo de botón a "button" para que no intente enviar el formulario
+          type="button"
           className={classes.button}
-          onClick={handleLoginClick} // Añade el evento onClick
+          onClick={handleLoginClick}
         >
           Iniciar Sesión
         </button>
@@ -85,11 +105,10 @@ const useStyles = makeStyles(() => ({
       backgroundColor: "#4cae14",
     },
   },
+  error: {
+    color: 'red', // Estilo para el mensaje de error
+    marginBottom: '16px',
+  },
 }));
 
 export default Login;
-
-
-
-
-
