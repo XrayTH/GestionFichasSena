@@ -1,29 +1,76 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from '../src/pages/Login';
-import Home from '../src/pages/Home';
-import Email from '../src/pages/Email';
-import GesUsu from '../src/pages/GestionUsuarios';
-import GesFicha from '../src/components/GestionFichas';
-import GesCoo from '../src/components/GestionCoordinadores';
-import GesIns from '../src/components/GestionInstructores';
-import Programar from '../src/pages/Programar';
-import Consultas from '../src/pages/Consultas';
+import { ProtectedRoute, RedirectIfAuthenticated } from './components/ProtectedRoute';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import Email from './pages/Email';
+import GesUsu from './pages/GestionUsuarios';
+import GesFicha from './components/GestionFichas';
+import GesCoo from './components/GestionCoordinadores';
+import GesIns from './components/GestionInstructores';
+import Programar from './pages/Programar';
+import Consultas from './pages/Consultas';
+import NotFound from './pages/NotFound'; // Importa el componente NotFound
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/gestion-usuarios" element={<GesUsu />} />
-        <Route path="/programar" element={<Programar />} />
-        <Route path="/consultas" element={<Consultas />} />
-        <Route path="/gestion-fichas" element={<GesFicha />} />
-        <Route path="/gestion-coordinadores" element={<GesCoo />} />
-        <Route path="/gestion-instructores" element={<GesIns />} />
-        <Route path="/enviar-email" element={<Email />} />
+        <Route path="/login" element={
+          <RedirectIfAuthenticated>
+            <Login />
+          </RedirectIfAuthenticated>
+        } />
 
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/gestion-usuarios" element={
+          <ProtectedRoute>
+            <GesUsu />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/programar" element={
+          <ProtectedRoute>
+            <Programar />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/consultas" element={
+          <ProtectedRoute>
+            <Consultas />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/gestion-fichas" element={
+          <ProtectedRoute>
+            <GesFicha />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/gestion-coordinadores" element={
+          <ProtectedRoute>
+            <GesCoo />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/gestion-instructores" element={
+          <ProtectedRoute>
+            <GesIns />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/enviar-email" element={
+          <ProtectedRoute>
+            <Email />
+          </ProtectedRoute>
+        } />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

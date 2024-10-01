@@ -1,9 +1,12 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
+import { useDispatch } from 'react-redux'; // Importa useDispatch
 import { useNavigate } from 'react-router-dom'; // Importa el hook useNavigate
+import { logout } from '../features/userSlice'; // Importa la acción logout
 
 const Home = () => {
   const classes = useStyles();
+  const dispatch = useDispatch(); // Inicializa el dispatch
   const navigate = useNavigate(); // Inicializa el hook useNavigate
 
   const handleGestionUsuarios = () => {
@@ -15,7 +18,7 @@ const Home = () => {
   };
 
   const handleCerrarSesion = () => {
-    navigate('/');
+    dispatch(logout()); // Realiza el logout
   };
 
   return (
@@ -76,5 +79,3 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default Home;
-
-
