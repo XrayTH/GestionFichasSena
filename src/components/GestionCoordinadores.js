@@ -1,21 +1,30 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Button, TextField } from '@mui/material';
 import Coordinador from './Coordinador';
 import NewCoordinador from './NewCoordinador';
 import { makeStyles } from '@mui/styles';
+import { getCoordinadores } from '../service/coordinadorService'; // Asegúrate de que la ruta sea correcta
 
 const GestionCoordinadores = () => {
   const classes = useStyles();
 
-  const [coordinadores, setCoordinadores] = useState([
-    { documento: '123456789', nombre: 'Juan Perez', email: 'juan.perez@example.com', telefono: '555'},
-    { documento: '987654321', nombre: 'Maria Gómez', email: 'maria.gomez@example.com', telefono: '666' },
-    { documento: '456123789', nombre: 'Carlos Rodriguez', email: 'carlos.rodriguez@example.com', telefono: '777' },
-    { documento: '321654987', nombre: 'Lucía López', email: 'lucia.lopez@example.com', telefono: '888' },
-  ]);
-
+  const [coordinadores, setCoordinadores] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewCoordinadorForm, setShowNewCoordinadorForm] = useState(false);
+
+  // Hook para cargar los coordinadores al cargar la página
+  useEffect(() => {
+    const fetchCoordinadores = async () => {
+      try {
+        const data = await getCoordinadores(); // Usa el método adecuado para obtener los coordinadores
+        setCoordinadores(data)
+      } catch (error) {
+        console.error('Error al obtener los coordinadores:', error);
+      }
+    };
+
+    fetchCoordinadores();
+  }, []); // El array vacío asegura que el efecto solo se ejecute una vez al montar el componente
 
   const handleNewCoordinadorClick = () => setShowNewCoordinadorForm(true);
 
@@ -125,4 +134,3 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default GestionCoordinadores;
-
