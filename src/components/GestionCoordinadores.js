@@ -8,10 +8,10 @@ const GestionCoordinadores = () => {
   const classes = useStyles();
 
   const [coordinadores, setCoordinadores] = useState([
-    { documento: '123456789', nombre: 'Juan Perez', email: 'juan.perez@example.com' },
-    { documento: '987654321', nombre: 'Maria Gómez', email: 'maria.gomez@example.com' },
-    { documento: '456123789', nombre: 'Carlos Rodriguez', email: 'carlos.rodriguez@example.com' },
-    { documento: '321654987', nombre: 'Lucía López', email: 'lucia.lopez@example.com' },
+    { documento: '123456789', nombre: 'Juan Perez', email: 'juan.perez@example.com', telefono: '555'},
+    { documento: '987654321', nombre: 'Maria Gómez', email: 'maria.gomez@example.com', telefono: '666' },
+    { documento: '456123789', nombre: 'Carlos Rodriguez', email: 'carlos.rodriguez@example.com', telefono: '777' },
+    { documento: '321654987', nombre: 'Lucía López', email: 'lucia.lopez@example.com', telefono: '888' },
   ]);
 
   const [searchTerm, setSearchTerm] = useState('');

@@ -4,11 +4,12 @@ import { makeStyles } from '@mui/styles';
 
 const NewCoordinador = ({ onSave, onCancel }) => {
   const classes = useStyles();
-  
+
   const [formState, setFormState] = useState({
     documento: '',
     nombre: '',
     email: '',
+    telefono: '', // Agregando el campo de teléfono
   });
 
   const handleChange = (e) => {
@@ -61,6 +62,18 @@ const NewCoordinador = ({ onSave, onCancel }) => {
         />
       </div>
 
+      {/* Teléfono */}
+      <div className={classes.fieldContainer}>
+        <label className={classes.label}>Teléfono</label>
+        <TextField
+          className={classes.textField}
+          name="telefono"
+          value={formState.telefono}
+          variant="outlined"
+          onChange={handleChange}
+        />
+      </div>
+
       {/* Botones */}
       <div className={classes.buttonRow}>
         <Button className={classes.button} onClick={handleSave}>
@@ -83,9 +96,9 @@ const useStyles = makeStyles(() => ({
     padding: '20px',
     borderRadius: '8px',
     border: '2px solid black',
-    maxWidth: '600px', // Establece la anchura máxima del contenedor
-    width: '100%', // Asegúrate de que el contenedor use el ancho completo disponible
-    margin: '0 auto', // Centra el componente
+    maxWidth: '700px',
+    width: '100%',
+    margin: '0 auto',
     '@media (max-width: 768px)': {
       gridTemplateColumns: '1fr',
     },
@@ -110,7 +123,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: '10px',
-    gridColumn: '1 / -1', // Asegúrate de que ocupe toda la fila
+    gridColumn: '1 / -1',
   },
   button: {
     backgroundColor: '#5eb219',
@@ -118,7 +131,7 @@ const useStyles = makeStyles(() => ({
     '&:hover': {
       backgroundColor: '#4cae14',
     },
-    marginRight: '10px', // Espaciado entre botones
+    marginRight: '10px',
   },
   cancelButton: {
     backgroundColor: '#b2195e',

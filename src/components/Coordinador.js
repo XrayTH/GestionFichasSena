@@ -70,6 +70,21 @@ const Coordinador = ({ coordinador, onUpdate }) => {
         />
       </div>
 
+      {/* Teléfono */}
+      <div className={classes.fieldContainer}>
+        <label className={classes.label}>Teléfono</label>
+        <TextField
+          className={classes.textField}
+          name="telefono"
+          value={formState.telefono || ''}
+          variant="outlined"
+          InputProps={{
+            readOnly: !isEditable,
+          }}
+          onChange={handleChange}
+        />
+      </div>
+
       {/* Botones */}
       <div className={classes.buttonRow}>
         <Button className={classes.button} onClick={handleEditClick}>
@@ -90,7 +105,7 @@ const useStyles = makeStyles(() => ({
     padding: '20px',
     borderRadius: '8px',
     border: '2px solid black',
-    maxWidth: '600px', // Establece la anchura máxima del contenedor
+    maxWidth: '700px', // Establece la anchura máxima del contenedor
     width: '100%', // Asegúrate de que el contenedor use el ancho completo disponible
     margin: '0 auto', // Centra el componente
     '@media (max-width: 768px)': {
@@ -137,5 +152,3 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default Coordinador;
-
-
