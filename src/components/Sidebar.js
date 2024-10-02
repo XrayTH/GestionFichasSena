@@ -26,6 +26,7 @@ const useStyles = makeStyles(() => ({
   listItem: {
     '&:hover': {
       backgroundColor: 'rgba(255, 255, 255, 0.2)',
+      cursor: "pointer",
     },
   },
   toggleButton: {
