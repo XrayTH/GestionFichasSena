@@ -3,7 +3,7 @@ import { Button, TextField } from '@mui/material';
 import Coordinador from './Coordinador';
 import NewCoordinador from './NewCoordinador';
 import { makeStyles } from '@mui/styles';
-import { getCoordinadores } from '../service/coordinadorService'; // Asegúrate de que la ruta sea correcta
+import { getCoordinadores, updateCoordinadorByDocumento, createCoordinador } from '../service/coordinadorService'; // Import correcto
 
 const GestionCoordinadores = () => {
   const classes = useStyles();
@@ -16,38 +16,58 @@ const GestionCoordinadores = () => {
   useEffect(() => {
     const fetchCoordinadores = async () => {
       try {
-        const data = await getCoordinadores(); // Usa el método adecuado para obtener los coordinadores
-        setCoordinadores(data)
+        const data = await getCoordinadores(); // Llamada al método correcto para obtener los coordinadores
+        setCoordinadores(data); // Llena el estado con los datos obtenidos
       } catch (error) {
         console.error('Error al obtener los coordinadores:', error);
       }
     };
 
     fetchCoordinadores();
-  }, []); // El array vacío asegura que el efecto solo se ejecute una vez al montar el componente
+  }, []);
 
   const handleNewCoordinadorClick = () => setShowNewCoordinadorForm(true);
 
-  const handleSaveNewCoordinador = (newCoordinador) => {
-    setCoordinadores((prevCoordinadores) => [...prevCoordinadores, newCoordinador]);
-    setShowNewCoordinadorForm(false);
+  const handleSaveNewCoordinador = async (newCoordinador) => {
+    try {
+      // Envía el nuevo coordinador a la base de datos
+      const createdCoordinador = await createCoordinador(newCoordinador);
+  
+      // Si la creación fue exitosa, actualizamos el estado local
+      setCoordinadores((prevCoordinadores) => [...prevCoordinadores, createdCoordinador]);
+  
+      setShowNewCoordinadorForm(false);
+      console.log('Coordinador creado exitosamente en la base de datos');
+    } catch (error) {
+      console.error('Error al crear el coordinador en la base de datos:', error);
+    }
   };
+  
 
   const handleCancelNewCoordinador = () => setShowNewCoordinadorForm(false);
 
-  const handleUpdateCoordinador = (updatedCoordinador) => {
-    setCoordinadores((prevCoordinadores) =>
-      prevCoordinadores.map((coordinador) =>
-        coordinador.documento === updatedCoordinador.documento ? updatedCoordinador : coordinador
-      )
-    );
+  const handleUpdateCoordinador = async (updatedCoordinador) => {
+    try {
+      // Actualizamos en la base de datos con el método correcto
+      await updateCoordinadorByDocumento(updatedCoordinador.documento, updatedCoordinador);
+
+      // Si la actualización en la base de datos es exitosa, actualizamos en el estado local
+      setCoordinadores((prevCoordinadores) =>
+        prevCoordinadores.map((coordinador) =>
+          coordinador.documento === updatedCoordinador.documento ? updatedCoordinador : coordinador
+        )
+      );
+      console.log('Coordinador actualizado exitosamente en la base de datos');
+    } catch (error) {
+      console.error('Error al actualizar el coordinador en la base de datos:', error);
+    }
   };
 
   const filteredCoordinadores = useMemo(() => {
     return coordinadores.filter((coordinador) =>
       coordinador.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
       coordinador.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      coordinador.documento.toLowerCase().includes(searchTerm.toLowerCase())
+      coordinador.documento.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [coordinadores, searchTerm]);
 
@@ -81,7 +101,7 @@ const GestionCoordinadores = () => {
             <div key={coordinador.documento} className={classes.coordinadorComponent}>
               <Coordinador 
                 coordinador={coordinador}
-                onUpdate={handleUpdateCoordinador}
+                onUpdate={handleUpdateCoordinador} // Pasamos el método de actualización al componente Coordinador
               />
             </div>
           ))
