@@ -13,6 +13,16 @@ export const getCoordinadores = async () => {
   }
 };
 
+// Crear un nuevo coordinador
+export const createCoordinador = async (coordinadorData) => {
+    try {
+      const response = await api.post('/coordinadores', coordinadorData);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data.message || 'Error al crear el coordinador');
+    }
+  };
+
 // Obtener coordinador por documento
 export const getCoordinadorByDocumento = async (documento) => {
   try {
