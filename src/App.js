@@ -11,9 +11,9 @@ import GesIns from './components/GestionInstructores';
 import GesPro from './components/GestionPrograma'
 import Programar from './pages/Programar';
 import ProIns from "./pages/ProgramarPorInstructor";
-import Consultas from './pages/Consultas';
 import NotFound from './pages/NotFound';
 import Pruebas from './components/PruebaCriptar';
+import ConFicha from './components/ConsultaPorFicha'
 
 function App() {
   return (
@@ -50,12 +50,6 @@ function App() {
           </ProtectedRoute>
         } />
         
-        <Route path="/consultas" element={
-          <ProtectedRoute>
-            <Consultas />
-          </ProtectedRoute>
-        } />
-        
         <Route path="/gestion-fichas" element={
           <ProtectedRoute>
             <GesFicha />
@@ -89,6 +83,12 @@ function App() {
         <Route path="/pruebas" element={
           <ProtectedRoute>
             <Pruebas />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/consultar-ficha" element={
+          <ProtectedRoute>
+            <ConFicha />
           </ProtectedRoute>
         } />
 

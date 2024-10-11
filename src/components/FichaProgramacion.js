@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import { FormControl, InputLabel, Select, MenuItem, Grid2, Typography, TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
 import { getNumeroAsignaciones } from '../service/asignacionService'
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInstructorChange, startDateFilter, endDateFilter }) => {
     const classes = useStyles();
+    const navigate = useNavigate(); // Usa el hook useNavigate
     const [filteredAsignaciones, setFilteredAsignaciones] = useState([]);
     const [selectedInstructors, setSelectedInstructors] = useState({});
     const [openModal, setOpenModal] = useState(false);
@@ -164,6 +166,12 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
         }));
     };
 
+    const abrirConsulta = () => {
+        navigate('/consultar-ficha', { 
+          state: { ficha } 
+        });
+      };
+
     return (
         <div key={reloadKey} className={classes.container}>
             <Grid2 container spacing={2}>
@@ -171,6 +179,9 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
                     <Typography variant="p" className={classes.fichaCodigo}>
                         {ficha.codigo}
                     </Typography>
+                    <Button onClick={abrirConsulta}>
+                        Ver en Calendario
+                    </Button>
                     <Grid2 container spacing={1}>
                             {jornadas.map((jornada) => (
                                 <FormControlLabel
