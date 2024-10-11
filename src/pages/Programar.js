@@ -1,146 +1,253 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FichaProgramacion from '../components/FichaProgramacion';
-import { Grid, TextField } from '@mui/material';
+import { Grid2, TextField, Snackbar, Alert } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { getFichas } from '../service/fichaService';
+import { getJornadas } from '../service/jornadaService';
+import { getInstructores } from '../service/intructorService';
+import { getAllAsignaciones, createAsignacion, deleteAsignacionById, updateAsignacionById } from '../service/asignacionService';
+import Jornadas from '../components/Jornadas';
+import Sidebar from './../components/Sidebar';
+import { getStartOfMonth, getEndOfMonth } from '../utils/date'
 
 const Programar = () => {
     const classes = useStyles();
 
-    const [fichas, setFichas] = useState([
-        { id: 1, coordinador: 'Juan Perez', gestor: 'Diego Torres', programa: 'Programación', ambiente: 'Laboratorio 101', inicio: '2024-10-01', fin: '2024-12-15', requerimientos: 'Proyector, PC con software especializado' },
-        { id: 2, coordinador: 'Maria Gómez', gestor: 'Ana Martínez', programa: 'Diseño Gráfico', ambiente: 'Laboratorio 202', inicio: '2024-09-01', fin: '2024-11-30', requerimientos: 'Mesa de trabajo, iMac' },
-        { id: 3, coordinador: 'Carlos Rodriguez', gestor: 'Luis Fernández', programa: 'Redes', ambiente: 'Laboratorio 303', inicio: '2024-08-15', fin: '2024-12-01', requerimientos: 'Router, Switch' },
-        { id: 4, coordinador: 'Lucía López', gestor: 'Diego Torres', programa: 'Marketing', ambiente: 'Laboratorio 404', inicio: '2024-09-15', fin: '2024-12-01', requerimientos: 'Proyector, Computadora' },
-    ]);
+    const [fichas, setFichas] = useState([]);
+    const [asignaciones, setAsignaciones] = useState([]);
+    const [instructores, setInstructores] = useState([]);
+    const [jornadas, setJornadas] = useState([]);
 
-    const [jornadas, setJornadas] = useState([
-        { id: 1, ficha: 1, dia: "Lunes", jornada: "Mañana", instructor: "Luis Fernández" },
-        { id: 2, ficha: 2, dia: "Martes", jornada: "Tarde", instructor: "Ana Martínez" },
-        { id: 3, ficha: 3, dia: "Miércoles", jornada: "Noche", instructor: "Luis Fernández" },
-        { id: 4, ficha: 4, dia: "Jueves", jornada: "Mañana", instructor: "Diego Torres" },
-        { id: 5, ficha: 2, dia: "Viernes", jornada: "Tarde", instructor: "Ana Martínez" }
-    ]);
+    // Campos de fechas de filtrado
+    const [startDateFilter, setStartDateFilter] = useState('');
+    const [endDateFilter, setEndDateFilter] = useState('');
 
-    const [Instructores, setInstructores] = useState([
-        "Diego Torres", 'Ana Martínez', 'Luis Fernández'
-    ]);
+    const [idFilter, setIdFilter] = useState('');
+    const [coordinadorFilter, setCoordinadorFilter] = useState('');
+    const [programaFilter, setProgramaFilter] = useState('');
+    const [gestorFilter, setGestorFilter] = useState('');
 
-    const [filter, setFilter] = useState('');
+    const [mensaje, setMensaje] = useState(null);
 
-    const schedule = fichas.map(ficha => {
-        const fichaJornadas = {
-            id: ficha.id,
-            coordinador: ficha.coordinador,
-            gestor: ficha.gestor,
-            programa: ficha.programa,
-            lunes_mañana: null,
-            lunes_tarde: null,
-            lunes_noche: null,
-            martes_mañana: null,
-            martes_tarde: null,
-            martes_noche: null,
-            miércoles_mañana: null,
-            miércoles_tarde: null,
-            miércoles_noche: null,
-            jueves_mañana: null,
-            jueves_tarde: null,
-            jueves_noche: null,
-            viernes_mañana: null,
-            viernes_tarde: null,
-            viernes_noche: null,
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const fichasData = await getFichas();
+                const asignacionesData = await getAllAsignaciones();
+                const instructoresData = await getInstructores();
+                const jornadasData = await getJornadas();
+
+                setFichas(fichasData);
+                setAsignaciones(asignacionesData);
+                setInstructores(instructoresData);
+                setJornadas(jornadasData);
+            } catch (error) {
+                setMensaje({ text: 'Error al cargar los datos', severity: 'error' });
+            }
         };
 
-        jornadas.forEach(jornada => {
-            if (jornada.ficha === ficha.id) {
-                const key = `${jornada.dia.toLowerCase()}_${jornada.jornada.toLowerCase()}`;
-                if (key in fichaJornadas) {
-                    fichaJornadas[key] = jornada.instructor;
-                }
-            }
-        });
+        fetchData();
+    }, []);
 
-        return fichaJornadas;
+    useEffect(() => {
+        setStartDateFilter(getStartOfMonth());
+        setEndDateFilter(getEndOfMonth());
+      }, []);
+
+    const filteredFichas = fichas.filter(ficha => {
+        const hasActiveFilters = idFilter || coordinadorFilter || programaFilter || gestorFilter;
+
+        if (!hasActiveFilters) {
+            return true;
+        }
+
+        const matchesId = idFilter ? ficha.codigo?.toString().includes(idFilter.toString()) : true;
+        const matchesCoordinador = coordinadorFilter ? ficha.coordinador?.toLowerCase().includes(coordinadorFilter.toLowerCase()) : true;
+        const matchesPrograma = programaFilter ? ficha.programa?.toLowerCase().includes(programaFilter.toLowerCase()) : true;
+        const matchesGestor = gestorFilter ? ficha.gestor?.toLowerCase().includes(gestorFilter.toLowerCase()) : true;
+
+        return matchesId && matchesCoordinador && matchesPrograma && matchesGestor;
     });
 
-    const filteredFichas = schedule.filter(ficha => 
-        ficha.id.toString().includes(filter) ||
-        ficha.coordinador.toLowerCase().includes(filter.toLowerCase()) ||
-        ficha.programa.toLowerCase().includes(filter.toLowerCase()) ||
-        ficha.gestor.toLowerCase().includes(filter.toLowerCase())
-    );
-
-    const handleFilterChange = (event) => {
-        setFilter(event.target.value);
+    const handleIdFilterChange = (event) => {
+        setIdFilter(event.target.value);
     };
 
-    const handleInstructorChange = (fichaId, dia, jornada, instructor) => {
-        setJornadas((prevJornadas) => {
-            // Verifica si la jornada ya existe
-            const existingJornadaIndex = prevJornadas.findIndex(
-                (jornadaItem) => 
-                    jornadaItem.ficha === fichaId && 
-                    jornadaItem.dia === dia && 
-                    jornadaItem.jornada === jornada
-            );
-    
-            if (existingJornadaIndex !== -1) {
-                // Si existe, actualiza la jornada
-                return prevJornadas.map((jornadaItem, index) => {
-                    if (index === existingJornadaIndex) {
-                        return { ...jornadaItem, instructor }; // Actualiza el instructor
-                    }
-                    return jornadaItem; // Devuelve el item sin cambios
-                });
+    const handleCoordinadorFilterChange = (event) => {
+        setCoordinadorFilter(event.target.value);
+    };
+
+    const handleProgramaFilterChange = (event) => {
+        setProgramaFilter(event.target.value);
+    };
+
+    const handleGestorFilterChange = (event) => {
+        setGestorFilter(event.target.value);
+    };
+
+    const handleInstructorChange = async ({ ficha, dia, jornada, instructor, inicio, fin }) => {
+        try {
+            if (!instructor) {
+                const asignacionToDelete = asignaciones.find(
+                    (asig) => asig.ficha === ficha && asig.dia === dia && asig.jornada === jornada && asig.inicio === inicio
+                );
+                if (asignacionToDelete) {
+                    await deleteAsignacionById(asignacionToDelete.id);
+                    setAsignaciones((prev) => prev.filter((asig) => asig.id !== asignacionToDelete.id));
+                    setMensaje({ text: 'Asignación eliminada con éxito', severity: 'success' });
+                }
             } else {
-                // Si no existe, agrega una nueva jornada
-                const newJornada = {
-                    id: prevJornadas.length + 1, // O una lógica para generar IDs únicos
-                    ficha: fichaId,
-                    dia,
-                    jornada,
-                    instructor,
-                };
-                return [...prevJornadas, newJornada]; // Agrega la nueva jornada al array
+                const asignacionExistente = asignaciones.find(
+                    (asig) =>
+                        asig.ficha === ficha &&
+                        asig.dia === dia &&
+                        asig.jornada === jornada &&
+                        (asig.inicio === inicio || (asig.inicio <= fin && asig.fin >= inicio))
+                );
+
+                if (asignacionExistente) {
+                    await updateAsignacionById(asignacionExistente.id, { ...asignacionExistente, instructor, fin });
+                    setAsignaciones((prev) =>
+                        prev.map((asig) => (asig.id === asignacionExistente.id ? { ...asig, instructor, fin } : asig))
+                    );
+                    setMensaje({ text: 'Asignación actualizada con éxito', severity: 'success' });
+                } else {
+                    const nuevaAsignacion = {
+                        ficha,
+                        dia,
+                        jornada,
+                        instructor,
+                        inicio,
+                        fin,
+                        id: asignaciones.length + 1,
+                    };
+                    const createdAsignacion = await createAsignacion(nuevaAsignacion);
+                    setAsignaciones((prev) => [...prev, createdAsignacion]);
+                    setMensaje({ text: 'Asignación creada con éxito', severity: 'success' });
+                }
             }
-        });
-    };    
+        } catch (error) {
+            setMensaje({ text: 'Error al manejar el cambio de instructor', severity: 'error' });
+        }
+    };
 
     return (
-        <div className={classes.container}>
-            <TextField
-                label="Buscar por ID, Coordinador, Programa o Gestor"
-                variant="outlined"
-                fullWidth
-                onChange={handleFilterChange}
-                value={filter}
-                className={classes.textField}
-            />
-            <Grid container spacing={2}>
-                {filteredFichas.map((ficha) => (
-                    <Grid item xs={12} key={ficha.id}>
-                        <FichaProgramacion
-                            ficha={ficha}
-                            instructores={Instructores}
-                            onInstructorChange={handleInstructorChange}
-                            className={classes.ficha}
-                        />
-                    </Grid>
-                ))}
-            </Grid>
-        </div>
+        <>
+            <Sidebar />
+            <div className={classes.container}>
+                <label>Filtros:</label><br /><br />
+                <TextField
+                    label="Buscar por codigo"
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleIdFilterChange}
+                    value={idFilter}
+                    className={classes.textField}
+                />
+                <TextField
+                    label="Buscar por Coordinador"
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleCoordinadorFilterChange}
+                    value={coordinadorFilter}
+                    className={classes.textField}
+                />
+                <TextField
+                    label="Buscar por Programa"
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleProgramaFilterChange}
+                    value={programaFilter}
+                    className={classes.textField}
+                />
+                <TextField
+                    label="Buscar por Gestor"
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleGestorFilterChange}
+                    value={gestorFilter}
+                    className={classes.textField}
+                />
+
+                {/* Campos para las fechas de filtro */}
+                <TextField
+                    label="Fecha de inicio"
+                    type="date"
+                    value={startDateFilter}
+                    onChange={(e) => setStartDateFilter(e.target.value)}
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    variant="outlined"
+                    className={classes.textField}
+                />
+                <TextField
+                    label="Fecha de fin"
+                    type="date"
+                    value={endDateFilter}
+                    onChange={(e) => setEndDateFilter(e.target.value)}
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    variant="outlined"
+                    className={classes.textField}
+                />
+
+                <br /><br /><label>Crear Borrar o Editar Jornadas:</label><br />
+                <Jornadas />
+
+                <div className={classes.fichasContainer}>
+                    {filteredFichas.map((ficha) => (
+                        <div className={classes.fichaWrapper} key={ficha.codigo}>
+                            <FichaProgramacion
+                                ficha={ficha}
+                                asignaciones={asignaciones}
+                                instructores={instructores}
+                                jornadas={jornadas}
+                                onInstructorChange={handleInstructorChange}
+                                startDateFilter={startDateFilter}  // Pasa la fecha de inicio
+                                endDateFilter={endDateFilter}      // Pasa la fecha de fin
+                                className={classes.ficha}
+                            />
+                        </div>
+                    ))}
+                </div>
+
+                {/* Snackbar para mostrar mensajes de éxito o error */}
+                {mensaje && (
+                    <Snackbar
+                        open={Boolean(mensaje)}
+                        autoHideDuration={6000}
+                        onClose={() => setMensaje(null)}
+                    >
+                        <Alert onClose={() => setMensaje(null)} severity={mensaje.severity} sx={{ width: '100%' }}>
+                            {mensaje.text}
+                        </Alert>
+                    </Snackbar>
+                )}
+            </div>
+        </>
     );
-}
+};
 
 const useStyles = makeStyles((theme) => ({
     container: {
         padding: '20px',
         borderRadius: '8px',
         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-        margin: '10 20px', // Margen lateral
+        margin: '10px 20px',
     },
     textField: {
-        margin: '16px',
+        margin: '16px 16px',
         backgroundColor: '#ffffff',
+    },
+    fichasContainer: {
+        display: 'flex',  // Usamos Flexbox
+        flexWrap: 'wrap',  // Permite que las fichas se ajusten en múltiples filas si es necesario
+        justifyContent: 'center',  // Centra las fichas horizontalmente
+        marginTop: '20px',
+    },
+    fichaWrapper: {
+        width: 'auto',  // Las fichas ocuparán solo el espacio necesario
+        margin: '10px',  // Espacio entre fichas
     },
     ficha: {
         backgroundColor: '#b2195e',
@@ -150,5 +257,7 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.2)',
     },
 }));
+
+
 
 export default Programar;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-const Instructor = ({ instructor, onUpdate }) => {
+const Instructor = ({ instructor, onUpdate, onDelete }) => {
   const classes = useStyles();
 
   const [isEditable, setIsEditable] = useState(false);
@@ -14,6 +14,12 @@ const Instructor = ({ instructor, onUpdate }) => {
     }
     setIsEditable(!isEditable);
   };
+
+  const handleDeleteClick = () => {
+    if (onDelete) {
+      onDelete(instructor.documento); // Pasamos el documento del instructor a borrar
+    }
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,12 +76,42 @@ const Instructor = ({ instructor, onUpdate }) => {
         />
       </div>
 
+      {/* Teléfono */}
+      <div className={classes.fieldContainer}>
+        <label className={classes.label}>Teléfono</label>
+        <TextField
+          className={classes.textField}
+          name="telefono"
+          value={formState.telefono || ''}
+          variant="outlined"
+          InputProps={{
+            readOnly: !isEditable,
+          }}
+          onChange={handleChange}
+        />
+      </div>
+
+      {/* Área Temática */}
+      <div className={classes.fieldContainer}>
+        <label className={classes.label}>Área Temática</label>
+        <TextField
+          className={classes.textField}
+          name="areaTematica"
+          value={formState.areaTematica || ''}
+          variant="outlined"
+          InputProps={{
+            readOnly: !isEditable,
+          }}
+          onChange={handleChange}
+        />
+      </div>
+
       {/* Botones */}
       <div className={classes.buttonRow}>
         <Button className={classes.button} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}
         </Button>
-        <Button className={classes.deleteButton}>Borrar</Button>
+        <Button className={classes.deleteButton} onClick={handleDeleteClick}>Borrar</Button>
       </div>
     </div>
   );
@@ -90,7 +126,7 @@ const useStyles = makeStyles(() => ({
     padding: '20px',
     borderRadius: '8px',
     border: '2px solid black',
-    maxWidth: '600px',
+    maxWidth: '800px',
     width: '100%',
     margin: '0 auto',
     '@media (max-width: 768px)': {

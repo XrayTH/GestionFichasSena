@@ -1,9 +1,10 @@
-import { useState, useMemo, useEffect } from 'react';
-import { Button, TextField } from '@mui/material';
+import React, { useState, useMemo, useEffect } from 'react';
 import Coordinador from './Coordinador';
 import NewCoordinador from './NewCoordinador';
+import { TextField, Button, Snackbar, Alert } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { getCoordinadores, updateCoordinadorByDocumento, createCoordinador } from '../service/coordinadorService'; // Import correcto
+import { getCoordinadores, createCoordinador, updateCoordinadorByDocumento, deleteCoordinadorByDocumento } from '../service/coordinadorService';
+import Sidebar from './Sidebar';
 
 const GestionCoordinadores = () => {
   const classes = useStyles();
@@ -11,6 +12,7 @@ const GestionCoordinadores = () => {
   const [coordinadores, setCoordinadores] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewCoordinadorForm, setShowNewCoordinadorForm] = useState(false);
+  const [mensaje, setMensaje] = useState(null); // Manejar mensajes del sistema
 
   // Hook para cargar los coordinadores al cargar la página
   useEffect(() => {
@@ -20,6 +22,7 @@ const GestionCoordinadores = () => {
         setCoordinadores(data); // Llena el estado con los datos obtenidos
       } catch (error) {
         console.error('Error al obtener los coordinadores:', error);
+        setMensaje({ text: error.message, severity: 'error' });
       }
     };
 
@@ -35,14 +38,30 @@ const GestionCoordinadores = () => {
   
       // Si la creación fue exitosa, actualizamos el estado local
       setCoordinadores((prevCoordinadores) => [...prevCoordinadores, createdCoordinador]);
-  
       setShowNewCoordinadorForm(false);
-      console.log('Coordinador creado exitosamente en la base de datos');
+      setMensaje({ text: 'Coordinador creado con éxito', severity: 'success' });
     } catch (error) {
       console.error('Error al crear el coordinador en la base de datos:', error);
+      setMensaje({ text: error.message, severity: 'error' });
     }
   };
+
+  const handleDeleteCoordinador = async (documento) => {
+    try {
+      // Llamar a la función para eliminar el coordinador en la base de datos
+      await deleteCoordinadorByDocumento(documento); // Asegúrate de tener esta función en tu servicio
   
+      // Actualizar el estado local eliminando el coordinador
+      setCoordinadores((prevCoordinadores) =>
+        prevCoordinadores.filter((coordinador) => coordinador.documento !== documento)
+      );
+  
+      setMensaje({ text: 'Coordinador borrado con éxito', severity: 'success' });
+    } catch (error) {
+      console.error('Error al borrar el coordinador en la base de datos:', error);
+      setMensaje({ text: error.message, severity: 'error' });
+    }
+  };
 
   const handleCancelNewCoordinador = () => setShowNewCoordinadorForm(false);
 
@@ -57,99 +76,97 @@ const GestionCoordinadores = () => {
           coordinador.documento === updatedCoordinador.documento ? updatedCoordinador : coordinador
         )
       );
-      console.log('Coordinador actualizado exitosamente en la base de datos');
+      setMensaje({ text: 'Coordinador actualizado con éxito', severity: 'success' });
     } catch (error) {
       console.error('Error al actualizar el coordinador en la base de datos:', error);
+      setMensaje({ text: error.message, severity: 'error' });
     }
   };
 
   const filteredCoordinadores = useMemo(() => {
     return coordinadores.filter((coordinador) =>
-      coordinador.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      coordinador.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      coordinador.documento.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      coordinador.areaTematica?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      coordinador.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      coordinador.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      coordinador.documento?.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [coordinadores, searchTerm]);
 
   return (
-    <div className={classes.container}>
-      <div className={classes.filters}>
+    <>
+      <Sidebar />
+      <div className={classes.container}>
+        {/* Componente de mensajes del sistema */}
+        {mensaje && (
+          <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
+            <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
+              {mensaje.text}
+            </Alert>
+          </Snackbar>
+        )}
+
         <TextField
           variant="outlined"
-          placeholder="Buscar por Documento, Nombre o Email"
+          placeholder="Buscar por Documento o Nombre"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className={classes.searchField}
         />
-        <div className={classes.newCoordinadorButton}>
-          <Button variant="contained" onClick={handleNewCoordinadorClick} className={classes.newCoordinadorButtonStyle}>
-            Nuevo Coordinador
-          </Button>
+
+        <Button variant="contained" onClick={handleNewCoordinadorClick} className={classes.newCoordinadorButton}>
+          Nuevo Coordinador
+        </Button>
+
+        {showNewCoordinadorForm && (
+          <NewCoordinador 
+            onSave={handleSaveNewCoordinador}
+            onCancel={handleCancelNewCoordinador}
+          />
+        )}
+
+        <div className={classes.coordinadorList}>
+          {filteredCoordinadores.length > 0 ? (
+            filteredCoordinadores.map((coordinador) => (
+              <Coordinador
+                key={coordinador.documento}
+                coordinador={coordinador}
+                onUpdate={handleUpdateCoordinador}
+                onDelete={handleDeleteCoordinador}
+              />
+            ))
+          ) : (
+            <p>No se encontraron coordinadores</p>
+          )}
         </div>
       </div>
-
-      {showNewCoordinadorForm && (
-        <NewCoordinador 
-          onSave={handleSaveNewCoordinador} 
-          onCancel={handleCancelNewCoordinador} 
-        />
-      )}
-
-      <div className={classes.coordinadorList}>
-        {filteredCoordinadores.length > 0 ? (
-          filteredCoordinadores.map((coordinador) => (
-            <div key={coordinador.documento} className={classes.coordinadorComponent}>
-              <Coordinador 
-                coordinador={coordinador}
-                onUpdate={handleUpdateCoordinador} // Pasamos el método de actualización al componente Coordinador
-              />
-            </div>
-          ))
-        ) : (
-          <p>No se encontraron coordinadores</p>
-        )}
-      </div>
-    </div>
+    </>
   );
 };
 
 const useStyles = makeStyles(() => ({
   container: {
-    maxWidth: '1400px',
-    width: '100%',
-    margin: 'auto',
     padding: '20px',
-    backgroundColor: '#f4f4f4',
-  },
-  filters: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '20px',
+    backgroundColor: '#f5f5f5',
+    borderRadius: '8px',
+    width: '100%',
+    margin: '0 auto',
   },
   searchField: {
-    flexGrow: 1,
-    marginRight: '20px',
+    width: '85%',
+    marginBottom: '20px',
   },
   newCoordinadorButton: {
-    textAlign: 'right',
-  },
-  newCoordinadorButtonStyle: {
     backgroundColor: '#5eb219',
+    color: '#fff',
     '&:hover': {
       backgroundColor: '#4cae14',
     },
+    marginBottom: '20px',
   },
   coordinadorList: {
-    marginTop: '20px',
-  },
-  coordinadorComponent: {
-    marginBottom: '15px',
-    border: `1px solid #195eb2`,
-    borderRadius: '5px',
-    padding: '10px',
-    backgroundColor: '#ffffff',
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridGap: '10px',
   },
 }));
 

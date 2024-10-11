@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { TextField, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-
-const Coordinador = ({ coordinador, onUpdate }) => {
+ 
+const Coordinador = ({ coordinador, onUpdate, onDelete}) => {
   const classes = useStyles();
 
   const [isEditable, setIsEditable] = useState(false);
@@ -13,6 +13,10 @@ const Coordinador = ({ coordinador, onUpdate }) => {
       onUpdate(formState);
     }
     setIsEditable(!isEditable);
+  };
+
+  const handleDeleteClick = () => {
+    onDelete(coordinador.documento); 
   };
 
   const handleChange = (e) => {
@@ -90,7 +94,7 @@ const Coordinador = ({ coordinador, onUpdate }) => {
         <Button className={classes.button} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}
         </Button>
-        <Button className={classes.deleteButton}>Borrar</Button>
+        <Button className={classes.deleteButton} onClick={handleDeleteClick}>Borrar</Button>
       </div>
     </div>
   );

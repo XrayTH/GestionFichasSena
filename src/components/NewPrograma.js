@@ -2,15 +2,12 @@ import React, { useState } from 'react';
 import { TextField, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-const NewInstructor = ({ onSave, onCancel }) => {
+const NewPrograma = ({ onSave, onCancel }) => {
   const classes = useStyles();
-  
+
   const [formState, setFormState] = useState({
-    documento: '',
     nombre: '',
-    email: '',
-    telefono: '',
-    areaTematica: ''
+    nombreCorto: ''
   });
 
   const handleChange = (e) => {
@@ -27,18 +24,6 @@ const NewInstructor = ({ onSave, onCancel }) => {
 
   return (
     <div className={classes.container}>
-      {/* Documento */}
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Documento</label>
-        <TextField
-          className={classes.textField}
-          name="documento"
-          value={formState.documento}
-          variant="outlined"
-          onChange={handleChange}
-        />
-      </div>
-
       {/* Nombre */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Nombre</label>
@@ -51,37 +36,13 @@ const NewInstructor = ({ onSave, onCancel }) => {
         />
       </div>
 
-      {/* Email */}
+      {/* Nombre Corto */}
       <div className={classes.fieldContainer}>
-        <label className={classes.label}>Email</label>
+        <label className={classes.label}>Nombre Corto</label>
         <TextField
           className={classes.textField}
-          name="email"
-          value={formState.email}
-          variant="outlined"
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* Teléfono */}
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Teléfono</label>
-        <TextField
-          className={classes.textField}
-          name="telefono"
-          value={formState.telefono}
-          variant="outlined"
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* Área Temática */}
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Área Temática</label>
-        <TextField
-          className={classes.textField}
-          name="areaTematica"
-          value={formState.areaTematica}
+          name="nombreCorto"
+          value={formState.nombreCorto}
           variant="outlined"
           onChange={handleChange}
         />
@@ -109,7 +70,7 @@ const useStyles = makeStyles(() => ({
     padding: '20px',
     borderRadius: '8px',
     border: '2px solid black',
-    maxWidth: '800px',
+    maxWidth: '300px',
     width: '100%',
     margin: '0 auto',
     '@media (max-width: 768px)': {
@@ -155,4 +116,4 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default NewInstructor;
+export default NewPrograma;

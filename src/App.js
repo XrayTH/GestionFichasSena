@@ -8,12 +8,16 @@ import GesUsu from './pages/GestionUsuarios';
 import GesFicha from './components/GestionFichas';
 import GesCoo from './components/GestionCoordinadores';
 import GesIns from './components/GestionInstructores';
+import GesPro from './components/GestionPrograma'
 import Programar from './pages/Programar';
+import ProIns from "./pages/ProgramarPorInstructor";
 import Consultas from './pages/Consultas';
-import NotFound from './pages/NotFound'; // Importa el componente NotFound
+import NotFound from './pages/NotFound';
+import Pruebas from './components/PruebaCriptar';
 
 function App() {
   return (
+    
     <Router>
       <Routes>
         <Route path="/login" element={
@@ -37,6 +41,12 @@ function App() {
         <Route path="/programar" element={
           <ProtectedRoute>
             <Programar />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/programar-instructor" element={
+          <ProtectedRoute>
+            <ProIns />
           </ProtectedRoute>
         } />
         
@@ -70,10 +80,23 @@ function App() {
           </ProtectedRoute>
         } />
 
+        <Route path="/gestion-programas" element={
+          <ProtectedRoute>
+            <GesPro />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/pruebas" element={
+          <ProtectedRoute>
+            <Pruebas />
+          </ProtectedRoute>
+        } />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
-  );
+    
+  )
 }
 
 export default App;

@@ -2,16 +2,22 @@ import React, { useState } from 'react';
 import { TextField, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-const NewInstructor = ({ onSave, onCancel }) => {
+const Programa = ({ programa, onUpdate, onDelete }) => {
   const classes = useStyles();
-  
-  const [formState, setFormState] = useState({
-    documento: '',
-    nombre: '',
-    email: '',
-    telefono: '',
-    areaTematica: ''
-  });
+
+  const [isEditable, setIsEditable] = useState(false);
+  const [formState, setFormState] = useState(programa || {});
+
+  const handleEditClick = () => {
+    if (isEditable) {
+      onUpdate(formState);
+    }
+    setIsEditable(!isEditable);
+  };
+
+  const handleDeleteClick = () => {
+    onDelete(programa.id); 
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,80 +27,44 @@ const NewInstructor = ({ onSave, onCancel }) => {
     }));
   };
 
-  const handleSave = () => {
-    onSave(formState);
-  };
-
   return (
     <div className={classes.container}>
-      {/* Documento */}
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Documento</label>
-        <TextField
-          className={classes.textField}
-          name="documento"
-          value={formState.documento}
-          variant="outlined"
-          onChange={handleChange}
-        />
-      </div>
-
       {/* Nombre */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Nombre</label>
         <TextField
           className={classes.textField}
           name="nombre"
-          value={formState.nombre}
+          value={formState.nombre || ''}
           variant="outlined"
+          InputProps={{
+            readOnly: !isEditable,
+          }}
           onChange={handleChange}
         />
       </div>
 
-      {/* Email */}
+      {/* Nombre Corto */}
       <div className={classes.fieldContainer}>
-        <label className={classes.label}>Email</label>
+        <label className={classes.label}>Nombre Corto</label>
         <TextField
           className={classes.textField}
-          name="email"
-          value={formState.email}
+          name="nombreCorto"
+          value={formState.nombreCorto || ''}
           variant="outlined"
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* Teléfono */}
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Teléfono</label>
-        <TextField
-          className={classes.textField}
-          name="telefono"
-          value={formState.telefono}
-          variant="outlined"
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* Área Temática */}
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Área Temática</label>
-        <TextField
-          className={classes.textField}
-          name="areaTematica"
-          value={formState.areaTematica}
-          variant="outlined"
+          InputProps={{
+            readOnly: !isEditable,
+          }}
           onChange={handleChange}
         />
       </div>
 
       {/* Botones */}
       <div className={classes.buttonRow}>
-        <Button className={classes.button} onClick={handleSave}>
-          Guardar
+        <Button className={classes.button} onClick={handleEditClick}>
+          {isEditable ? 'Guardar' : 'Editar'}
         </Button>
-        <Button className={classes.cancelButton} onClick={onCancel}>
-          Cancelar
-        </Button>
+        <Button className={classes.deleteButton} onClick={handleDeleteClick}>Borrar</Button>
       </div>
     </div>
   );
@@ -109,7 +79,7 @@ const useStyles = makeStyles(() => ({
     padding: '20px',
     borderRadius: '8px',
     border: '2px solid black',
-    maxWidth: '800px',
+    maxWidth: '300px',
     width: '100%',
     margin: '0 auto',
     '@media (max-width: 768px)': {
@@ -146,7 +116,7 @@ const useStyles = makeStyles(() => ({
     },
     marginRight: '10px',
   },
-  cancelButton: {
+  deleteButton: {
     backgroundColor: '#b2195e',
     color: '#fff',
     '&:hover': {
@@ -155,4 +125,4 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default NewInstructor;
+export default Programa;

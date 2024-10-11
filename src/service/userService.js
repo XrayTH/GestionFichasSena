@@ -1,7 +1,7 @@
 import { fichaSenaService } from '../utils/api'; // Asegúrate de que esta ruta sea correcta
 
 // Ruta base del backend
-const api = fichaSenaService
+const api = fichaSenaService;
 
 // Obtener todos los usuarios
 export const getUsuarios = async () => {
@@ -53,3 +53,12 @@ export const verificarUsuario = async (credentials) => {
   }
 };
 
+// Eliminar usuario por ID
+export const deleteUsuarioById = async (id) => {
+  try {
+    const response = await api.delete(`/usuarios/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data.message || 'Error al eliminar el usuario');
+  }
+};

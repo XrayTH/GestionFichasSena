@@ -5,6 +5,7 @@ import logo from "../assets/logo-sena-verde-complementario-svg-2022.svg";
 import { useDispatch } from 'react-redux'; // Importa useDispatch
 import { setUser } from '../features/userSlice';
 import { verificarUsuario } from '../service/userService';
+import { encryptPassword } from '../utils/encryption'; // Importa la función de cifrado
 
 const Login = () => {
   const classes = useStyles();
@@ -17,8 +18,10 @@ const Login = () => {
   const handleLoginClick = async () => {
     setError(''); // Reinicia el error al hacer clic
     try {
+      // Cifrar la contraseña antes de enviarla
+      const encryptedPassword = encryptPassword(contraseña);
       // Verificar el usuario con la función de servicio
-      const userData = await verificarUsuario({ usuario, contraseña });
+      const userData = await verificarUsuario({ usuario, contraseña: encryptedPassword });
       dispatch(setUser(userData.usuario)); // Almacena la información del usuario
       navigate("/home"); // Navega a la página de inicio
     } catch (err) {

@@ -1,75 +1,141 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Instructor from './Instructor';
 import NewInstructor from './NewInstructor';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Snackbar, Alert } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { getInstructores, createInstructor, updateInstructorByDocumento, deleteInstructorByDocumento } from '../service/intructorService';
+import Sidebar from './Sidebar';
 
 const GestionInstructores = () => {
   const classes = useStyles();
 
-  const [instructores, setInstructores] = useState([
-    { documento: '123', nombre: 'Diego Torres', email: 'diego@example.com' },
-    { documento: '456', nombre: 'Ana Martínez', email: 'ana@example.com' },
-  ]);
-
+  const [instructores, setInstructores] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewInstructorForm, setShowNewInstructorForm] = useState(false);
+  const [mensaje, setMensaje] = useState(null); // Manejar mensajes del sistema
+
+  // Hook para cargar los instructores al cargar la página
+  useEffect(() => {
+    const fetchInstructores = async () => {
+      try {
+        const data = await getInstructores(); // Llamada al método correcto para obtener los instructores
+        setInstructores(data); // Llena el estado con los datos obtenidos
+      } catch (error) {
+        console.error('Error al obtener los instructores:', error);
+        setMensaje({ text: error.message, severity: 'error' });
+      }
+    };
+
+    fetchInstructores();
+  }, []);
 
   const handleNewInstructorClick = () => setShowNewInstructorForm(true);
 
-  const handleSaveNewInstructor = (newInstructor) => {
-    setInstructores((prevInstructores) => [...prevInstructores, newInstructor]);
-    setShowNewInstructorForm(false);
+  const handleSaveNewInstructor = async (newInstructor) => {
+    try {
+      // Envía el nuevo instructor a la base de datos
+      const createdInstructor = await createInstructor(newInstructor);
+  
+      // Si la creación fue exitosa, actualizamos el estado local
+      setInstructores((prevInstructores) => [...prevInstructores, createdInstructor]);
+      setShowNewInstructorForm(false);
+      setMensaje({ text: 'Instructor creado con éxito', severity: 'success' });
+    } catch (error) {
+      console.error('Error al crear el instructor en la base de datos:', error);
+      setMensaje({ text: error.message, severity: 'error' });
+    }
   };
 
   const handleCancelNewInstructor = () => setShowNewInstructorForm(false);
 
-  const handleUpdateInstructor = (updatedInstructor) => {
-    setInstructores((prevInstructores) =>
-      prevInstructores.map((instructor) =>
-        instructor.documento === updatedInstructor.documento ? updatedInstructor : instructor
-      )
-    );
+  const handleUpdateInstructor = async (updatedInstructor) => {
+    try {
+      // Actualizamos en la base de datos con el método correcto
+      await updateInstructorByDocumento(updatedInstructor.documento, updatedInstructor);
+
+      // Si la actualización en la base de datos es exitosa, actualizamos en el estado local
+      setInstructores((prevInstructores) =>
+        prevInstructores.map((instructor) =>
+          instructor.documento === updatedInstructor.documento ? updatedInstructor : instructor
+        )
+      );
+      setMensaje({ text: 'Instructor actualizado con éxito', severity: 'success' });
+    } catch (error) {
+      console.error('Error al actualizar el instructor en la base de datos:', error);
+      setMensaje({ text: error.message, severity: 'error' });
+    }
+  };
+
+  const handleDeleteInstructor = async (documento) => {
+    try {
+      await deleteInstructorByDocumento(documento); // Llama a la función de eliminación
+      setInstructores((prevInstructores) =>
+        prevInstructores.filter((instructor) => instructor.documento !== documento)
+      ); // Actualiza el estado para eliminar al instructor de la lista
+      setMensaje({ text: 'Instructor eliminado con éxito', severity: 'success' });
+    } catch (error) {
+      console.error('Error al eliminar el instructor:', error);
+      setMensaje({ text: error.message, severity: 'error' });
+    }
   };
 
   const filteredInstructores = useMemo(() => {
     return instructores.filter((instructor) =>
-      instructor.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      instructor.documento.includes(searchTerm)
+      instructor.areaTematica?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      instructor.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      instructor.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      instructor.documento?.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [instructores, searchTerm]);
-
+  
   return (
-    <div className={classes.container}>
-      <TextField
-        variant="outlined"
-        placeholder="Buscar por Documento o Nombre"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className={classes.searchField}
-      />
+    <>
+      <Sidebar />
+      <div className={classes.container}>
+        {/* Componente de mensajes del sistema */}
+        {mensaje && (
+          <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
+            <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
+              {mensaje.text}
+            </Alert>
+          </Snackbar>
+        )}
 
-      <Button variant="contained" onClick={handleNewInstructorClick} className={classes.newInstructorButton}>
-        Nuevo Instructor
-      </Button>
-
-      {showNewInstructorForm && (
-        <NewInstructor 
-          onSave={handleSaveNewInstructor}
-          onCancel={handleCancelNewInstructor}
+        <TextField
+          variant="outlined"
+          placeholder="Buscar por Documento o Nombre"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className={classes.searchField}
         />
-      )}
 
-      <div className={classes.instructorList}>
-        {filteredInstructores.map((instructor) => (
-          <Instructor
-            key={instructor.documento}
-            instructor={instructor}
-            onUpdate={handleUpdateInstructor}
+        <Button variant="contained" onClick={handleNewInstructorClick} className={classes.newInstructorButton}>
+          Nuevo Instructor
+        </Button>
+
+        {showNewInstructorForm && (
+          <NewInstructor 
+            onSave={handleSaveNewInstructor}
+            onCancel={handleCancelNewInstructor}
           />
-        ))}
+        )}
+
+        <div className={classes.instructorList}>
+          {filteredInstructores.length > 0 ? (
+            filteredInstructores.map((instructor) => (
+              <Instructor
+                key={instructor.documento}
+                instructor={instructor}
+                onUpdate={handleUpdateInstructor}
+                onDelete={handleDeleteInstructor}
+              />
+            ))
+          ) : (
+            <p>No se encontraron instructores</p>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -15,13 +15,13 @@ export const getCoordinadores = async () => {
 
 // Crear un nuevo coordinador
 export const createCoordinador = async (coordinadorData) => {
-    try {
-      const response = await api.post('/coordinadores', coordinadorData);
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data.message || 'Error al crear el coordinador');
-    }
-  };
+  try {
+    const response = await api.post('/coordinadores', coordinadorData);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data.message || 'Error al crear el coordinador');
+  }
+};
 
 // Obtener coordinador por documento
 export const getCoordinadorByDocumento = async (documento) => {
@@ -50,5 +50,15 @@ export const updateCoordinadorByDocumento = async (documento, coordinadorData) =
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data.message || 'Error al actualizar el coordinador');
+  }
+};
+
+// Eliminar coordinador por documento
+export const deleteCoordinadorByDocumento = async (documento) => {
+  try {
+    const response = await api.delete(`/coordinadores/${documento}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data.message || 'Error al eliminar el coordinador');
   }
 };

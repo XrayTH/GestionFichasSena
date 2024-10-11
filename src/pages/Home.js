@@ -3,6 +3,7 @@ import { makeStyles } from '@mui/styles';
 import { useDispatch } from 'react-redux'; // Importa useDispatch
 import { useNavigate } from 'react-router-dom'; // Importa el hook useNavigate
 import { logout } from '../features/userSlice'; // Importa la acción logout
+import { Typography } from '@mui/material';
 
 const Home = () => {
   const classes = useStyles();
@@ -13,8 +14,28 @@ const Home = () => {
     navigate('/gestion-usuarios');
   };
 
-  const handleConsultas = () => {
-    navigate('/consultas');
+  const handleProgramas = () => {
+    navigate('/gestion-programas');
+  };
+
+  const handleInstructores = () => {
+    navigate('/gestion-instructores');
+  };
+
+  const handleCoordinadores = () => {
+    navigate('/gestion-coordinadores');
+  };
+
+  const handleFichas = () => {
+    navigate('/gestion-fichas');
+  };
+
+  const handleProFicha = () => {
+    navigate('/programar');
+  };
+
+  const handleProIns = () => {
+    navigate('/programar-instructor');
   };
 
   const handleCerrarSesion = () => {
@@ -23,11 +44,30 @@ const Home = () => {
 
   return (
     <div className={classes.container}>
+      <Typography variant="h4" component="h1" className={classes.title}>
+        SISTEMA DE GESTIÓN DE FICHAS - SENA
+      </Typography>
+      <br/>
       <button className={classes.button} onClick={handleGestionUsuarios}>
         Gestionar Usuarios
       </button>
-      <button className={classes.button} onClick={handleConsultas}>
-        Consultar/Editar Fichas
+      <button className={classes.button} onClick={handleProgramas}>
+        Ver Programas
+      </button>
+      <button className={classes.button} onClick={handleInstructores}>
+        Ver Instructores
+      </button>
+      <button className={classes.button} onClick={handleCoordinadores}>
+        Ver Coordinadores
+      </button>
+      <button className={classes.button} onClick={handleFichas}>
+        Ver Fichas
+      </button>
+      <button className={classes.button} onClick={handleProFicha}>
+        Programacion Por Ficha
+      </button>
+      <button className={classes.button} onClick={handleProIns}>
+        Programacion Por Instructor
       </button>
       <button className={classes.smallButton} onClick={handleCerrarSesion}>
         Cerrar Sesión

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Button, Switch } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-const UserComponent = ({ user, onUpdate }) => {
+const UserComponent = ({ user, onUpdate, onDelete }) => {
   const classes = useStyles();
 
   const [isEditable, setIsEditable] = useState(false);
@@ -133,7 +133,7 @@ const UserComponent = ({ user, onUpdate }) => {
         <Button className={classes.button} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}
         </Button>
-        <Button className={classes.deleteButton}>Borrar</Button>
+        <Button className={classes.deleteButton} onClick={() => onDelete(user.id)}>Borrar</Button>
       </div>
     </div>
   );

@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { TextField, Button, MenuItem } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], gestores = [] }) => {
+const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], gestores = [], municipios = [] }) => {
   const classes = useStyles();
   const [formState, setFormState] = useState({
-    id: '',
+    codigo: '',
     coordinador: '',
     programa: '',
-    gestor: '', // Nuevo campo gestor
+    gestor: '',
+    municipio: '',
+    ubicacionGPS: '',
     ambiente: '',
     inicio: '',
     fin: '',
@@ -25,27 +27,35 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
 
   const handleSave = () => {
     onSave(formState);
+    setFormState({
+      codigo: '',
+      coordinador: '',
+      programa: '',
+      gestor: '',
+      municipio: '',
+      ubicacionGPS: '',
+      ambiente: '',
+      inicio: '',
+      fin: '',
+      requerimientos: '',
+    });
   };
 
   return (
     <div className={classes.container}>
-      {/* Campos en una fila, pero con flex-wrap y centrado */}
-      <div className={classes.fieldsRow}>
-        {/* 1. ID */}
+      {/* Fila 1: Código, Coordinador, Programa, Gestor */}
+      <div className={classes.fieldRow}>
         <div className={classes.fieldContainer}>
-          <label className={classes.label}>ID</label>
+          <label className={classes.label}>Código</label>
           <TextField
             className={classes.textField}
-            name="id"
-            type="text"
-            inputMode="numeric"
-            value={formState.id}
+            name="codigo"
+            value={formState.codigo}
             variant="outlined"
             onChange={handleChange}
           />
         </div>
 
-        {/* 2. Coordinador */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Coordinador</label>
           <TextField
@@ -58,17 +68,18 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
           >
             {coordinadores.length > 0 ? (
               coordinadores.map((coordinador) => (
-                <MenuItem key={coordinador} value={coordinador}>
-                  {coordinador}
+                <MenuItem key={coordinador.nombre} value={coordinador.nombre}>
+                  {coordinador.nombre}
                 </MenuItem>
               ))
             ) : (
-              <MenuItem disabled>No hay coordinadores disponibles</MenuItem>
+              <MenuItem value="">
+                <em>No hay coordinadores disponibles</em>
+              </MenuItem>
             )}
           </TextField>
         </div>
 
-        {/* 3. Programa */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Programa</label>
           <TextField
@@ -81,17 +92,18 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
           >
             {programas.length > 0 ? (
               programas.map((programa) => (
-                <MenuItem key={programa} value={programa}>
-                  {programa}
+                <MenuItem key={programa.nombre} value={programa.nombre}>
+                  {programa.nombre}
                 </MenuItem>
               ))
             ) : (
-              <MenuItem disabled>No hay programas disponibles</MenuItem>
+              <MenuItem value="">
+                <em>No hay programas disponibles</em>
+              </MenuItem>
             )}
           </TextField>
         </div>
 
-        {/* 4. Gestor */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Gestor</label>
           <TextField
@@ -104,17 +116,21 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
           >
             {gestores.length > 0 ? (
               gestores.map((gestor) => (
-                <MenuItem key={gestor} value={gestor}>
-                  {gestor}
+                <MenuItem key={gestor.nombre} value={gestor.nombre}>
+                  {gestor.nombre}
                 </MenuItem>
               ))
             ) : (
-              <MenuItem disabled>No hay gestores disponibles</MenuItem>
+              <MenuItem value="">
+                <em>No hay gestores disponibles</em>
+              </MenuItem>
             )}
           </TextField>
         </div>
+      </div>
 
-        {/* 5. Ambiente */}
+      {/* Fila 2: Ambiente, Ubicación GPS, Inicio, Fin */}
+      <div className={classes.fieldRow}>
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Ambiente</label>
           <TextField
@@ -126,7 +142,17 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
           />
         </div>
 
-        {/* 6. Inicio */}
+        <div className={classes.fieldContainer}>
+          <label className={classes.label}>Ubicación GPS</label>
+          <TextField
+            className={classes.textField}
+            name="ubicacionGPS"
+            value={formState.ubicacionGPS}
+            variant="outlined"
+            onChange={handleChange}
+          />
+        </div>
+
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Inicio</label>
           <TextField
@@ -142,7 +168,6 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
           />
         </div>
 
-        {/* 7. Fin */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Fin</label>
           <TextField
@@ -159,26 +184,26 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
         </div>
       </div>
 
-      {/* Requerimientos centrado */}
-      <div className={classes.fieldContainerLarge}>
+      {/* Fila 3: Requerimientos */}
+      <div className={classes.fieldContainer}>
         <label className={classes.label}>Requerimientos</label>
         <TextField
-          className={classes.textFieldLarge}
+          className={classes.textField}
           name="requerimientos"
           value={formState.requerimientos}
+          variant="outlined"
           multiline
           rows={4}
-          variant="outlined"
           onChange={handleChange}
         />
       </div>
 
-      {/* Botones centrados */}
-      <div className={classes.buttonContainer}>
+      {/* Botones */}
+      <div className={classes.buttonRow}>
         <Button className={classes.button} onClick={handleSave}>
           Guardar
         </Button>
-        <Button className={classes.cancelButton} onClick={onCancel}>
+        <Button className={classes.button} onClick={onCancel}>
           Cancelar
         </Button>
       </div>
@@ -188,52 +213,41 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
 
 const useStyles = makeStyles(() => ({
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridGap: '10px',
     backgroundColor: '#f5f5f5',
     padding: '20px',
     borderRadius: '8px',
     border: '2px solid black',
   },
-  fieldsRow: {
-    display: 'flex',
-    justifyContent: 'center', // Centramos los campos
-    alignItems: 'center',
-    flexWrap: 'wrap', // Hace que los campos se adapten en responsividad
-    width: '100%',
-    gap: '15px', // Espacio entre los campos
-    marginBottom: '20px',
+  fieldRow: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', // Ajustado para que los campos tengan un tamaño mínimo
+    gridGap: '10px',
+    justifyItems: 'center', // Centrar elementos dentro de cada celda
   },
   fieldContainer: {
     display: 'flex',
     flexDirection: 'column',
-    width: '15%',
-    minWidth: '200px', // Define un ancho mínimo para que los campos se reorganicen correctamente
-    alignItems: 'center',
-  },
-  fieldContainerLarge: {
-    display: 'flex',
-    flexDirection: 'column',
     width: '100%',
     alignItems: 'center',
-    marginBottom: '20px',
   },
   label: {
     fontWeight: 'bold',
     color: '#5eb219',
+    alignSelf: 'center',
     marginBottom: '5px',
   },
   textField: {
     width: '100%',
   },
-  textFieldLarge: {
-    width: '80%', // Más espacio para Requerimientos
-  },
-  buttonContainer: {
+  buttonRow: {
     display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'center',
-    gap: '10px',
+    marginTop: '10px',
+    gridColumn: '1 / -1',
   },
   button: {
     backgroundColor: '#5eb219',
@@ -241,13 +255,7 @@ const useStyles = makeStyles(() => ({
     '&:hover': {
       backgroundColor: '#4cae14',
     },
-  },
-  cancelButton: {
-    backgroundColor: '#b2195e',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#d81b60',
-    },
+    marginRight: '10px',
   },
 }));
 

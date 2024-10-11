@@ -3,8 +3,9 @@ import { Button, TextField, MenuItem, Select, FormControl, Snackbar, Alert } fro
 import UserComponent from '../components/UserComponent';
 import NewUserForm from '../components/NewUserForm';
 import { makeStyles } from '@mui/styles';
-import { getUsuarios, createUsuario, updateUsuarioById } from '../service/userService'; // Importa la función para actualizar usuarios
+import { getUsuarios, createUsuario, updateUsuarioById, deleteUsuarioById } from '../service/userService';
 import Sidebar from '../components/Sidebar';
+import { encryptPassword, decryptPassword } from '../utils/encryption';
 
 const GestionUsuarios = () => {
   const classes = useStyles();
@@ -19,7 +20,12 @@ const GestionUsuarios = () => {
     const cargarUsuarios = async () => {
       try {
         const usuariosDesdeApi = await getUsuarios();
-        setUsuarios(usuariosDesdeApi);
+        // Desencriptar la contraseña de cada usuario
+        const usuariosConContraseñasDesencriptadas = usuariosDesdeApi.map(usuario => ({
+          ...usuario,
+          contraseña: decryptPassword(usuario.contraseña), // Suponiendo que la propiedad se llama 'contraseña'
+        }));
+        setUsuarios(usuariosConContraseñasDesencriptadas);
       } catch (error) {
         console.error("Error al cargar usuarios:", error.message);
         setMensaje({ text: error.message, severity: 'error' });
@@ -33,14 +39,35 @@ const GestionUsuarios = () => {
   
   const manejarGuardarNuevoUsuario = async (nuevoUsuario) => {
     try {
-      await createUsuario(nuevoUsuario); // Llama al método para agregar el nuevo usuario en la base de datos
-      const nuevoId = usuarios.length > 0 ? Math.max(...usuarios.map(usuario => usuario.id)) + 1 : 1; // Obtiene el ID más alto y le suma 1
-      const usuarioConId = { ...nuevoUsuario, id: nuevoId }; // Crea el nuevo usuario con el ID asignado
-      setUsuarios((usuariosPrevios) => [...usuariosPrevios, usuarioConId]); // Agrega el nuevo usuario al estado
+      // Encriptar la contraseña antes de guardar el usuario
+      const usuarioConContraseñaEncriptada = {
+        ...nuevoUsuario,
+        contraseña: encryptPassword(nuevoUsuario.contraseña), // Asumiendo que el campo se llama 'contraseña'
+      };
+      
+      await createUsuario(usuarioConContraseñaEncriptada);
+      const nuevoId = usuarios.length > 0 ? Math.max(...usuarios.map(usuario => usuario.id)) + 1 : 1;
+      const usuarioConId = { ...usuarioConContraseñaEncriptada, id: nuevoId };
+      setUsuarios((usuariosPrevios) => [...usuariosPrevios, usuarioConId]);
       setMostrarFormularioNuevoUsuario(false);
       setMensaje({ text: 'Usuario creado con éxito', severity: 'success' });
     } catch (error) {
       console.error("Error al guardar el nuevo usuario:", error.message);
+      setMensaje({ text: error.message, severity: 'error' });
+    }
+    window.location.reload();
+  };
+  
+
+  const manejarEliminarUsuario = async (usuarioId) => {
+    try {
+      await deleteUsuarioById(usuarioId);
+      setUsuarios((usuariosPrevios) => 
+        usuariosPrevios.filter(usuario => usuario.id !== usuarioId)
+      );
+      setMensaje({ text: 'Usuario eliminado con éxito', severity: 'success' });
+    } catch (error) {
+      console.error("Error al eliminar el usuario:", error.message);
       setMensaje({ text: error.message, severity: 'error' });
     }
   };
@@ -49,15 +76,22 @@ const GestionUsuarios = () => {
 
   const manejarActualizarUsuario = async (usuarioActualizado) => {
     try {
-      await updateUsuarioById(usuarioActualizado.id, usuarioActualizado); // Actualiza en la base de datos
+      // Encriptar la contraseña antes de actualizar el usuario
+      const usuarioConContraseñaEncriptada = {
+        ...usuarioActualizado,
+        contraseña: encryptPassword(usuarioActualizado.contraseña), // Encriptar la contraseña si es necesario
+      };
+  
+      await updateUsuarioById(usuarioConContraseñaEncriptada.id, usuarioConContraseñaEncriptada);
       setUsuarios((usuariosPrevios) =>
-        usuariosPrevios.map(usuario => (usuario.id === usuarioActualizado.id ? usuarioActualizado : usuario))
+        usuariosPrevios.map(usuario => (usuario.id === usuarioActualizado.id ? usuarioConContraseñaEncriptada : usuario))
       );
       setMensaje({ text: 'Usuario actualizado con éxito', severity: 'success' });
     } catch (error) {
       console.error("Error al actualizar el usuario:", error.message);
       setMensaje({ text: error.message, severity: 'error' });
     }
+    window.location.reload();
   };
 
   const roles = useMemo(() => {
@@ -126,7 +160,7 @@ const GestionUsuarios = () => {
         {usuariosFiltrados.length > 0 ? (
           usuariosFiltrados.map((usuario) => (
             <div key={usuario.id} className={classes.userComponent}>
-              <UserComponent user={usuario} onUpdate={manejarActualizarUsuario} />
+              <UserComponent user={usuario} onUpdate={manejarActualizarUsuario} onDelete={manejarEliminarUsuario}/>
             </div>
           ))
         ) : (
