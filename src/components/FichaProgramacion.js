@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import { FormControl, InputLabel, Select, MenuItem, Grid2, Typography, TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
 import { getNumeroAsignaciones } from '../service/asignacionService'
-import 'focus-visible';
 
 const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInstructorChange, startDateFilter, endDateFilter }) => {
     const classes = useStyles();
@@ -34,6 +33,22 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
 
         setFilteredAsignaciones(filtered);
     }, [asignaciones, ficha.codigo, startDateFilter, endDateFilter]);
+
+    useEffect(() => {
+        const initialSelectedInstructors = {};
+        
+        jornadas.forEach((jornada) => {
+            ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].forEach((day) => {
+                const instructor = getInstructorForDay(jornada.nombre, day);
+                if (instructor) {
+                    initialSelectedInstructors[`${jornada.nombre}-${day}`] = instructor;
+                }
+            });
+        });
+    
+        setSelectedInstructors(initialSelectedInstructors);
+    }, [filteredAsignaciones, jornadas]);
+    
 
     // Obtener el número de asignaciones para un instructor en el rango de fechas
     const fetchAsignacionesForInstructor = async (instructor) => {
@@ -82,26 +97,59 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
         setJornadasVisibles(visibilidadInicial);
     }, [filteredAsignaciones, jornadas]);
 
-    const handleInstructorChangeChild = (jornadaNombre, day, event) => {
+    const handleInstructorChangeChild = (jornadaNombre, day, event, asignacion) => {
         const selectedInstructor = event.target.value;
+        
+        // Extraemos el inicio y fin de la asignación correspondiente
+        const inicio = asignacion ? asignacion.inicio : '';
+        const fin = asignacion ? asignacion.fin : '';
+    
+        // Actualiza el estado de los instructores seleccionados
+        setSelectedInstructors((prev) => ({
+            ...prev,
+            [`${jornadaNombre}-${day}`]: selectedInstructor,
+        }));
+    
+        // Guarda el nuevo instructor para la jornada y día seleccionados, con las fechas de la asignación
         setNewInstructor({
             ficha: ficha.codigo,
             dia: day,
             jornada: jornadaNombre,
             instructor: selectedInstructor,
+            inicio: inicio,  // Usamos la fecha de inicio de la asignación actual
+            fin: fin         // Usamos la fecha de fin de la asignación actual
         });
-
-        setStartDate(startDateFilter);  // Establece la fecha de inicio por defecto
-        setOpenModal(true);             // Abre el modal para definir las fechas
+    
+        setOpenModal(true); // Abre el modal para definir las fechas
     };
+    
+    
 
     const handleConfirm = () => {
-        onInstructorChange({ ...newInstructor, inicio: startDate, fin: endDate });
-        
+        console.log(newInstructor)
+        if (newInstructor.instructor === "" || newInstructor.instructor === undefined) {
+            onInstructorChange({
+                ficha: newInstructor.ficha,
+                dia: newInstructor.dia,
+                jornada: newInstructor.jornada,
+                instructor: "",  // Esto marcaría la eliminación
+                inicio: newInstructor.inicio,      // Limpiamos las fechas
+                fin: newInstructor.fin,
+            });
+        } else {
+            // Si se selecciona un nuevo instructor, guardar la asignación normalmente
+            onInstructorChange({ 
+                ...newInstructor, 
+                inicio: startDate, 
+                fin: endDate 
+            });
+        }
+    
+        // Cierra el modal y actualiza la UI
         setOpenModal(false);
-
-        setReloadKey(prevKey => prevKey + 1);
+        setReloadKey(prevKey => prevKey + 1);  // Forzar la recarga de la UI
     };
+    
     
 
     const handleCancel = () => {
@@ -123,7 +171,6 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
                     <Typography variant="p" className={classes.fichaCodigo}>
                         {ficha.codigo}
                     </Typography>
-                    {/* Checkbox para las jornadas */}
                     <Grid2 container spacing={1}>
                             {jornadas.map((jornada) => (
                                 <FormControlLabel
@@ -138,7 +185,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
                                     label={jornada.nombre}
                                     sx={{ 
                                         '& .MuiFormControlLabel-label': { 
-                                            fontSize: '0.6rem'  // Tamaño de letra más pequeño
+                                            fontSize: '0.6rem'  
                                         }
                                     }}
                                 />
@@ -209,11 +256,17 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
                                             >
                                                 <Select
                                                     labelId={`select-${jornada.nombre}-${day}`}
-                                                    onChange={(event) => handleInstructorChangeChild(jornada.nombre, day, event)}
-                                                    value={selectedInstructors[`${jornada.nombre}-${day}`] || getInstructorForDay(jornada.nombre, day)}
+                                                    onChange={(event) => {
+                                                        const asignacion = filteredAsignaciones.find(
+                                                            (asig) => asig.jornada === jornada.nombre && asig.dia === day
+                                                        );
+                                                        handleInstructorChangeChild(jornada.nombre, day, event, asignacion);
+                                                    }}
+                                                    value={selectedInstructors[`${jornada.nombre}-${day}`] || ""}
                                                     className={classes.select}
                                                     onMouseEnter={() => handleInstructorHover(getInstructorForDay(jornada.nombre, day))}
                                                 >
+
                                                     <MenuItem value="">
                                                         <em>Ninguno</em>
                                                     </MenuItem>
@@ -325,10 +378,7 @@ const useStyles = makeStyles(() => ({
             '&.Mui-focused fieldset': {
                 borderColor: '#5eb219',
             },
-        },
-        '&:focus': {
-            outline: '2px solid #5eb219',  // Asegúrate de agregar un estilo visible para el foco
-        },
+        }
     },
     textField: {
         '& .MuiInputLabel-root': {
