@@ -7,6 +7,17 @@ import { Tooltip, Paper, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useLocation } from 'react-router-dom';
 
+//Mapeo de dias de la semana
+const daysMap = {
+  Lunes: 1,
+  Martes: 2,
+  Miércoles: 3,
+  Jueves: 4,
+  Viernes: 5,
+  Sábado: 6,
+  Domingo: 0,
+};
+
 const ConsultaPorFicha = () => {
   const location = useLocation();
   const { ficha } = location.state || {};
@@ -18,12 +29,29 @@ const ConsultaPorFicha = () => {
     const fetchAsignaciones = async () => {
       try {
         const response = await getAsignacionesByFicha(ficha.codigo);
-        const formattedAsignaciones = response.map((asignacion) => ({
-          title: asignacion.instructor,
-          start: new Date(asignacion.inicio),
-          end: new Date(asignacion.fin),
-          jornada: asignacion.jornada,
-        }));
+        const formattedAsignaciones = [];
+
+        response.forEach((asignacion) => {
+          const start = moment(asignacion.inicio); 
+          const end = moment(asignacion.fin); 
+          const dayOfWeek = daysMap[asignacion.dia];  //Dia de la semana que debe repetirse
+
+          //Iteramos sobre el rango de fechas entre inicio y fin
+          let currentDate = moment(start);
+          while (currentDate.isSameOrBefore(end)) {
+            //Si el dia de la semana coincide con el de la asignacion
+            if (currentDate.day() === dayOfWeek) {
+              formattedAsignaciones.push({
+                title: asignacion.instructor,
+                start: currentDate.toDate(),
+                end: currentDate.toDate(),
+                jornada: asignacion.jornada,
+              });
+            }
+            currentDate.add(1, 'days');
+          }
+        });
+
         setAsignaciones(formattedAsignaciones);
       } catch (error) {
         console.error('Error al cargar las asignaciones', error);
@@ -75,8 +103,8 @@ const ConsultaPorFicha = () => {
 
 const useStyles = makeStyles(() => ({
   eventStyle: {
-    backgroundColor: '#1976d2', // Color azul personalizado
-    color: '#ffffff', // Texto en blanco
+    backgroundColor: '#1976d2', // Azul personalizado
+    color: '#ffffff', // Texto blanco
     padding: '5px',
     borderRadius: '4px',
     cursor: 'pointer',
