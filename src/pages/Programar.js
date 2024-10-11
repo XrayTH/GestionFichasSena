@@ -87,11 +87,12 @@ const Programar = () => {
 
     const handleInstructorChange = async ({ ficha, dia, jornada, instructor, inicio, fin }) => {
         try {
-            if (!instructor) {
+            if (!instructor || "") {
                 const asignacionToDelete = asignaciones.find(
-                    (asig) => asig.ficha === ficha && asig.dia === dia && asig.jornada === jornada && asig.inicio === inicio
+                    (asig) => asig.ficha === ficha && asig.dia === dia && asig.jornada === jornada && asig.inicio === inicio && asig.fin === fin
                 );
                 if (asignacionToDelete) {
+                    console.log("viene aqui",inicio,fin)
                     await deleteAsignacionById(asignacionToDelete.id);
                     setAsignaciones((prev) => prev.filter((asig) => asig.id !== asignacionToDelete.id));
                     setMensaje({ text: 'Asignación eliminada con éxito', severity: 'success' });
