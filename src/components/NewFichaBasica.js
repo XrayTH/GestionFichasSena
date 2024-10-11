@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, MenuItem } from '@mui/material';
+import { TextField, Button, Autocomplete } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], gestores = [], municipios = [] }) => {
@@ -16,6 +16,11 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
     fin: '',
     requerimientos: '',
   });
+
+  const [coordinadorInput, setCoordinadorInput] = useState('');
+  const [programaInput, setProgramaInput] = useState('');
+  const [gestorInput, setGestorInput] = useState('');
+  const [municipioInput, setMunicipioInput] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,74 +63,86 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
 
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Coordinador</label>
-          <TextField
-            className={classes.textField}
-            name="coordinador"
+          <Autocomplete
             value={formState.coordinador}
-            select
-            variant="outlined"
-            onChange={handleChange}
-          >
-            {coordinadores.length > 0 ? (
-              coordinadores.map((coordinador) => (
-                <MenuItem key={coordinador.nombre} value={coordinador.nombre}>
-                  {coordinador.nombre}
-                </MenuItem>
-              ))
-            ) : (
-              <MenuItem value="">
-                <em>No hay coordinadores disponibles</em>
-              </MenuItem>
+            onChange={(event, newValue) => {
+              setFormState((prevState) => ({
+                ...prevState,
+                coordinador: newValue,
+              }));
+            }}
+            inputValue={coordinadorInput}
+            onInputChange={(event, newInputValue) => {
+              setCoordinadorInput(newInputValue);
+            }}
+            options={coordinadores.map((coordinador) => coordinador.nombre)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="coordinador"
+                variant="outlined"
+                style={{ minWidth: '150px', maxWidth: '100%' }}
+              />
             )}
-          </TextField>
+            freeSolo
+            disableClearable
+          />
         </div>
 
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Programa</label>
-          <TextField
-            className={classes.textField}
-            name="programa"
+          <Autocomplete
             value={formState.programa}
-            select
-            variant="outlined"
-            onChange={handleChange}
-          >
-            {programas.length > 0 ? (
-              programas.map((programa) => (
-                <MenuItem key={programa.nombre} value={programa.nombre}>
-                  {programa.nombre}
-                </MenuItem>
-              ))
-            ) : (
-              <MenuItem value="">
-                <em>No hay programas disponibles</em>
-              </MenuItem>
+            onChange={(event, newValue) => {
+              setFormState((prevState) => ({
+                ...prevState,
+                programa: newValue,
+              }));
+            }}
+            inputValue={programaInput}
+            onInputChange={(event, newInputValue) => {
+              setProgramaInput(newInputValue);
+            }}
+            options={programas.map((programa) => programa.nombre)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="programa"
+                variant="outlined"
+                style={{ minWidth: '150px', maxWidth: '100%' }}
+              />
             )}
-          </TextField>
+            freeSolo
+            disableClearable
+          />
         </div>
 
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Gestor</label>
-          <TextField
-            className={classes.textField}
-            name="gestor"
+          <Autocomplete
             value={formState.gestor}
-            select
-            variant="outlined"
-            onChange={handleChange}
-          >
-            {gestores.length > 0 ? (
-              gestores.map((gestor) => (
-                <MenuItem key={gestor.nombre} value={gestor.nombre}>
-                  {gestor.nombre}
-                </MenuItem>
-              ))
-            ) : (
-              <MenuItem value="">
-                <em>No hay gestores disponibles</em>
-              </MenuItem>
+            onChange={(event, newValue) => {
+              setFormState((prevState) => ({
+                ...prevState,
+                gestor: newValue,
+              }));
+            }}
+            inputValue={gestorInput}
+            onInputChange={(event, newInputValue) => {
+              setGestorInput(newInputValue);
+            }}
+            options={gestores.map((gestor) => gestor.nombre)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="gestor"
+                variant="outlined"
+                style={{ minWidth: '150px', maxWidth: '100%' }}
+              />
             )}
-          </TextField>
+            freeSolo
+            disableClearable
+          />
         </div>
       </div>
 

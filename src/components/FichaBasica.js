@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, MenuItem } from '@mui/material';
+import { TextField, Button, Autocomplete } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas = [], gestores = [], municipios = [] }) => {
@@ -7,6 +7,10 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
 
   const [isEditable, setIsEditable] = useState(false);
   const [formState, setFormState] = useState(ficha || {});
+  const [coordinadorInput, setCoordinadorInput] = useState(formState.coordinador || '');
+  const [gestorInput, setGestorInput] = useState(formState.gestor || '');
+  const [programaInput, setProgramaInput] = useState(formState.programa || '');
+  const [municipioInput, setMunicipioInput] = useState(formState.municipio || '');
 
   const handleEditClick = () => {
     if (isEditable) {
@@ -38,91 +42,125 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
             InputProps={{
               readOnly: true,
             }}
+            style={{ maxWidth: '50%' }} // Establece el ancho mínimo y máximo
           />
         </div>
 
         {/* Coordinador */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Coordinador</label>
-          <TextField
-            className={classes.textField}
-            name="coordinador"
+          <Autocomplete
             value={formState.coordinador || ''}
-            select
-            variant="outlined"
-            InputProps={{
-              readOnly: !isEditable,
+            onChange={(event, newValue) => {
+              setFormState((prevState) => ({
+                ...prevState,
+                coordinador: newValue,
+              }));
             }}
-            onChange={handleChange}
-          >
-            {coordinadores.length > 0 ? (
-              coordinadores.map((coordinador) => (
-                <MenuItem key={coordinador.id} value={coordinador.nombre}>
-                  {coordinador.nombre}
-                </MenuItem>
-              ))
-            ) : (
-              <MenuItem value="">
-                <em>No hay coordinadores disponibles</em>
-              </MenuItem>
+            inputValue={coordinadorInput}
+            onInputChange={(event, newInputValue) => {
+              setCoordinadorInput(newInputValue);
+              if (!isEditable) {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  coordinador: newInputValue,
+                }));
+              }
+            }}
+            options={coordinadores.map((coordinador) => coordinador.nombre)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="coordinador"
+                variant="outlined"
+                InputProps={{
+                  ...params.InputProps,
+                  readOnly: !isEditable,
+                }}
+                style={{ minWidth: '150px', maxWidth: '100%' }} // Establece el ancho mínimo y máximo
+              />
             )}
-          </TextField>
+            freeSolo
+            disableClearable
+          />
         </div>
 
         {/* Gestor */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Gestor</label>
-          <TextField
-            className={classes.textField}
-            name="gestor"
+          <Autocomplete
             value={formState.gestor || ''}
-            select
-            variant="outlined"
-            InputProps={{
-              readOnly: !isEditable,
+            onChange={(event, newValue) => {
+              setFormState((prevState) => ({
+                ...prevState,
+                gestor: newValue,
+              }));
             }}
-            onChange={handleChange}
-          >
-            {gestores.length > 0 ? (
-              gestores.map((gestor) => (
-                <MenuItem key={gestor.id} value={gestor.nombre}>
-                  {gestor.nombre}
-                </MenuItem>
-              ))
-            ) : (
-              <MenuItem value="">
-                <em>No hay gestores disponibles</em>
-              </MenuItem>
+            inputValue={gestorInput}
+            onInputChange={(event, newInputValue) => {
+              setGestorInput(newInputValue);
+              if (!isEditable) {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  gestor: newInputValue,
+                }));
+              }
+            }}
+            options={gestores.map((gestor) => gestor.nombre)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="gestor"
+                variant="outlined"
+                InputProps={{
+                  ...params.InputProps,
+                  readOnly: !isEditable,
+                }}
+                style={{ minWidth: '150px', maxWidth: '100%' }}
+              />
             )}
-          </TextField>
+            freeSolo
+            disableClearable
+          />
         </div>
 
         {/* Programa */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Programa</label>
-          <TextField
-            className={classes.textField}
-            name="programa"
+          <Autocomplete
             value={formState.programa || ''}
-            select
-            variant="outlined"
-            InputProps={{
-              readOnly: !isEditable,
+            onChange={(event, newValue) => {
+              setFormState((prevState) => ({
+                ...prevState,
+                programa: newValue,
+              }));
             }}
-            onChange={handleChange}
-          >
-            {programas.length > 0 ? (
-              programas.map((programa) => (
-                <MenuItem key={programa.id} value={programa.nombre}>
-                  {programa.nombre}
-                </MenuItem>
-              ))
-            ) : (
-              <MenuItem value="">
-                <em>No hay programas disponibles</em>
-              </MenuItem>
+            inputValue={programaInput}
+            onInputChange={(event, newInputValue) => {
+              setProgramaInput(newInputValue);
+              if (!isEditable) {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  programa: newInputValue,
+                }));
+              }
+            }}
+            options={programas.map((programa) => programa.nombre)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="programa"
+                variant="outlined"
+                InputProps={{
+                  ...params.InputProps,
+                  readOnly: !isEditable,
+                }}
+                style={{ minWidth: '350px', maxWidth: '100%' }}
+              />
             )}
-          </TextField>
+            freeSolo
+            disableClearable
+          />
         </div>
       </div>
 
@@ -143,31 +181,43 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
+        {/* Municipio */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Municipio</label>
-          <TextField
-            className={classes.textField}
-            name="municipio"
+          <Autocomplete
             value={formState.municipio || ''}
-            select
-            variant="outlined"
-            InputProps={{
-              readOnly: !isEditable,
+            onChange={(event, newValue) => {
+              setFormState((prevState) => ({
+                ...prevState,
+                municipio: newValue,
+              }));
             }}
-            onChange={handleChange}
-          >
-            {municipios.length > 0 ? (
-              municipios.map((municipio) => (
-                <MenuItem key={municipio} value={municipio}>
-                  {municipio}
-                </MenuItem>
-              ))
-            ) : (
-              <MenuItem value="">
-                <em>Error al cargar municipios</em>
-              </MenuItem>
+            inputValue={municipioInput}
+            onInputChange={(event, newInputValue) => {
+              setMunicipioInput(newInputValue);
+              if (!isEditable) {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  municipio: newInputValue,
+                }));
+              }
+            }}
+            options={municipios}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="municipio"
+                variant="outlined"
+                InputProps={{
+                  ...params.InputProps,
+                  readOnly: !isEditable,
+                }}
+                style={{ minWidth: '150px', maxWidth: '100%' }}
+              />
             )}
-          </TextField>
+            freeSolo
+            disableClearable
+          />
         </div>
 
         {/* Ubicación GPS */}
