@@ -1,93 +1,10 @@
-import { TextField, Button, TextareaAutosize, MenuItem, Select } from '@mui/material';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
-import ImageList from '../components/ImageList';
-import { useState } from 'react';
-
-const Email = () => {
-    const classes = useStyles();
-  
-    const [selectedValue, setSelectedValue] = useState('');
-    const [recipients, setRecipients] = useState('');
-  
-    const recipientOptions = [
-        'correo1@example.com',
-        'correo2@example.com',
-        'correo3@example.com',
-    ];
-
-    const handleAddRecipient = () => {
-        if (selectedValue) {
-            const recipientList = recipients.split('\n');
-            if (!recipientList.includes(selectedValue)) {
-                setRecipients((prev) => (prev ? `${prev}\n${selectedValue}` : selectedValue));
-            }
-            setSelectedValue('');
-        }
-    };
-  
-    return (
-      <div className={classes.container}>
-        <div className={classes.formContainer}>
-  
-          <div className={classes.leftSection}>
-            <label className={classes.label}>Asunto:</label>
-            <br/>
-            <TextField variant="outlined" className={classes.textField} />
-            <br/>
-  
-            <label className={classes.label}>Contenido:</label>
-            <TextareaAutosize
-              className={classes.textAreaEditable}
-              minRows={6}
-              maxRows={6}
-              placeholder="Escribe el contenido aquí"
-            />
-  
-            <div className={classes.imageListWrapper}>
-              <ImageList/>
-              <Button className={classes.addButton}>+</Button>
-            </div>
-          </div>
-  
-          <div className={classes.rightSection}>
-            <label className={classes.label}>Enviar a:</label>
-            <div className={classes.dropdownWrapper}>
-              <Select
-                variant="outlined"
-                className={classes.dropdown}
-                displayEmpty
-                value={selectedValue} 
-                onChange={(e) => setSelectedValue(e.target.value)} 
-              >
-                <MenuItem value="">
-                  <em>Seleccionar destinatario</em>
-                </MenuItem>
-                {recipientOptions.map((option, index) => (
-                  <MenuItem key={index} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-              <Button className={classes.addButton} onClick={handleAddRecipient}>+</Button>
-            </div>
-  
-            <TextareaAutosize
-              className={classes.textAreaReadOnly}
-              minRows={6}
-              maxRows={6}
-              placeholder="Correos"
-              value={recipients}
-              disabled
-            />
-  
-            <Button variant="contained" color="primary" className={classes.sendButton}>
-              Enviar
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-};
+import { TextField, Button, TextareaAutosize, MenuItem, Select } from '@mui/material';
+import { sendEmail } from './../service/emailService';
+import { getInstructores } from '../service/intructorService';
+import { getCoordinadores } from '../service/coordinadorService';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -128,7 +45,7 @@ const useStyles = makeStyles(() => ({
   textField: {
     marginBottom: '20px',
     borderColor: '#5eb219',
-    width: "100%"
+    width: "100%",
   },
   textAreaEditable: {
     borderRadius: '4px',
@@ -187,7 +104,145 @@ const useStyles = makeStyles(() => ({
     color: '#fff',
     padding: '10px',
   },
+  imageListContainer: {
+    display: 'flex',
+    overflowX: 'auto',
+    height: '80px',
+    alignItems: 'center',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    padding: '5px',
+    width: '100%',
+    marginRight: '10px',
+  },
+  imageItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginRight: '10px',
+  },
+  image: {
+    width: '50px',
+    height: '50px',
+    marginBottom: '5px',
+  },
+  imageName: {
+    fontSize: '12px',
+    textAlign: 'center',
+  },
 }));
 
-export default Email;
+const ImageList = () => {
+  const classes = useStyles();
 
+  return (
+    <div className={classes.imageListContainer}>
+      {/* Aquí irán las imágenes */}
+    </div>
+  );
+};
+
+const Email = () => {
+  const classes = useStyles();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [selectedValue, setSelectedValue] = useState('');
+  const [recipients, setRecipients] = useState('');
+  const [options, setOptions] = useState([]);  // Almacena instructores y coordinadores
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const instructores = await getInstructores();
+        const coordinadores = await getCoordinadores();
+
+        // Combina ambas listas y formatea los datos
+        const combinedOptions = [
+          ...instructores.map(inst => ({ nombre: inst.nombre, email: inst.email })),
+          ...coordinadores.map(coord => ({ nombre: coord.nombre, email: coord.email }))
+        ];
+
+        setOptions(combinedOptions); // Almacena en el estado
+      } catch (error) {
+        console.error("Error al obtener instructores o coordinadores", error);
+      }
+    };
+
+    fetchOptions();
+  }, []);
+
+  const handleAddRecipient = () => {
+    if (selectedValue) {
+      const recipientList = recipients.split('\n');
+      if (!recipientList.includes(selectedValue)) {
+        setRecipients((prev) => (prev ? `${prev}\n${selectedValue}` : selectedValue));
+      }
+      setSelectedValue('');
+    }
+  };
+
+  return (
+    <div className={classes.container}>
+      <div className={classes.formContainer}>
+        <div className={classes.leftSection}>
+          <label className={classes.label}>Asunto:</label>
+          <br />
+          <TextField variant="outlined" className={classes.textField} />
+          <br />
+
+          <label className={classes.label}>Contenido:</label>
+          <TextareaAutosize
+            className={classes.textAreaEditable}
+            minRows={6}
+            maxRows={6}
+            placeholder="Escribe el contenido aquí"
+          />
+
+          <div className={classes.imageListWrapper}>
+            <ImageList />
+            <Button className={classes.addButton}>+</Button>
+          </div>
+        </div>
+
+        <div className={classes.rightSection}>
+          <label className={classes.label}>Enviar a:</label>
+          <div className={classes.dropdownWrapper}>
+            <Select
+              variant="outlined"
+              className={classes.dropdown}
+              displayEmpty
+              value={selectedValue}
+              onChange={(e) => setSelectedValue(e.target.value)}  // Aquí se almacena el email
+            >
+              <MenuItem value="">
+                <em>Seleccionar destinatario</em>
+              </MenuItem>
+              {options.map((option, index) => (
+                <MenuItem key={index} value={option.email}>
+                  {option.nombre}  {/* Muestra el nombre, guarda el email */}
+                </MenuItem>
+              ))}
+            </Select>
+            <Button className={classes.addButton} onClick={handleAddRecipient}>+</Button>
+          </div>
+
+          <TextareaAutosize
+            className={classes.textAreaReadOnly}
+            minRows={6}
+            maxRows={6}
+            placeholder="Correos"
+            value={recipients}
+            disabled
+          />
+
+          <Button variant="contained" color="primary" className={classes.sendButton}>
+            Enviar
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Email;
