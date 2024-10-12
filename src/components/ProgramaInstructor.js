@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
+import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instructores, jornadas, fechaInicio, fechaFin, onCrearAsignacion, onEliminarAsignacion }) => {
+  const navigate = useNavigate(); 
   const [instructorActual, setInstructorActual] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [selectedFicha, setSelectedFicha] = useState('');
@@ -81,6 +84,13 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
     }));
   };
 
+  const abrirConsulta = () => {
+    console.log(instructorActual)
+    navigate('/consultar-instructor', { 
+      state: { instructorActual } 
+    });
+  };
+  
   return (
     <div className={classes.container}>
       <div className={classes.checkboxContainer}>
@@ -94,6 +104,9 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
             {jornada.nombre}
           </label>
         ))}
+        <Button onClick={abrirConsulta}>
+                        Ver en Calendario
+        </Button>
       </div>
 
       <table className={classes.table}>

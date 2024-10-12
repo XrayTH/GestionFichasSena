@@ -14,6 +14,8 @@ import ProIns from "./pages/ProgramarPorInstructor";
 import NotFound from './pages/NotFound';
 import Pruebas from './components/PruebaCriptar';
 import ConFicha from './components/ConsultaPorFicha'
+import ConIns from './components/ConsultaPorInstructor'
+
 
 function App() {
   return (
@@ -89,6 +91,12 @@ function App() {
         <Route path="/consultar-ficha" element={
           <ProtectedRoute>
             <ConFicha />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/consultar-instructor" element={
+          <ProtectedRoute>
+            <ConIns />
           </ProtectedRoute>
         } />
 

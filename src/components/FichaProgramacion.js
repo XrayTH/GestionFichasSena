@@ -6,7 +6,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
 const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInstructorChange, startDateFilter, endDateFilter }) => {
     const classes = useStyles();
-    const navigate = useNavigate(); // Usa el hook useNavigate
+    const navigate = useNavigate(); 
     const [filteredAsignaciones, setFilteredAsignaciones] = useState([]);
     const [selectedInstructors, setSelectedInstructors] = useState({});
     const [openModal, setOpenModal] = useState(false);
@@ -125,8 +125,6 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
         setOpenModal(true); // Abre el modal para definir las fechas
     };
     
-    
-
     const handleConfirm = () => {
         console.log(newInstructor)
         if (newInstructor.instructor === "" || newInstructor.instructor === undefined) {
@@ -152,8 +150,6 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
         setReloadKey(prevKey => prevKey + 1);  // Forzar la recarga de la UI
     };
     
-    
-
     const handleCancel = () => {
         setOpenModal(false);
     };
