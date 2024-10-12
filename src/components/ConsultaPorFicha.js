@@ -3,10 +3,12 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { getAsignacionesByFicha } from '../service/asignacionService';
-import { Tooltip, Paper, Typography, Box } from '@mui/material';
+import { Tooltip, Paper, Typography, Box, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useLocation } from 'react-router-dom';
 import 'moment/locale/es';
+import { useNavigate } from 'react-router-dom';
+import Sidebar from './Sidebar';
 
 moment.locale('es'); 
 
@@ -31,6 +33,7 @@ const colorScale = [
 ];
 
 const ConsultaPorFicha = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const { ficha } = location.state || {};
   const classes = useStyles();
@@ -109,19 +112,14 @@ const ConsultaPorFicha = () => {
     </Tooltip>
   );
 
+  const handleRegresar = () => {
+    navigate(-1); 
+  };
+
   return (
     <div className={classes.calendarContainer}>
+      <Sidebar/>
       <Box className={classes.flexContainer}>
-        <Box className={classes.legendContainer}>
-          <Box className={classes.legendItems}>
-            {Object.entries(jornadaColors).map(([jornada, color]) => (
-              <Box key={jornada} className={classes.legendItem}>
-                <Box style={{ backgroundColor: color, width: '10px', height: '20px', borderRadius: '4px', marginRight: '5px' }}></Box>
-                <Typography variant="body2" className={classes.legendText}>{jornada}</Typography>
-              </Box>
-            ))}
-          </Box>
-        </Box>
 
         <Box className={classes.infoContainer}>
           <Typography variant="body2">Ficha: {ficha.codigo}</Typography>
@@ -130,10 +128,22 @@ const ConsultaPorFicha = () => {
           <Typography variant="body2">Gestor: {ficha.gestor}</Typography>
           <Typography variant="body2">Ambiente: {ficha.ambiente}</Typography>
           <Typography variant="body2">Municipio: {ficha.municipio}</Typography>
-          <Typography variant="body2">Ubicación: {ficha.ubicacionGPS}</Typography>
+          {/*<Typography variant="body2">Ubicación: {ficha.ubicacionGPS}</Typography>*/}
           <Typography variant="body2">Inicio: {ficha.inicio}</Typography>
           <Typography variant="body2">Fin: {ficha.fin}</Typography>
-          <Typography variant="body2">Requerimientos: {ficha.requerimientos}</Typography>
+          {/*<Typography variant="body2">Requerimientos: {ficha.requerimientos}</Typography>*/}
+        </Box>
+
+        <Box className={classes.legendContainer}>
+        <Button onClick={handleRegresar}>Volver</Button>
+          <Box className={classes.legendItems}>
+            {Object.entries(jornadaColors).map(([jornada, color]) => (
+              <Box key={jornada} className={classes.legendItem}>
+                <Box style={{ backgroundColor: color, width: '10px', height: '20px', borderRadius: '4px', marginRight: '5px' }}></Box>
+                <Typography variant="body2" className={classes.legendText}>{jornada}</Typography>
+              </Box>
+            ))}
+          </Box>
         </Box>
       </Box>
 
