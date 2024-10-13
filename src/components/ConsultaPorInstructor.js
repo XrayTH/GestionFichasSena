@@ -11,6 +11,7 @@ import { useLocation } from 'react-router-dom';
 import 'moment/locale/es';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import html2pdf from 'html2pdf.js';
 
 moment.locale('es');
 
@@ -42,6 +43,7 @@ const ConsultaPorInstructor = () => {
   const localizer = momentLocalizer(moment);
   const [asignaciones, setAsignaciones] = useState([]);
   const [jornadaColors, setJornadaColors] = useState({});
+  const [pdf, setPdf] = useState(null);  
 
   useEffect(() => {
     const fetchAsignaciones = async () => {
@@ -130,17 +132,45 @@ const ConsultaPorInstructor = () => {
     navigate(-1); 
   };
 
+  const handleCaptureToPDF = () => {
+    const element = document.getElementById('calendarContainer');  // Captura el contenedor
+
+    const opt = {
+        margin: 0.5,
+        filename: 'calendarioInstructor.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+    };
+
+    html2pdf().from(element).set(opt).toPdf().get('pdf').then(function (pdf) {
+        setPdf(pdf);  // Guardar el PDF en el estado
+
+        // Abrir el PDF en una nueva ventana para inspección
+        const blob = pdf.output('blob');
+        const url = URL.createObjectURL(blob);
+        window.open(url);  // Abre el PDF en una nueva pestaña del navegador
+
+        // Una vez que el PDF esté generado, redirige a la página de envío de correo
+        navigate('/enviar-email', {
+            state: { pdf: blob }  // Usa 'blob' en lugar de 'pdf' para asegurar que pasas el archivo correctamente
+        });
+    });
+};
+
   if (!instructor) {
     console.log(instructor)
     return <div>Error: No se ha proporcionado un instructor válido.</div>;
   }
 
   return (
-    <div className={classes.calendarContainer}>
-      <Sidebar />
+    <>
+    <Sidebar />
+    <div className={classes.calendarContainer} id="calendarContainer">
       <Box className={classes.flexContainer}>
 
         <Box className={classes.infoContainer}>
+        <Button onClick={handleRegresar}>Volver</Button>
           <Typography variant="body2">Instructor: {instructor.nombre}</Typography>
           <Typography variant="body2">Email: {instructor.email}</Typography>
           <Typography variant="body2">Teléfono: {instructor.telefono}</Typography>
@@ -148,7 +178,6 @@ const ConsultaPorInstructor = () => {
         </Box>
 
         <Box className={classes.legendContainer}>
-          <Button onClick={handleRegresar}>Volver</Button>
           <Box className={classes.legendItems}>
             {Object.entries(jornadaColors).map(([jornada, color]) => (
               <Box key={jornada} className={classes.legendItem}>
@@ -189,6 +218,15 @@ const ConsultaPorInstructor = () => {
         }}
       />
     </div>
+    <Button
+        variant="contained"
+        color="primary"
+        onClick={handleCaptureToPDF}
+        style={{ marginTop: '20px' }}
+      >
+        Enviar por correo
+      </Button>
+    </>
   );
 };
 

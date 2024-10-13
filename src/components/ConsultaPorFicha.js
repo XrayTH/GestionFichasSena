@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom';
 import 'moment/locale/es';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import html2pdf from 'html2pdf.js';  // Importa html2pdf
+import html2pdf from 'html2pdf.js';
 
 moment.locale('es'); 
 
@@ -41,7 +41,7 @@ const ConsultaPorFicha = () => {
   const localizer = momentLocalizer(moment);
   const [asignaciones, setAsignaciones] = useState([]);
   const [jornadaColors, setJornadaColors] = useState({});
-  const [pdf, setPdf] = useState(null);  // Estado para guardar el PDF
+  const [pdf, setPdf] = useState(null);  
 
   useEffect(() => {
     const fetchAsignaciones = async () => {
@@ -119,7 +119,6 @@ const ConsultaPorFicha = () => {
   };
 
   const handleCaptureToPDF = () => {
-    console.log("Se activa")
     const element = document.getElementById('calendarContainer');  // Captura el contenedor
 
     const opt = {
@@ -151,6 +150,7 @@ const ConsultaPorFicha = () => {
     <div className={classes.calendarContainer} id="calendarContainer">
       <Box className={classes.flexContainer}>
         <Box className={classes.infoContainer}>
+        <Button onClick={handleRegresar}>Volver</Button>
           <Typography variant="body2">Ficha: {ficha.codigo}</Typography>
           <Typography variant="body2">Coordinador: {ficha.coordinador}</Typography>
           <Typography variant="body2">Programa: {ficha.programa}</Typography>
@@ -162,7 +162,6 @@ const ConsultaPorFicha = () => {
         </Box>
 
         <Box className={classes.legendContainer}>
-          <Button onClick={handleRegresar}>Volver</Button>
           <Box className={classes.legendItems}>
             {Object.entries(jornadaColors).map(([jornada, color]) => (
               <Box key={jornada} className={classes.legendItem}>
