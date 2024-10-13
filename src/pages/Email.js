@@ -154,6 +154,14 @@ const Email = () => {
   const [loading, setLoading] = useState(false); // Estado para la carga
   const [snackMessage, setSnackMessage] = useState(''); // Mensaje de éxito o error
 
+  useEffect(() => {
+    if (location.state?.pdf) {
+      // Si se recibió un PDF en la redirección, lo agregamos a los archivos adjuntos
+      const pdfFile = new File([location.state.pdf], 'calendarioFicha.pdf', { type: 'application/pdf' });
+      setFiles(prevFiles => [...prevFiles, pdfFile]);  // Agregarlo a los archivos
+    }
+  }, [location.state]);
+
   // Cargar instructores y coordinadores al montar el componente
   useEffect(() => {
     const fetchOptions = async () => {

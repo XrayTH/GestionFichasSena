@@ -9,6 +9,7 @@ import { useLocation } from 'react-router-dom';
 import 'moment/locale/es';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import html2pdf from 'html2pdf.js';  // Importa html2pdf
 
 moment.locale('es'); 
 
@@ -40,6 +41,7 @@ const ConsultaPorFicha = () => {
   const localizer = momentLocalizer(moment);
   const [asignaciones, setAsignaciones] = useState([]);
   const [jornadaColors, setJornadaColors] = useState({});
+  const [pdf, setPdf] = useState(null);  // Estado para guardar el PDF
 
   useEffect(() => {
     const fetchAsignaciones = async () => {
@@ -116,11 +118,36 @@ const ConsultaPorFicha = () => {
     navigate(-1); 
   };
 
-  return (
-    <div className={classes.calendarContainer}>
-      <Sidebar/>
-      <Box className={classes.flexContainer}>
+  const handleCaptureToPDF = () => {
+    console.log("Se activa")
+    const element = document.getElementById('calendarContainer');  // Captura el contenedor
 
+    const opt = {
+        margin:       0.5,
+        filename:     'calendarioFicha.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf().from(element).set(opt).toPdf().get('pdf').then(function (pdf) {
+        setPdf(pdf);  // Guardar el PDF en el estado
+        enviarCorreo(pdf)
+    });
+    
+  };
+
+  const enviarCorreo = (pdf) => {
+    navigate('/enviar-email', { 
+      state: { pdf } 
+    });
+  }
+
+  return (
+    <>      
+    <Sidebar/>
+    <div className={classes.calendarContainer} id="calendarContainer">
+      <Box className={classes.flexContainer}>
         <Box className={classes.infoContainer}>
           <Typography variant="body2">Ficha: {ficha.codigo}</Typography>
           <Typography variant="body2">Coordinador: {ficha.coordinador}</Typography>
@@ -128,14 +155,12 @@ const ConsultaPorFicha = () => {
           <Typography variant="body2">Gestor: {ficha.gestor}</Typography>
           <Typography variant="body2">Ambiente: {ficha.ambiente}</Typography>
           <Typography variant="body2">Municipio: {ficha.municipio}</Typography>
-          {/*<Typography variant="body2">Ubicación: {ficha.ubicacionGPS}</Typography>*/}
           <Typography variant="body2">Inicio: {ficha.inicio}</Typography>
           <Typography variant="body2">Fin: {ficha.fin}</Typography>
-          {/*<Typography variant="body2">Requerimientos: {ficha.requerimientos}</Typography>*/}
         </Box>
 
         <Box className={classes.legendContainer}>
-        <Button onClick={handleRegresar}>Volver</Button>
+          <Button onClick={handleRegresar}>Volver</Button>
           <Box className={classes.legendItems}>
             {Object.entries(jornadaColors).map(([jornada, color]) => (
               <Box key={jornada} className={classes.legendItem}>
@@ -175,7 +200,17 @@ const ConsultaPorFicha = () => {
           showMore: (total) => `+ Ver más (${total})`,
         }}
       />
+
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleCaptureToPDF}
+        style={{ marginTop: '20px' }}
+      >
+        Enviar por correo
+      </Button>
     </div>
+    </>
   );
 };
 
