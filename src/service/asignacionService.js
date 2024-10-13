@@ -69,7 +69,8 @@ export const createAsignacion = async (asignacionData) => {
     const response = await api.post('/asignacion', asignacionData);
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data.message || 'Error al crear la asignación');
+    // Cambiar para capturar 'data.error' en lugar de 'data.message'
+    throw new Error(error.response?.data.error || 'Error al crear la asignación');
   }
 };
 
@@ -79,9 +80,11 @@ export const updateAsignacionById = async (id, asignacionData) => {
     const response = await api.put(`/asignacion/${id}`, asignacionData);
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data.message || 'Error al actualizar la asignación');
+    // Cambiar para capturar 'data.error' en lugar de 'data.message'
+    throw new Error(error.response?.data.error || 'Error al actualizar la asignación');
   }
 };
+
 
 // Eliminar una asignación por ID
 export const deleteAsignacionById = async (id) => {

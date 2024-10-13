@@ -27,6 +27,7 @@ const Programar = () => {
     const [gestorFilter, setGestorFilter] = useState('');
 
     const [mensaje, setMensaje] = useState(null);
+    const [reload, setReload] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,7 +36,7 @@ const Programar = () => {
                 const asignacionesData = await getAllAsignaciones();
                 const instructoresData = await getInstructores();
                 const jornadasData = await getJornadas();
-
+    
                 setFichas(fichasData);
                 setAsignaciones(asignacionesData);
                 setInstructores(instructoresData);
@@ -44,9 +45,9 @@ const Programar = () => {
                 setMensaje({ text: 'Error al cargar los datos', severity: 'error' });
             }
         };
-
+    
         fetchData();
-    }, []);
+    }, [reload]);
 
     useEffect(() => {
         setStartDateFilter(getStartOfMonth());
@@ -86,12 +87,12 @@ const Programar = () => {
 
     const handleInstructorChange = async ({ ficha, dia, jornada, instructor, inicio, fin }) => {
         try {
-            if (!instructor || "") {
+            if (!instructor || instructor === "") {
                 const asignacionToDelete = asignaciones.find(
                     (asig) => asig.ficha === ficha && asig.dia === dia && asig.jornada === jornada && asig.inicio === inicio && asig.fin === fin
                 );
                 if (asignacionToDelete) {
-                    console.log("viene aqui",inicio,fin)
+                    console.log("Eliminando asignación", inicio, fin);
                     await deleteAsignacionById(asignacionToDelete.id);
                     setAsignaciones((prev) => prev.filter((asig) => asig.id !== asignacionToDelete.id));
                     setMensaje({ text: 'Asignación eliminada con éxito', severity: 'success' });
@@ -104,7 +105,7 @@ const Programar = () => {
                         asig.jornada === jornada &&
                         (asig.inicio === inicio || (asig.inicio <= fin && asig.fin >= inicio))
                 );
-
+    
                 if (asignacionExistente) {
                     await updateAsignacionById(asignacionExistente.id, { ...asignacionExistente, instructor, fin });
                     setAsignaciones((prev) =>
@@ -127,9 +128,19 @@ const Programar = () => {
                 }
             }
         } catch (error) {
-            setMensaje({ text: 'Error al manejar el cambio de instructor', severity: 'error' });
+            console.error('Error capturado:', error);
+            if (error.response && error.response.data && error.response.data.error) {
+                setMensaje({ text: `Error: ${error.response.data.error}`, severity: 'error' });
+            } else {
+                setMensaje({ text: `Error inesperado: ${error.message}`, severity: 'error' });
+            }
+    
+            // Forzar el re-render del contenedor de fichas al cambiar el valor de "reload"
+            setReload((prev) => !prev);
         }
     };
+    
+    
 
     return (
         <>
