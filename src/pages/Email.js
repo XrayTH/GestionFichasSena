@@ -266,17 +266,14 @@ const Email = () => {
                 </div>
               ))}
             </div>
-            <input
+            
+          </div>
+          <input
               type="file"
               multiple
               onChange={handleFileChange}  // Manejador de archivos adjuntos
-              style={{ display: 'none' }}
               id="file-upload"
             />
-            <label htmlFor="file-upload">
-              <Button className={classes.addButton}>+</Button>
-            </label>
-          </div>
         </div>
 
         <div className={classes.rightSection}>
