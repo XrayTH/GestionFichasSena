@@ -150,7 +150,11 @@ const Email = () => {
   const [selectedValue, setSelectedValue] = useState('');
   const [recipients, setRecipients] = useState('');
   const [options, setOptions] = useState([]);  // Almacena instructores y coordinadores
+  const [subject, setSubject] = useState('');  // Almacenar el asunto del correo
+  const [content, setContent] = useState('');  // Almacenar el contenido del correo
+  const [files, setFiles] = useState([]);      // Almacenar los archivos adjuntos
 
+  // Cargar instructores y coordinadores al montar el componente
   useEffect(() => {
     const fetchOptions = async () => {
       try {
@@ -172,6 +176,7 @@ const Email = () => {
     fetchOptions();
   }, []);
 
+  // Manejo para agregar un destinatario
   const handleAddRecipient = () => {
     if (selectedValue) {
       const recipientList = recipients.split('\n');
@@ -182,13 +187,46 @@ const Email = () => {
     }
   };
 
+  // Manejo de los archivos seleccionados
+  const handleFileChange = (event) => {
+    setFiles([...event.target.files]);  // Almacena los archivos seleccionados en el estado
+  };
+
+  // Enviar el correo
+  const handleSendEmail = async () => {
+    const emailList = recipients.split('\n').filter(email => email);  // Convierte en array de correos válidos
+    if (!emailList.length || !subject) {
+      alert("Por favor, asegúrate de ingresar al menos un destinatario y un asunto.");
+      return;
+    }
+
+    try {
+      // Llamada a la función sendEmail
+      await sendEmail(emailList, subject, content, files);
+      alert('Correo enviado exitosamente');
+      // Resetear formulario después de enviar
+      setRecipients('');
+      setSubject('');
+      setContent('');
+      setFiles([]);
+    } catch (error) {
+      console.error('Error al enviar el correo', error);
+      alert('Hubo un error al enviar el correo.');
+    }
+  };
+
   return (
     <div className={classes.container}>
       <div className={classes.formContainer}>
         <div className={classes.leftSection}>
           <label className={classes.label}>Asunto:</label>
           <br />
-          <TextField variant="outlined" className={classes.textField} />
+          <TextField
+            variant="outlined"
+            className={classes.textField}
+            value={subject}  // Maneja el estado de asunto
+            onChange={(e) => setSubject(e.target.value)}  // Actualiza el asunto en el estado
+          />
           <br />
 
           <label className={classes.label}>Contenido:</label>
@@ -197,12 +235,20 @@ const Email = () => {
             minRows={6}
             maxRows={6}
             placeholder="Escribe el contenido aquí"
+            value={content}  // Maneja el estado del contenido
+            onChange={(e) => setContent(e.target.value)}  // Actualiza el contenido en el estado
           />
 
           <div className={classes.imageListWrapper}>
             <ImageList />
             <Button className={classes.addButton}>+</Button>
           </div>
+
+          <input
+            type="file"
+            multiple
+            onChange={handleFileChange}  // Manejador de archivos adjuntos
+          />
         </div>
 
         <div className={classes.rightSection}>
@@ -236,7 +282,12 @@ const Email = () => {
             disabled
           />
 
-          <Button variant="contained" color="primary" className={classes.sendButton}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.sendButton}
+            onClick={handleSendEmail}  // Llama a la función que envía el correo
+          >
             Enviar
           </Button>
         </div>
