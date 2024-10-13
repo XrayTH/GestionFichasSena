@@ -127,7 +127,7 @@ const ConsultaPorFicha = () => {
         filename: 'calendarioFicha.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
     };
 
     html2pdf().from(element).set(opt).toPdf().get('pdf').then(function (pdf) {
