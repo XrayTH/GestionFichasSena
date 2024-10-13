@@ -94,6 +94,9 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
   return (
     <div className={classes.container}>
       <div className={classes.checkboxContainer}>
+        <Button onClick={abrirConsulta}>
+          Ver en Calendario
+        </Button>
         {jornadas.map((jornada) => (
           <label key={jornada.id}>
             <input
@@ -104,9 +107,6 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
             {jornada.nombre}
           </label>
         ))}
-        <Button onClick={abrirConsulta}>
-                        Ver en Calendario
-        </Button>
       </div>
 
       <table className={classes.table}>
@@ -199,7 +199,6 @@ const useStyles = makeStyles({
   },
   checkboxContainer: {
     display: 'flex',
-    marginBottom: '20px',
   },
   table: {
     width: '100%',

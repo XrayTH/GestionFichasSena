@@ -18,7 +18,6 @@ const Programar = () => {
     const [instructores, setInstructores] = useState([]);
     const [jornadas, setJornadas] = useState([]);
 
-    // Campos de fechas de filtrado
     const [startDateFilter, setStartDateFilter] = useState('');
     const [endDateFilter, setEndDateFilter] = useState('');
 
@@ -136,7 +135,8 @@ const Programar = () => {
         <>
             <Sidebar />
             <div className={classes.container}>
-                <label>Filtros:</label><br /><br />
+            <div className={classes.filtrosContainer}>
+                <label>Filtros:</label>
                 <TextField
                     label="Buscar por codigo"
                     variant="outlined"
@@ -169,8 +169,6 @@ const Programar = () => {
                     value={gestorFilter}
                     className={classes.textField}
                 />
-
-                {/* Campos para las fechas de filtro */}
                 <TextField
                     label="Fecha de inicio"
                     type="date"
@@ -191,9 +189,8 @@ const Programar = () => {
                     variant="outlined"
                     className={classes.textField}
                 />
-
-                <br /><br /><label>Crear Borrar o Editar Jornadas:</label><br />
                 <Jornadas />
+                </div>
 
                 <div className={classes.fichasContainer}>
                     {filteredFichas.map((ficha) => (
@@ -204,15 +201,14 @@ const Programar = () => {
                                 instructores={instructores}
                                 jornadas={jornadas}
                                 onInstructorChange={handleInstructorChange}
-                                startDateFilter={startDateFilter}  // Pasa la fecha de inicio
-                                endDateFilter={endDateFilter}      // Pasa la fecha de fin
+                                startDateFilter={startDateFilter}  
+                                endDateFilter={endDateFilter}      
                                 className={classes.ficha}
                             />
                         </div>
                     ))}
                 </div>
 
-                {/* Snackbar para mostrar mensajes de éxito o error */}
                 {mensaje && (
                     <Snackbar
                         open={Boolean(mensaje)}
@@ -256,6 +252,11 @@ const useStyles = makeStyles((theme) => ({
         padding: '10px',
         borderRadius: '5px',
         boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.2)',
+    },
+    filtrosContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
     },
 }));
 

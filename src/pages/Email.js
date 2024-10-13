@@ -8,161 +8,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { FilePresent, PictureAsPdf } from '@mui/icons-material';  // Importa íconos de archivos
 import Sidebar from './../components/Sidebar';
 
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    backgroundColor: '#f5f5f5',
-    padding: '20px', 
-  },
-  formContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    backgroundColor: '#fff',
-    padding: '20px',
-    borderRadius: '8px',
-    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-    width: '100%',
-    maxWidth: '1000px',
-    flexWrap: 'wrap', 
-  },
-  leftSection: {
-    flex: 1,
-    marginRight: '20px',
-    marginBottom: '20px',
-  },
-  rightSection: {
-    flex: 1,
-    marginLeft: '20px',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  label: {
-    marginBottom: '8px',
-    fontWeight: 'bold',
-    color: '#5eb219',
-  },
-  textField: {
-    marginBottom: '20px',
-    borderColor: '#5eb219',
-    width: "100%",
-  },
-  textAreaEditable: {
-    borderRadius: '4px',
-    padding: '10px',
-    border: '1px solid #5eb219',
-    marginBottom: '20px',
-    resize: 'none',
-    fontSize: '16px',
-    width: '95%',
-  },
-  textAreaReadOnly: {
-    borderRadius: '4px',
-    padding: '10px',
-    border: '1px solid #ccc',
-    marginBottom: '20px',
-    backgroundColor: '#e8f5e9',
-    resize: 'none',
-    fontSize: '16px',
-  },
-  imageListWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    overflowX: 'auto',
-    marginBottom: '20px',
-    border: '1px solid #5eb219',
-    padding: '10px',
-  },
-  addButton: {
-    width: '40px',
-    height: '40px',
-    borderRadius: '50%',
-    backgroundColor: '#5eb219',
-    color: '#fff',
-    fontSize: '24px',
-    minWidth: 'unset',
-    marginRight: '10px',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-  },
-  dropdownWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '20px',
-  },
-  dropdown: {
-    flexGrow: 1,
-    borderColor: '#5eb219',
-    marginRight: '10px',
-  },
-  sendButton: {
-    backgroundColor: '#7614ae',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-    color: '#fff',
-    padding: '10px',
-  },
-  imageListContainer: {
-    display: 'flex',
-    overflowX: 'auto',
-    height: '80px',
-    alignItems: 'center',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    padding: '5px',
-    width: '100%',
-    marginRight: '10px',
-  },
-  imageItem: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginRight: '10px',
-  },
-  image: {
-    width: '50px',
-    height: '50px',
-    marginBottom: '5px',
-  },
-  imageName: {
-    fontSize: '12px',
-    textAlign: 'center',
-  },
-  loadingSpinner: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: '20px',
-  },
-  sendButtonWrapper: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gap: '10px', 
-  },
-  fileInput: {
-    padding: '10px',
-    backgroundColor: '#5eb219',
-    color: '#fff',
-    border: '1px solid #5eb219',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginTop: '10px',
-    width: '100%',
-    display: 'block',
-    fontSize: '16px',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-  },
-  inputFileWrapper: {
-    marginBottom: '20px',
-  },
-}));
-
 const Email = () => {
   const classes = useStyles();
   const navigate = useNavigate();
@@ -322,10 +167,11 @@ const Email = () => {
   return (
     <>
     <Sidebar/>
-    <Button onClick={handleRegresar} className={classes.returnButton}>Volver</Button>
     <div className={classes.container}>
       <div className={classes.formContainer}>
         <div className={classes.leftSection}>
+        <Button onClick={handleRegresar} className={classes.returnButton}>Volver</Button>
+        <br/>
           <label className={classes.label}>Asunto:</label>
           <br />
           <TextField
@@ -434,5 +280,173 @@ const Email = () => {
     </>
   );
 };
+
+const useStyles = makeStyles(() => ({
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    backgroundColor: '#f5f5f5',
+    padding: '20px', 
+  },
+  formContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    padding: '20px',
+    borderRadius: '8px',
+    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+    width: '100%',
+    maxWidth: '1000px',
+    flexWrap: 'wrap', 
+  },
+  leftSection: {
+    flex: 1,
+    marginRight: '20px',
+    marginBottom: '20px',
+  },
+  rightSection: {
+    flex: 1,
+    marginLeft: '20px',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  label: {
+    marginBottom: '8px',
+    fontWeight: 'bold',
+    color: '#5eb219',
+  },
+  textField: {
+    marginBottom: '20px',
+    borderColor: '#5eb219',
+    width: "100%",
+  },
+  textAreaEditable: {
+    borderRadius: '4px',
+    padding: '10px',
+    border: '1px solid #5eb219',
+    marginBottom: '20px',
+    resize: 'none',
+    fontSize: '16px',
+    width: '95%',
+  },
+  textAreaReadOnly: {
+    borderRadius: '4px',
+    padding: '10px',
+    border: '1px solid #ccc',
+    marginBottom: '20px',
+    backgroundColor: '#e8f5e9',
+    resize: 'none',
+    fontSize: '16px',
+  },
+  imageListWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    overflowX: 'auto',
+    marginBottom: '20px',
+    border: '1px solid #5eb219',
+    padding: '10px',
+  },
+  addButton: {
+    width: '40px',
+    height: '40px',
+    borderRadius: '50%',
+    backgroundColor: '#5eb219',
+    color: '#fff',
+    fontSize: '24px',
+    minWidth: 'unset',
+    marginRight: '10px',
+    '&:hover': {
+      backgroundColor: '#4cae14',
+    },
+  },
+  dropdownWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: '20px',
+  },
+  dropdown: {
+    flexGrow: 1,
+    borderColor: '#5eb219',
+    marginRight: '10px',
+  },
+  sendButton: {
+    backgroundColor: '#7614ae',
+    '&:hover': {
+      backgroundColor: '#4cae14',
+    },
+    color: '#fff',
+    padding: '10px',
+  },
+  imageListContainer: {
+    display: 'flex',
+    overflowX: 'auto',
+    height: '80px',
+    alignItems: 'center',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    padding: '5px',
+    width: '100%',
+    marginRight: '10px',
+  },
+  imageItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginRight: '10px',
+  },
+  image: {
+    width: '50px',
+    height: '50px',
+    marginBottom: '5px',
+  },
+  imageName: {
+    fontSize: '12px',
+    textAlign: 'center',
+  },
+  loadingSpinner: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '20px',
+  },
+  sendButtonWrapper: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '10px', 
+  },
+  fileInput: {
+    padding: '10px',
+    backgroundColor: '#5eb219',
+    color: '#fff',
+    border: '1px solid #5eb219',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    marginTop: '10px',
+    width: '100%',
+    display: 'block',
+    fontSize: '16px',
+    '&:hover': {
+      backgroundColor: '#4cae14',
+    },
+  },
+  inputFileWrapper: {
+    marginBottom: '20px',
+  },
+  returnButton: {
+    backgroundColor: '#f44336',  // Color de fondo rojo
+    color: '#fff',  // Color del texto blanco
+    padding: '10px 20px',
+    borderRadius: '4px',
+    marginTop: '10px', // Reducido el margen superior
+    '&:hover': {
+      backgroundColor: '#d32f2f',  // Color de fondo en hover más oscuro
+    },
+    fontSize: '16px',
+    fontWeight: 'bold',
+    textTransform: 'none',
+  },
+}));
 
 export default Email;
