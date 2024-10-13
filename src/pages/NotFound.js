@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../assets/logo-sena-naranja-svg-2022.svg';
+import logo from '../assets/logo-sena-blanco.svg';
 import { makeStyles } from '@mui/styles';
 
 function NotFound() {

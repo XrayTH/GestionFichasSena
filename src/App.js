@@ -15,11 +15,10 @@ import NotFound from './pages/NotFound';
 import Pruebas from './components/PruebaCriptar';
 import ConFicha from './components/ConsultaPorFicha'
 import ConIns from './components/ConsultaPorInstructor'
-
+import AccessDenied from './pages/AccessDenied';
 
 function App() {
   return (
-    
     <Router>
       <Routes>
         <Route path="/login" element={
@@ -33,78 +32,71 @@ function App() {
             <Home />
           </ProtectedRoute>
         } />
-        
+
         <Route path="/gestion-usuarios" element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermissions={['gestionUsuarios']}>
             <GesUsu />
           </ProtectedRoute>
         } />
-        
+
         <Route path="/programar" element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermissions={['verProgramacion']}>
             <Programar />
           </ProtectedRoute>
         } />
 
         <Route path="/programar-instructor" element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermissions={['verProgramacion']}>
             <ProIns />
           </ProtectedRoute>
         } />
-        
+
         <Route path="/gestion-fichas" element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermissions={['tablas']}>
             <GesFicha />
           </ProtectedRoute>
         } />
-        
+
         <Route path="/gestion-coordinadores" element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermissions={['tablas']}>
             <GesCoo />
           </ProtectedRoute>
         } />
-        
+
         <Route path="/gestion-instructores" element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermissions={['tablas']}>
             <GesIns />
           </ProtectedRoute>
         } />
-        
+
         <Route path="/enviar-email" element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermissions={['email']}>
             <Email />
           </ProtectedRoute>
         } />
 
         <Route path="/gestion-programas" element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermissions={['tablas']}>
             <GesPro />
           </ProtectedRoute>
         } />
 
-        <Route path="/pruebas" element={
-          <ProtectedRoute>
-            <Pruebas />
-          </ProtectedRoute>
-        } />
-
         <Route path="/consultar-ficha" element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermissions={['verProgramacion']}>
             <ConFicha />
           </ProtectedRoute>
         } />
 
         <Route path="/consultar-instructor" element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermissions={['verProgramacion']}>
             <ConIns />
           </ProtectedRoute>
         } />
-
+        <Route path="/Denegado" element={<AccessDenied />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
-    
-  )
+  );
 }
 
 export default App;
