@@ -138,6 +138,29 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     marginTop: '20px',
   },
+  sendButtonWrapper: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '10px', 
+  },
+  fileInput: {
+    padding: '10px',
+    backgroundColor: '#5eb219',
+    color: '#fff',
+    border: '1px solid #5eb219',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    marginTop: '10px',
+    width: '100%',
+    display: 'block',
+    fontSize: '16px',
+    '&:hover': {
+      backgroundColor: '#4cae14',
+    },
+  },
+  inputFileWrapper: {
+    marginBottom: '20px',
+  },
 }));
 
 const Email = () => {
@@ -339,7 +362,7 @@ const Email = () => {
               multiple
               onChange={handleFileChange}  // Manejador de archivos adjuntos
               id="file-upload"
-            />
+              className={classes.fileInput}            />
         </div>
 
         <div className={classes.rightSection}>
@@ -373,25 +396,26 @@ const Email = () => {
             disabled
           />
 
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.sendButton}
-            onClick={handleSendEmail}  
-          >
-            Enviar Este Correo
-          </Button>
-          
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.sendButton}
-            onClick={handleSendMasiveEmail}
-            disabled={loading}  // Deshabilitar si está cargando
-          >
-            Enviar Correo Masivo
-          </Button>
+          <div className={classes.sendButtonWrapper}>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.sendButton}
+              onClick={handleSendEmail}
+            >
+              Enviar Este Correo
+            </Button>
 
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.sendButton}
+              onClick={handleSendMasiveEmail}
+              disabled={loading}
+            >
+              Enviar Correo Masivo
+            </Button>
+          </div>
 
           {loading && (
             <div className={classes.loadingSpinner}>
