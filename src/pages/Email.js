@@ -249,6 +249,13 @@ const Email = () => {
   };
 
   const handleSendMasiveEmail = async () => {
+    // Preguntar al usuario si está seguro de enviar los correos
+    const confirmacion = window.confirm("Esta opción enviará a cada instructor por correo la programación que le corresponde del presente mes. ¿Está seguro de hacerlo?");
+    
+    if (!confirmacion) {
+        return; // Si el usuario cancela, no hacemos nada
+    }
+
     setLoading(true); // Activar el spinner de carga
     try {
       // Llamada a la función para enviar los correos masivos
@@ -279,7 +286,8 @@ const Email = () => {
     } finally {
       setLoading(false); // Ocultar el spinner independientemente del resultado
     }
-  };
+};
+
   
   
   
