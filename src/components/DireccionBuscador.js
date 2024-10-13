@@ -115,7 +115,6 @@ const styles = {
     border: '1px solid #ccc',
     flex: '2',
     backgroundColor: '#f0f0f0',
-    cursor: 'not-allowed',
   },
   button: {
     backgroundColor: '#5eb219',

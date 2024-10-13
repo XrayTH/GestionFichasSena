@@ -9,6 +9,7 @@ import { getCoordinadores } from '../service/coordinadorService';
 import { obtenerProgramas } from '../service/programaService';
 import Municipios from '../data/municipios.json';
 import Sidebar from '../components/Sidebar';
+import DireccionBuscador from './DireccionBuscador';
 
 const GestionFichas = () => {
   const classes = useStyles();
@@ -95,6 +96,7 @@ const GestionFichas = () => {
     <>
     <Sidebar/>
     <div className={classes.container}>
+      <DireccionBuscador/>
       {/* Componente de mensajes del sistema */}
       {mensaje && (
         <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>

@@ -38,6 +38,10 @@ const Home = () => {
     navigate('/programar-instructor');
   };
 
+  const handleEmail = () => {
+    navigate('/enviar-email');
+  };
+
   const handleCerrarSesion = () => {
     dispatch(logout()); // Realiza el logout
   };
@@ -68,6 +72,9 @@ const Home = () => {
       </button>
       <button className={classes.button} onClick={handleProIns}>
         Programacion Por Instructor
+      </button>
+      <button className={classes.button} onClick={handleProIns}>
+        Enviar Correo
       </button>
       <button className={classes.smallButton} onClick={handleCerrarSesion}>
         Cerrar Sesión
