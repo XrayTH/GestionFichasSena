@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { getAsignacionesByInstructor } from '../service/asignacionService'; 
-import { getFichaByCodigo } from '../service/fichaService'; 
-import { obtenerProgramaPorNombre } from '../service/programaService'
+import { getAsignacionesByInstructor } from '../service/asignacionService';
+import { getFichaByCodigo } from '../service/fichaService';
+import { obtenerProgramaPorNombre } from '../service/programaService';
 import { Tooltip, Paper, Typography, Box, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useLocation } from 'react-router-dom';
@@ -13,6 +13,8 @@ import 'moment/locale/es';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import html2pdf from 'html2pdf.js';
+import { useSelector } from 'react-redux';
+import { selectUserPermisos } from '../features/userSlice';
 
 moment.locale('es');
 
@@ -39,21 +41,22 @@ const colorScale = [
 const ConsultaPorInstructor = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { instructorActual: instructor } = location.state || {};  // Renombrando a "instructor"
+  const { instructorActual: instructor } = location.state || {};
   const classes = useStyles();
   const localizer = momentLocalizer(moment);
   const [asignaciones, setAsignaciones] = useState([]);
   const [jornadaColors, setJornadaColors] = useState({});
-  const [pdf, setPdf] = useState(null);  
+  const [pdf, setPdf] = useState(null);
+
+  const permisos = useSelector(selectUserPermisos);  
 
   useEffect(() => {
     const fetchAsignaciones = async () => {
       try {
-        const response = await getAsignacionesByInstructor(instructor.nombre); // Cambiado para que reciba por instructor
+        const response = await getAsignacionesByInstructor(instructor.nombre);
         const formattedAsignaciones = [];
         const colorsMap = {};
 
-        // Para cada asignación, obtenemos la información de la ficha
         for (const asignacion of response) {
           const start = moment(asignacion.inicio);
           const end = moment(asignacion.fin);
@@ -68,12 +71,12 @@ const ConsultaPorInstructor = () => {
           while (currentDate.isSameOrBefore(end)) {
             if (currentDate.day() === dayOfWeek) {
 
-                const fichaData = await getFichaByCodigo(asignacion.ficha); 
-                const programaData = await obtenerProgramaPorNombre(fichaData.programa);
+              const fichaData = await getFichaByCodigo(asignacion.ficha);
+              const programaData = await obtenerProgramaPorNombre(fichaData.programa);
 
               formattedAsignaciones.push({
-                title: asignacion.ficha+"/"+programaData.nombreCorto+"/"+fichaData.municipio, 
-                subtitle: fichaData.programa, 
+                title: asignacion.ficha+"/"+programaData.nombreCorto+"/"+fichaData.municipio,
+                subtitle: fichaData.programa,
                 ficha: asignacion.ficha,
                 municipio: fichaData.municipio,
                 start: currentDate.toDate(),
@@ -114,7 +117,6 @@ const ConsultaPorInstructor = () => {
     <Tooltip
       title={
         <Paper className={classes.tooltip}>
-          {/*<Typography variant="body2">Instructor: {instructor.nombre}</Typography>*/}
           <Typography variant="body2">Ficha: {event.ficha}</Typography>
           <Typography variant="body2">Programa: {event.subtitle}</Typography>
           <Typography variant="body2">Municipio: {event.municipio}</Typography>
@@ -134,7 +136,7 @@ const ConsultaPorInstructor = () => {
   };
 
   const handleCaptureToPDF = () => {
-    const element = document.getElementById('calendarContainer');  // Captura el contenedor
+    const element = document.getElementById('calendarContainer');
 
     const opt = {
         margin: 0.5,
@@ -145,22 +147,19 @@ const ConsultaPorInstructor = () => {
     };
 
     html2pdf().from(element).set(opt).toPdf().get('pdf').then(function (pdf) {
-        setPdf(pdf);  // Guardar el PDF en el estado
+        setPdf(pdf);
 
-        // Abrir el PDF en una nueva ventana para inspección
         const blob = pdf.output('blob');
         const url = URL.createObjectURL(blob);
-        window.open(url);  // Abre el PDF en una nueva pestaña del navegador
+        window.open(url);
 
-        // Una vez que el PDF esté generado, redirige a la página de envío de correo
         navigate('/enviar-email', {
-            state: { pdf: blob }  // Usa 'blob' en lugar de 'pdf' para asegurar que pasas el archivo correctamente
+            state: { pdf: blob }
         });
     });
-};
+  };
 
   if (!instructor) {
-    console.log(instructor)
     return <div>Error: No se ha proporcionado un instructor válido.</div>;
   }
 
@@ -219,7 +218,10 @@ const ConsultaPorInstructor = () => {
         }}
       />
     </div>
-    <Button
+
+    {/* Solo renderizar el botón si el usuario tiene permiso para enviar correo */}
+    {permisos.email && (
+      <Button
         variant="contained"
         color="primary"
         onClick={handleCaptureToPDF}
@@ -227,6 +229,7 @@ const ConsultaPorInstructor = () => {
       >
         Enviar por correo
       </Button>
+    )}
     </>
   );
 };

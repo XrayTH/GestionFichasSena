@@ -11,6 +11,7 @@ import 'moment/locale/es';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import html2pdf from 'html2pdf.js';
+import { useSelector } from 'react-redux'; 
 
 moment.locale('es'); 
 
@@ -42,7 +43,10 @@ const ConsultaPorFicha = () => {
   const localizer = momentLocalizer(moment);
   const [asignaciones, setAsignaciones] = useState([]);
   const [jornadaColors, setJornadaColors] = useState({});
-  const [pdf, setPdf] = useState(null);  
+  const [pdf, setPdf] = useState(null);
+
+  // Obtener permisos del usuario desde el estado de Redux
+  const permisosUsuario = useSelector((state) => state.user.usuario.permisos);
 
   useEffect(() => {
     const fetchAsignaciones = async () => {
@@ -70,8 +74,8 @@ const ConsultaPorFicha = () => {
                 end: currentDate.toDate(),
                 jornada: asignacion.jornada,
                 color: colorsMap[asignacion.jornada],
-                asignacionInicio: asignacion.inicio, // Agregado para el tooltip
-                asignacionFin: asignacion.fin, // Agregado para el tooltip
+                asignacionInicio: asignacion.inicio,
+                asignacionFin: asignacion.fin,
               });
             }
             currentDate.add(1, 'days');
@@ -120,7 +124,7 @@ const ConsultaPorFicha = () => {
   };
 
   const handleCaptureToPDF = () => {
-    const element = document.getElementById('calendarContainer');  // Captura el contenedor
+    const element = document.getElementById('calendarContainer');
 
     const opt = {
         margin: 0.5,
@@ -131,19 +135,17 @@ const ConsultaPorFicha = () => {
     };
 
     html2pdf().from(element).set(opt).toPdf().get('pdf').then(function (pdf) {
-        setPdf(pdf);  // Guardar el PDF en el estado
+        setPdf(pdf);
 
-        // Abrir el PDF en una nueva ventana para inspección
         const blob = pdf.output('blob');
         const url = URL.createObjectURL(blob);
-        window.open(url);  // Abre el PDF en una nueva pestaña del navegador
+        window.open(url);
 
-        // Una vez que el PDF esté generado, redirige a la página de envío de correo
         navigate('/enviar-email', {
-            state: { pdf: blob }  // Usa 'blob' en lugar de 'pdf' para asegurar que pasas el archivo correctamente
+            state: { pdf: blob }
         });
     });
-};
+  };
 
   return (
     <>      
@@ -151,7 +153,7 @@ const ConsultaPorFicha = () => {
     <div className={classes.calendarContainer} id="calendarContainer">
       <Box className={classes.flexContainer}>
         <Box className={classes.infoContainer}>
-        <Button onClick={handleRegresar}>Volver</Button>
+          <Button onClick={handleRegresar}>Volver</Button>
           <Typography variant="body2">Ficha: {ficha.codigo}</Typography>
           <Typography variant="body2">Coordinador: {ficha.coordinador}</Typography>
           <Typography variant="body2">Programa: {ficha.programa}</Typography>
@@ -203,14 +205,16 @@ const ConsultaPorFicha = () => {
         }}
       />
 
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleCaptureToPDF}
-        style={{ marginTop: '20px' }}
-      >
-        Enviar por correo
-      </Button>
+      {permisosUsuario.email && ( 
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleCaptureToPDF}
+          style={{ marginTop: '20px' }}
+        >
+          Enviar por correo
+        </Button>
+      )}
     </div>
     </>
   );
