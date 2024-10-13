@@ -12,7 +12,6 @@ import GesPro from './components/GestionPrograma'
 import Programar from './pages/Programar';
 import ProIns from "./pages/ProgramarPorInstructor";
 import NotFound from './pages/NotFound';
-import Pruebas from './components/PruebaCriptar';
 import ConFicha from './components/ConsultaPorFicha'
 import ConIns from './components/ConsultaPorInstructor'
 import AccessDenied from './pages/AccessDenied';
