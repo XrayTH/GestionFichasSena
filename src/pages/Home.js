@@ -1,14 +1,17 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
-import { useDispatch } from 'react-redux'; // Importa useDispatch
-import { useNavigate } from 'react-router-dom'; // Importa el hook useNavigate
-import { logout } from '../features/userSlice'; // Importa la acción logout
+import { useDispatch, useSelector } from 'react-redux'; // Importa useSelector para acceder a los permisos
+import { useNavigate } from 'react-router-dom';
+import { logout, selectUserPermisos } from '../features/userSlice'; // Importa el selector de permisos
 import { Typography } from '@mui/material';
 
 const Home = () => {
   const classes = useStyles();
-  const dispatch = useDispatch(); // Inicializa el dispatch
-  const navigate = useNavigate(); // Inicializa el hook useNavigate
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  // Obtiene los permisos del usuario desde el estado global
+  const permisos = useSelector(selectUserPermisos);
 
   const handleGestionUsuarios = () => {
     navigate('/gestion-usuarios');
@@ -43,7 +46,7 @@ const Home = () => {
   };
 
   const handleCerrarSesion = () => {
-    dispatch(logout()); // Realiza el logout
+    dispatch(logout());
   };
 
   return (
@@ -51,31 +54,49 @@ const Home = () => {
       <Typography variant="h4" component="h1" className={classes.title}>
         SISTEMA DE GESTIÓN DE FICHAS - SENA
       </Typography>
-      <br/>
-      <button className={classes.button} onClick={handleGestionUsuarios}>
-        Gestionar Usuarios
-      </button>
-      <button className={classes.button} onClick={handleProgramas}>
-        Ver Programas
-      </button>
-      <button className={classes.button} onClick={handleInstructores}>
-        Ver Instructores
-      </button>
-      <button className={classes.button} onClick={handleCoordinadores}>
-        Ver Coordinadores
-      </button>
-      <button className={classes.button} onClick={handleFichas}>
-        Ver Fichas
-      </button>
-      <button className={classes.button} onClick={handleProFicha}>
-        Programacion Por Ficha
-      </button>
-      <button className={classes.button} onClick={handleProIns}>
-        Programacion Por Instructor
-      </button>
-      <button className={classes.button} onClick={handleProIns}>
-        Enviar Correo
-      </button>
+      <br />
+      
+      {/* Renderiza los botones según los permisos */}
+      {permisos.gestionarUsuarios && (
+        <button className={classes.button} onClick={handleGestionUsuarios}>
+          Gestionar Usuarios
+        </button>
+      )}
+      
+      {permisos.tablas && (
+        <>
+          <button className={classes.button} onClick={handleProgramas}>
+            Ver Programas
+          </button>
+          <button className={classes.button} onClick={handleInstructores}>
+            Ver Instructores
+          </button>
+          <button className={classes.button} onClick={handleCoordinadores}>
+            Ver Coordinadores
+          </button>
+          <button className={classes.button} onClick={handleFichas}>
+            Ver Fichas
+          </button>
+        </>
+      )}
+
+      {(permisos.verProgramacion || permisos.editProgramacion) && (
+        <>
+          <button className={classes.button} onClick={handleProFicha}>
+            Programacion Por Ficha
+          </button>
+          <button className={classes.button} onClick={handleProIns}>
+            Programacion Por Instructor
+          </button>
+        </>
+      )}
+
+      {permisos.email && (
+        <button className={classes.button} onClick={handleEmail}>
+          Enviar Correo
+        </button>
+      )}
+
       <button className={classes.smallButton} onClick={handleCerrarSesion}>
         Cerrar Sesión
       </button>

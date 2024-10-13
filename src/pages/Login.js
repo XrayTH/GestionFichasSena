@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom"; 
 import logo from "../assets/logo-sena-verde-complementario-svg-2022.svg";
 import { useDispatch } from 'react-redux'; // Importa useDispatch
-import { setUser } from '../features/userSlice';
+import { setUser } from '../features/userSlice'; // Importa setUser del slice actualizado
 import { verificarUsuario } from '../service/userService';
 import { encryptPassword } from '../utils/encryption'; // Importa la función de cifrado
 
@@ -20,10 +20,24 @@ const Login = () => {
     try {
       // Cifrar la contraseña antes de enviarla
       const encryptedPassword = encryptPassword(contraseña);
+      
       // Verificar el usuario con la función de servicio
       const userData = await verificarUsuario({ usuario, contraseña: encryptedPassword });
-      dispatch(setUser(userData.usuario)); // Almacena la información del usuario
-      navigate("/home"); // Navega a la página de inicio
+      
+      // Almacena toda la información del usuario excepto la contraseña
+      dispatch(setUser({
+        id: userData.usuario.id, // ID del usuario
+        usuario: userData.usuario.usuario, // Nombre de usuario
+        rol: userData.usuario.rol, // Rol del usuario
+        tablas: userData.usuario.tablas, // Permiso de tablas
+        verProgramacion: userData.usuario.verProgramacion, // Permiso de ver la programación
+        editProgramacion: userData.usuario.editProgramacion, // Permiso de editar la programación
+        email: userData.usuario.email, // Permiso de email
+        gestionarUsuarios: userData.usuario.gestionarUsuarios // Permiso de gestionar usuarios
+      }));
+      console.log(userData.usuario.gestionarUsuarios)
+      // Redirige al usuario a la página de inicio
+      navigate("/home");
     } catch (err) {
       setError(err.message); // Maneja el error
       console.error("Error de login:", err.message);
