@@ -132,12 +132,19 @@ const ConsultaPorFicha = () => {
 
     html2pdf().from(element).set(opt).toPdf().get('pdf').then(function (pdf) {
         setPdf(pdf);  // Guardar el PDF en el estado
+
+        // Abrir el PDF en una nueva ventana para inspección
+        const blob = pdf.output('blob');
+        const url = URL.createObjectURL(blob);
+        window.open(url);  // Abre el PDF en una nueva pestaña del navegador
+
         enviarCorreo(pdf)
     });
     
   };
 
   const enviarCorreo = (pdf) => {
+    console.log("llega aqui",pdf)
     navigate('/enviar-email', { 
       state: { pdf } 
     });
