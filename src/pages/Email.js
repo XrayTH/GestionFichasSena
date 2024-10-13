@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import { TextField, Button, TextareaAutosize, MenuItem, Select, CircularProgress, Snackbar } from '@mui/material';
-import { sendEmail } from './../service/emailService';
+import { sendEmail, sendMasiveEmail } from './../service/emailService';
 import { getInstructores } from '../service/intructorService';
 import { getCoordinadores } from '../service/coordinadorService';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -248,6 +248,42 @@ const Email = () => {
     }
   };
 
+  const handleSendMasiveEmail = async () => {
+    setLoading(true); // Activar el spinner de carga
+    try {
+      // Llamada a la función para enviar los correos masivos
+      const respuesta = await sendMasiveEmail();
+      
+      if (respuesta.success) {
+        // Si la respuesta es exitosa, mostramos los correos enviados y no enviados
+        console.log("Proceso de envío de correos completado");
+        
+        if (respuesta.enviados.length > 0) {
+          console.log("Correos enviados:", respuesta.enviados);
+        }
+  
+        if (respuesta.noEnviados.length > 0) {
+          console.log("Correos no enviados:", respuesta.noEnviados);
+        }
+  
+        setSnackMessage('Correos enviados exitosamente');
+      } else {
+        // Si la respuesta no fue exitosa, mostramos el mensaje de error
+        console.error("Error en el proceso de envío:", respuesta.message);
+        setSnackMessage('Hubo un error al enviar los correos.');
+      }
+    } catch (error) {
+      // Manejo de errores en caso de fallo en la llamada a la API
+      console.error("Error al enviar los correos:", error);
+      setSnackMessage('Hubo un error al enviar los correos.');
+    } finally {
+      setLoading(false); // Ocultar el spinner independientemente del resultado
+    }
+  };
+  
+  
+  
+
   const handleRegresar = () => {
     navigate(-1); 
   };
@@ -342,10 +378,12 @@ const Email = () => {
             variant="contained"
             color="primary"
             className={classes.sendButton}
-            onClick={handleSendEmail}  
+            onClick={handleSendMasiveEmail}
+            disabled={loading}  // Deshabilitar si está cargando
           >
             Enviar Correo Masivo
           </Button>
+
 
           {loading && (
             <div className={classes.loadingSpinner}>

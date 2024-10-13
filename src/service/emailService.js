@@ -40,11 +40,12 @@ export const sendEmail = async (emails, subject, content, files) => {
     }
   };
   
-
-export const sendMasiveEmail = async () => {
+  export const sendMasiveEmail = async () => {
     try {
       // Llamada al backend para ejecutar el proceso de envío de correos
-      const response = await api.post('/ruta-al-backend', {}); // Asegúrate de usar la ruta correcta aquí
+      const response = await api.get('/enviar-correos', {
+        timeout: 60000  // Timeout de 60 segundos (60000 ms)
+      });
   
       if (response.status === 200) {
         console.log('Correos enviados exitosamente:', response.data.enviados);
@@ -63,13 +64,15 @@ export const sendMasiveEmail = async () => {
         };
       }
     } catch (error) {
-      console.error('Error al enviar los correos:', error);
+      // Si el error es un timeout o cualquier otro error, lo manejamos aquí
+      console.error('Error al enviar los correos:', error.message || error);
       return {
         success: false,
-        message: 'Error en el envío de correos',
+        message: error.message || 'Error en el envío de correos',
         enviados: [],
         noEnviados: []
       };
     }
   };
+  
   

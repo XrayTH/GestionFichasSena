@@ -58,7 +58,7 @@ const Sidebar = () => {
           onClick={() => navigate('/')} // Redirigir al hacer click en el logo
         />
         <List>
-          <MenuItem text="Home" path="/" />
+          <MenuItem text="Inicio" path="/" />
           <MenuItem text="Gestión de Usuarios" path="/gestion-usuarios" />
           <MenuItem text="Programar por Ficha" path="/programar" />
           <MenuItem text="Programar por Instructor" path="/programar-instructor" />
@@ -66,6 +66,7 @@ const Sidebar = () => {
           <MenuItem text="Gestión de Coordinadores" path="/gestion-coordinadores" />
           <MenuItem text="Gestión de Instructores" path="/gestion-instructores" />
           <MenuItem text="Gestión de Programas" path="/gestion-programas" />
+          <MenuItem text="Enviar Email" path="/enviar-email" />
         </List>
       </Drawer>
     </>
