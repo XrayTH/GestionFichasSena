@@ -6,6 +6,7 @@ import { getInstructores } from '../service/intructorService';
 import { getCoordinadores } from '../service/coordinadorService';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FilePresent, PictureAsPdf } from '@mui/icons-material';  // Importa íconos de archivos
+import Sidebar from './../components/Sidebar';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -234,6 +235,8 @@ const Email = () => {
   };
 
   return (
+    <>
+    <Sidebar/>
     <div className={classes.container}>
       <div className={classes.formContainer}>
         <div className={classes.leftSection}>
@@ -311,9 +314,18 @@ const Email = () => {
             variant="contained"
             color="primary"
             className={classes.sendButton}
-            onClick={handleSendEmail}  // Llama a la función que envía el correo
+            onClick={handleSendEmail}  
           >
-            Enviar
+            Enviar Este Correo
+          </Button>
+          
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.sendButton}
+            onClick={handleSendEmail}  
+          >
+            Enviar Correo Masivo
           </Button>
 
           {loading && (
@@ -330,6 +342,7 @@ const Email = () => {
         message={snackMessage}
       />
     </div>
+    </>
   );
 };
 
