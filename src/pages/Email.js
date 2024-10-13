@@ -248,9 +248,14 @@ const Email = () => {
     }
   };
 
+  const handleRegresar = () => {
+    navigate(-1); 
+  };
+
   return (
     <>
     <Sidebar/>
+    <Button onClick={handleRegresar} className={classes.returnButton}>Volver</Button>
     <div className={classes.container}>
       <div className={classes.formContainer}>
         <div className={classes.leftSection}>
