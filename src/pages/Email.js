@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
-import { TextField, Button, TextareaAutosize, MenuItem, Select } from '@mui/material';
+import { TextField, Button, TextareaAutosize, MenuItem, Select, CircularProgress, Snackbar } from '@mui/material';
 import { sendEmail } from './../service/emailService';
 import { getInstructores } from '../service/intructorService';
 import { getCoordinadores } from '../service/coordinadorService';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { FilePresent, PictureAsPdf } from '@mui/icons-material';  // Importa íconos de archivos
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -130,17 +131,13 @@ const useStyles = makeStyles(() => ({
     fontSize: '12px',
     textAlign: 'center',
   },
+  loadingSpinner: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '20px',
+  },
 }));
-
-const ImageList = () => {
-  const classes = useStyles();
-
-  return (
-    <div className={classes.imageListContainer}>
-      {/* Aquí irán las imágenes */}
-    </div>
-  );
-};
 
 const Email = () => {
   const classes = useStyles();
@@ -153,6 +150,8 @@ const Email = () => {
   const [subject, setSubject] = useState('');  // Almacenar el asunto del correo
   const [content, setContent] = useState('');  // Almacenar el contenido del correo
   const [files, setFiles] = useState([]);      // Almacenar los archivos adjuntos
+  const [loading, setLoading] = useState(false); // Estado para la carga
+  const [snackMessage, setSnackMessage] = useState(''); // Mensaje de éxito o error
 
   // Cargar instructores y coordinadores al montar el componente
   useEffect(() => {
@@ -189,7 +188,8 @@ const Email = () => {
 
   // Manejo de los archivos seleccionados
   const handleFileChange = (event) => {
-    setFiles([...event.target.files]);  // Almacena los archivos seleccionados en el estado
+    const newFiles = Array.from(event.target.files);
+    setFiles((prevFiles) => [...prevFiles, ...newFiles]);  // Almacena los archivos seleccionados en el estado
   };
 
   // Enviar el correo
@@ -200,10 +200,13 @@ const Email = () => {
       return;
     }
 
+    setLoading(true); // Mostrar el spinner de carga
+
     try {
       // Llamada a la función sendEmail
       await sendEmail(emailList, subject, content, files);
-      alert('Correo enviado exitosamente');
+      setSnackMessage('Correo enviado exitosamente');
+      setLoading(false); // Ocultar el spinner
       // Resetear formulario después de enviar
       setRecipients('');
       setSubject('');
@@ -211,7 +214,22 @@ const Email = () => {
       setFiles([]);
     } catch (error) {
       console.error('Error al enviar el correo', error);
-      alert('Hubo un error al enviar el correo.');
+      setSnackMessage('Hubo un error al enviar el correo.');
+      setLoading(false); // Ocultar el spinner
+    }
+  };
+
+  // Función para obtener el ícono según el tipo de archivo
+  const getFileIcon = (fileName) => {
+    const ext = fileName.split('.').pop();
+    switch (ext) {
+      case 'pdf':
+        return <PictureAsPdf />;
+      case 'xls':
+      case 'xlsx':
+        return <FilePresent />;
+      default:
+        return <FilePresent />;
     }
   };
 
@@ -240,15 +258,25 @@ const Email = () => {
           />
 
           <div className={classes.imageListWrapper}>
-            <ImageList />
-            <Button className={classes.addButton}>+</Button>
+            <div className={classes.imageListContainer}>
+              {files.map((file, index) => (
+                <div key={index} className={classes.imageItem}>
+                  {getFileIcon(file.name)} {/* Icono según el tipo de archivo */}
+                  <span className={classes.imageName}>{file.name}</span>
+                </div>
+              ))}
+            </div>
+            <input
+              type="file"
+              multiple
+              onChange={handleFileChange}  // Manejador de archivos adjuntos
+              style={{ display: 'none' }}
+              id="file-upload"
+            />
+            <label htmlFor="file-upload">
+              <Button className={classes.addButton}>+</Button>
+            </label>
           </div>
-
-          <input
-            type="file"
-            multiple
-            onChange={handleFileChange}  // Manejador de archivos adjuntos
-          />
         </div>
 
         <div className={classes.rightSection}>
@@ -290,8 +318,20 @@ const Email = () => {
           >
             Enviar
           </Button>
+
+          {loading && (
+            <div className={classes.loadingSpinner}>
+              <CircularProgress />
+            </div>
+          )}
         </div>
       </div>
+
+      <Snackbar
+        open={Boolean(snackMessage)}
+        autoHideDuration={6000}
+        message={snackMessage}
+      />
     </div>
   );
 };
