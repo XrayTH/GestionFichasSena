@@ -123,11 +123,11 @@ const ConsultaPorFicha = () => {
     const element = document.getElementById('calendarContainer');  // Captura el contenedor
 
     const opt = {
-        margin:       0.5,
-        filename:     'calendarioFicha.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2 },
-        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        margin: 0.5,
+        filename: 'calendarioFicha.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
     };
 
     html2pdf().from(element).set(opt).toPdf().get('pdf').then(function (pdf) {
@@ -138,17 +138,12 @@ const ConsultaPorFicha = () => {
         const url = URL.createObjectURL(blob);
         window.open(url);  // Abre el PDF en una nueva pestaña del navegador
 
-        enviarCorreo(pdf)
+        // Una vez que el PDF esté generado, redirige a la página de envío de correo
+        navigate('/enviar-email', {
+            state: { pdf: blob }  // Usa 'blob' en lugar de 'pdf' para asegurar que pasas el archivo correctamente
+        });
     });
-    
-  };
-
-  const enviarCorreo = (pdf) => {
-    console.log("llega aqui",pdf)
-    navigate('/enviar-email', { 
-      state: { pdf } 
-    });
-  }
+};
 
   return (
     <>      

@@ -156,11 +156,12 @@ const Email = () => {
 
   useEffect(() => {
     if (location.state?.pdf) {
-      // Si se recibió un PDF en la redirección, lo agregamos a los archivos adjuntos
-      const pdfFile = new File([location.state.pdf], 'calendarioFicha.pdf', { type: 'application/pdf' });
-      setFiles(prevFiles => [...prevFiles, pdfFile]);  // Agregarlo a los archivos
+        // Si se recibió un PDF en la redirección, lo agregamos a los archivos adjuntos
+        const pdfFile = new File([location.state.pdf], 'calendarioFicha.pdf', { type: 'application/pdf' });
+        setFiles(prevFiles => [...prevFiles, pdfFile]);  // Agregarlo a los archivos
     }
-  }, [location.state]);
+}, [location.state]);
+
 
   // Cargar instructores y coordinadores al montar el componente
   useEffect(() => {
