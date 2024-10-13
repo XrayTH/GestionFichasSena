@@ -86,35 +86,66 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
         />
       </div>
 
-      {/* 4. Editar */}
+      {/* 4. Tablas */}
+      <div className={classes.fieldContainer}>
+        <label className={classes.label}>Gestión</label>
+        <label className={classes.label}>Tablas</label>
+        <Switch
+          className={classes.switch}
+          checked={formState.tablas}
+          disabled={!isEditable}
+          onChange={() =>
+            setFormState({ ...formState, tablas: !formState.tablas })
+          }
+        />
+      </div>
+
+      {/* 5. Ver Programación */}
+      <div className={classes.fieldContainer}>
+        <label className={classes.label}>Ver </label>
+        <label className={classes.label}>Programación</label>
+        <Switch
+          className={classes.switch}
+          checked={formState.verProgramacion}
+          disabled={!isEditable}
+          onChange={() =>
+            setFormState({ ...formState, verProgramacion: !formState.verProgramacion })
+          }
+        />
+      </div>
+
+      {/* 6. Editar Programación */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Editar</label>
+        <label className={classes.label}>Programación</label>
         <Switch
           className={classes.switch}
-          checked={formState.editar}
+          checked={formState.editProgramacion}
           disabled={!isEditable}
           onChange={() =>
-            setFormState({ ...formState, editar: !formState.editar })
+            setFormState({ ...formState, editProgramacion: !formState.editProgramacion })
           }
         />
       </div>
 
-      {/* 5. Crear */}
+      {/* 7. Email */}
       <div className={classes.fieldContainer}>
-        <label className={classes.label}>Crear</label>
+        <label className={classes.label}>Enviar</label>
+        <label className={classes.label}>Emails</label>
         <Switch
           className={classes.switch}
-          checked={formState.crear}
+          checked={formState.email}
           disabled={!isEditable}
           onChange={() =>
-            setFormState({ ...formState, crear: !formState.crear })
+            setFormState({ ...formState, email: !formState.email })
           }
         />
       </div>
 
-      {/* 6. Gestionar Usuarios */}
+      {/* 8. Gestión Usuarios */}
       <div className={classes.fieldContainer}>
-        <label className={classes.label}>Gestión Usuarios</label>
+        <label className={classes.label}>Gestión</label>
+        <label className={classes.label}>Usuarios</label>
         <Switch
           className={classes.switch}
           checked={formState.gestionarUsuarios}
@@ -128,7 +159,7 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
         />
       </div>
 
-      {/* 7. Botones */}
+      {/* 9. Botones */}
       <div className={classes.fieldContainer}>
         <Button className={classes.button} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}
