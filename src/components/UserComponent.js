@@ -24,147 +24,144 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
     }));
   };
 
-  // Actualiza formState cuando el usuario prop cambia
   useEffect(() => {
     setFormState(user);
   }, [user]);
 
   return (
     <div className={classes.container}>
-      {/* 1. Usuario */}
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Usuario</label>
-        <TextField
-          className={classes.textField}
-          name="usuario"
-          value={formState.usuario}
-          variant="outlined"
-          InputProps={{
-            readOnly: !isEditable,
-          }}
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* 2. Contraseña */}
-      <div className={classes.fieldContainer}>
-        <div className={classes.labelWithButton}>
-          <label className={classes.label}>Contraseña</label>
-          <Button
-            onMouseDown={() => setShowPassword(true)}
-            onMouseUp={() => setShowPassword(false)}
-            className={classes.button}
-          >
-            👁️
-          </Button>
+      {/* 1. Campos de texto */}
+      <div className={classes.textFields}>
+        {/* Usuario */}
+        <div className={classes.fieldContainer}>
+          <label className={classes.label}>Usuario</label>
+          <TextField
+            className={classes.textField}
+            name="usuario"
+            value={formState.usuario}
+            variant="outlined"
+            InputProps={{
+              readOnly: !isEditable,
+            }}
+            onChange={handleChange}
+          />
         </div>
-        <TextField
-          className={classes.textField}
-          name="contraseña"
-          type={showPassword ? 'text' : 'password'}
-          value={formState.contraseña}
-          variant="outlined"
-          InputProps={{
-            readOnly: !isEditable,
-          }}
-          onChange={handleChange}
-        />
+
+        {/* Contraseña */}
+        <div className={classes.fieldContainer}>
+          <div className={classes.labelWithButton}>
+            <label className={classes.label}>Contraseña</label>
+            <Button
+              onMouseDown={() => setShowPassword(true)}
+              onMouseUp={() => setShowPassword(false)}
+              className={classes.button}
+            >
+              👁️
+            </Button>
+          </div>
+          <TextField
+            className={classes.textField}
+            name="contraseña"
+            type={showPassword ? 'text' : 'password'}
+            value={formState.contraseña}
+            variant="outlined"
+            InputProps={{
+              readOnly: !isEditable,
+            }}
+            onChange={handleChange}
+          />
+        </div>
+
+        {/* Rol */}
+        <div className={classes.fieldContainer}>
+          <label className={classes.label}>Rol</label>
+          <TextField
+            className={classes.textField}
+            name="rol"
+            value={formState.rol}
+            variant="outlined"
+            InputProps={{
+              readOnly: !isEditable,
+            }}
+            onChange={handleChange}
+          />
+        </div>
       </div>
 
-      {/* 3. Rol */}
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Rol</label>
-        <TextField
-          className={classes.textField}
-          name="rol"
-          value={formState.rol}
-          variant="outlined"
-          InputProps={{
-            readOnly: !isEditable,
-          }}
-          onChange={handleChange}
-        />
+      {/* 2. Switches */}
+      <div className={classes.switches}>
+        <div className={classes.switchContainer}>
+          <label className={classes.label}>Gestión Tablas</label>
+          <Switch
+            className={classes.switch}
+            checked={formState.tablas}
+            disabled={!isEditable}
+            onChange={() =>
+              setFormState({ ...formState, tablas: !formState.tablas })
+            }
+          />
+        </div>
+
+        <div className={classes.switchContainer}>
+          <label className={classes.label}>Ver Programación</label>
+          <Switch
+            className={classes.switch}
+            checked={formState.verProgramacion}
+            disabled={!isEditable}
+            onChange={() =>
+              setFormState({ ...formState, verProgramacion: !formState.verProgramacion })
+            }
+          />
+        </div>
+
+        <div className={classes.switchContainer}>
+          <label className={classes.label}>Editar Programación</label>
+          <Switch
+            className={classes.switch}
+            checked={formState.editProgramacion}
+            disabled={!isEditable}
+            onChange={() =>
+              setFormState({ ...formState, editProgramacion: !formState.editProgramacion })
+            }
+          />
+        </div>
+
+        <div className={classes.switchContainer}>
+          <label className={classes.label}>Enviar Emails</label>
+          <Switch
+            className={classes.switch}
+            checked={formState.email}
+            disabled={!isEditable}
+            onChange={() =>
+              setFormState({ ...formState, email: !formState.email })
+            }
+          />
+        </div>
+
+        <div className={classes.switchContainer}>
+          <label className={classes.label}>Gestión Usuarios</label>
+          <Switch
+            className={classes.switch}
+            checked={formState.gestionarUsuarios}
+            disabled={!isEditable}
+            onChange={() =>
+              setFormState({
+                ...formState,
+                gestionarUsuarios: !formState.gestionarUsuarios,
+              })
+            }
+          />
+        </div>
       </div>
 
-      {/* 4. Tablas */}
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Gestión</label>
-        <label className={classes.label}>Tablas</label>
-        <Switch
-          className={classes.switch}
-          checked={formState.tablas}
-          disabled={!isEditable}
-          onChange={() =>
-            setFormState({ ...formState, tablas: !formState.tablas })
-          }
-        />
-      </div>
-
-      {/* 5. Ver Programación */}
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Ver </label>
-        <label className={classes.label}>Programación</label>
-        <Switch
-          className={classes.switch}
-          checked={formState.verProgramacion}
-          disabled={!isEditable}
-          onChange={() =>
-            setFormState({ ...formState, verProgramacion: !formState.verProgramacion })
-          }
-        />
-      </div>
-
-      {/* 6. Editar Programación */}
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Editar</label>
-        <label className={classes.label}>Programación</label>
-        <Switch
-          className={classes.switch}
-          checked={formState.editProgramacion}
-          disabled={!isEditable}
-          onChange={() =>
-            setFormState({ ...formState, editProgramacion: !formState.editProgramacion })
-          }
-        />
-      </div>
-
-      {/* 7. Email */}
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Enviar</label>
-        <label className={classes.label}>Emails</label>
-        <Switch
-          className={classes.switch}
-          checked={formState.email}
-          disabled={!isEditable}
-          onChange={() =>
-            setFormState({ ...formState, email: !formState.email })
-          }
-        />
-      </div>
-
-      {/* 8. Gestión Usuarios */}
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Gestión</label>
-        <label className={classes.label}>Usuarios</label>
-        <Switch
-          className={classes.switch}
-          checked={formState.gestionarUsuarios}
-          disabled={!isEditable}
-          onChange={() =>
-            setFormState({
-              ...formState,
-              gestionarUsuarios: !formState.gestionarUsuarios,
-            })
-          }
-        />
-      </div>
-
-      {/* 9. Botones */}
-      <div className={classes.fieldContainer}>
+      {/* 3. Botones */}
+      <div className={classes.buttons}>
         <Button className={classes.button} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}
         </Button>
-        <Button className={classes.deleteButton} onClick={() => onDelete(user.id)}>Borrar</Button>
+        <Button className={classes.deleteButton} onClick={() => onDelete(user.id)}>
+          Borrar
+        </Button>
       </div>
     </div>
   );
@@ -172,13 +169,28 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
 
 const useStyles = makeStyles(() => ({
   container: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-    gridGap: '10px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
     backgroundColor: '#f5f5f5',
     padding: '20px',
     borderRadius: '8px',
     border: '2px solid #5eb219',
+  },
+  textFields: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gap: '10px',
+  },
+  switches: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gap: '10px',
+  },
+  buttons: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '10px',
   },
   fieldContainer: {
     display: 'flex',
@@ -186,10 +198,15 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     alignItems: 'center',
   },
+  switchContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
   label: {
     fontWeight: 'bold',
     color: '#5eb219',
-    alignSelf: 'center',
     marginBottom: '5px',
   },
   labelWithButton: {
@@ -200,6 +217,9 @@ const useStyles = makeStyles(() => ({
   },
   textField: {
     width: '100%',
+  },
+  switch: {
+    alignSelf: 'center',
   },
   button: {
     backgroundColor: '#5eb219',
@@ -215,9 +235,6 @@ const useStyles = makeStyles(() => ({
     '&:hover': {
       backgroundColor: '#d81b60',
     },
-  },
-  switch: {
-    alignSelf: 'center',
   },
 }));
 
