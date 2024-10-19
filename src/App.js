@@ -41,7 +41,7 @@ const AppContent = () => {
 
   useEffect(() => {
     checkConnection();
-  }, [location]);
+  }, [location, isConnected]);
 
   if (isConnected === false) {
     return <Conectando />;

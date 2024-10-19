@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
-import { TextField, Button, TextareaAutosize, MenuItem, Select, CircularProgress, Snackbar } from '@mui/material';
+import { TextField, Button, TextareaAutosize, CircularProgress, Snackbar, Autocomplete } from '@mui/material';
 import { sendEmail, sendMasiveEmail } from './../service/emailService';
 import { getInstructores } from '../service/intructorService';
 import { getCoordinadores } from '../service/coordinadorService';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FilePresent, PictureAsPdf } from '@mui/icons-material';  
+import { FilePresent, PictureAsPdf } from '@mui/icons-material';
 import Sidebar from './../components/Sidebar';
 
 const Email = () => {
@@ -15,17 +15,17 @@ const Email = () => {
 
   const [selectedValue, setSelectedValue] = useState('');
   const [recipients, setRecipients] = useState('');
-  const [options, setOptions] = useState([]); 
-  const [subject, setSubject] = useState('');  
-  const [content, setContent] = useState('');  
-  const [files, setFiles] = useState([]);      
-  const [loading, setLoading] = useState(false); 
-  const [snackMessage, setSnackMessage] = useState(''); 
+  const [options, setOptions] = useState([]);
+  const [subject, setSubject] = useState('');
+  const [content, setContent] = useState('');
+  const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [snackMessage, setSnackMessage] = useState('');
 
   useEffect(() => {
     if (location.state?.pdf) {
       const pdfFile = new File([location.state.pdf], 'calendarioFicha.pdf', { type: 'application/pdf' });
-      
+
       setFiles((prevFiles) => {
         const fileAlreadyExists = prevFiles.some(file => file.name === pdfFile.name);
         if (!fileAlreadyExists) {
@@ -35,7 +35,7 @@ const Email = () => {
       });
     }
   }, [location.state]);
-  
+
   useEffect(() => {
     const fetchOptions = async () => {
       try {
@@ -47,7 +47,7 @@ const Email = () => {
           ...coordinadores.map(coord => ({ nombre: coord.nombre, email: coord.email }))
         ];
 
-        setOptions(combinedOptions); 
+        setOptions(combinedOptions);
       } catch (error) {
         console.error("Error al obtener instructores o coordinadores", error);
       }
@@ -68,22 +68,22 @@ const Email = () => {
 
   const handleFileChange = (event) => {
     const newFiles = Array.from(event.target.files);
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);  
+    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
   };
 
   const handleSendEmail = async () => {
-    const emailList = recipients.split('\n').filter(email => email);  
+    const emailList = recipients.split('\n').filter(email => email);
     if (!emailList.length || !subject) {
       alert("Por favor, asegúrate de ingresar al menos un destinatario y un asunto.");
       return;
     }
 
-    setLoading(true); 
+    setLoading(true);
 
     try {
       await sendEmail(emailList, subject, content, files);
       setSnackMessage('Correo enviado exitosamente');
-      setLoading(false); 
+      setLoading(false);
       setRecipients('');
       setSubject('');
       setContent('');
@@ -91,7 +91,7 @@ const Email = () => {
     } catch (error) {
       console.error('Error al enviar el correo', error);
       setSnackMessage('Hubo un error al enviar el correo.');
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -110,26 +110,26 @@ const Email = () => {
 
   const handleSendMasiveEmail = async () => {
     const confirmacion = window.confirm("Esta opción enviará a cada instructor por correo la programación que le corresponde del presente mes. ¿Está seguro de hacerlo?");
-    
+
     if (!confirmacion) {
-        return; 
+      return;
     }
 
-    setLoading(true); 
+    setLoading(true);
     try {
       const respuesta = await sendMasiveEmail();
-      
+
       if (respuesta.success) {
         console.log("Proceso de envío de correos completado");
-        
+
         if (respuesta.enviados.length > 0) {
           console.log("Correos enviados:", respuesta.enviados);
         }
-  
+
         if (respuesta.noEnviados.length > 0) {
           console.log("Correos no enviados:", respuesta.noEnviados);
         }
-  
+
         setSnackMessage('Correos enviados exitosamente');
       } else {
         console.error("Error en el proceso de envío:", respuesta.message);
@@ -139,132 +139,127 @@ const Email = () => {
       console.error("Error al enviar los correos:", error);
       setSnackMessage('Hubo un error al enviar los correos.');
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
-};
-
-  
-  
-  
+  };
 
   const handleRegresar = () => {
-    navigate(-1); 
+    navigate(-1);
   };
 
   return (
     <>
-    <Sidebar/>
-    <div className={classes.container}>
-      <div className={classes.formContainer}>
-        <div className={classes.leftSection}>
-        <Button onClick={handleRegresar} className={classes.returnButton}>Volver</Button>
-        <br/>
-          <label className={classes.label}>Asunto:</label>
-          <br />
-          <TextField
-            variant="outlined"
-            className={classes.textField}
-            value={subject}  
-            onChange={(e) => setSubject(e.target.value)}  
-          />
-          <br />
+      <Sidebar />
+      <div className={classes.container}>
+        <div className={classes.formContainer}>
+          <div className={classes.leftSection}>
+            <Button onClick={handleRegresar} className={classes.returnButton}>Volver</Button>
+            <br />
+            <label className={classes.label}>Asunto:</label>
+            <br />
+            <TextField
+              variant="outlined"
+              className={classes.textField}
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+            />
+            <br />
 
-          <label className={classes.label}>Contenido:</label>
-          <TextareaAutosize
-            className={classes.textAreaEditable}
-            minRows={6}
-            maxRows={6}
-            placeholder="Escribe el contenido aquí"
-            value={content}  
-            onChange={(e) => setContent(e.target.value)}  
-          />
+            <label className={classes.label}>Contenido:</label>
+            <TextareaAutosize
+              className={classes.textAreaEditable}
+              minRows={6}
+              maxRows={6}
+              placeholder="Escribe el contenido aquí"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
 
-          <div className={classes.imageListWrapper}>
-            <div className={classes.imageListContainer}>
-              {files.map((file, index) => (
-                <div key={index} className={classes.imageItem}>
-                  {getFileIcon(file.name)} 
-                  <span className={classes.imageName}>{file.name}</span>
-                </div>
-              ))}
+            <div className={classes.imageListWrapper}>
+              <div className={classes.imageListContainer}>
+                {files.map((file, index) => (
+                  <div key={index} className={classes.imageItem}>
+                    {getFileIcon(file.name)}
+                    <span className={classes.imageName}>{file.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            
-          </div>
-          <input
+            <input
               type="file"
               multiple
-              onChange={handleFileChange}  
+              onChange={handleFileChange}
               id="file-upload"
-              className={classes.fileInput}            
+              className={classes.fileInput}
+            />
+          </div>
+
+          <div className={classes.rightSection}>
+            <label className={classes.label}>Enviar a:</label>
+            <div className={classes.dropdownWrapper}>
+              <Autocomplete
+                className={classes.dropdown}
+                disablePortal
+                options={options}
+                getOptionLabel={(option) => option.nombre}
+                value={options.find(option => option.email === selectedValue) || null}
+                onChange={(e, newValue) => setSelectedValue(newValue?.email || '')}
+                renderInput={(params) => (
+                  <TextField {...params} variant="outlined" className={classes.dropdown} />
+                )}
+                renderOption={(props, option) => (
+                  <li {...props} key={option.email}>
+                    {option.nombre}
+                  </li>
+                )}
               />
-        </div>
-
-        <div className={classes.rightSection}>
-          <label className={classes.label}>Enviar a:</label>
-          <div className={classes.dropdownWrapper}>
-            <Select
-              variant="outlined"
-              className={classes.dropdown}
-              displayEmpty
-              value={selectedValue}
-              onChange={(e) => setSelectedValue(e.target.value)}  
-            >
-              <MenuItem value="">
-                <em>Seleccionar destinatario</em>
-              </MenuItem>
-              {options.map((option, index) => (
-                <MenuItem key={index} value={option.email}>
-                  {option.nombre}  
-                </MenuItem>
-              ))}
-            </Select>
-            <Button className={classes.addButton} onClick={handleAddRecipient}>+</Button>
-          </div>
-
-          <TextareaAutosize
-            className={classes.textAreaReadOnly}
-            minRows={6}
-            maxRows={6}
-            placeholder="Correos"
-            value={recipients}
-            disabled
-          />
-
-          <div className={classes.sendButtonWrapper}>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.sendButton}
-              onClick={handleSendEmail}
-            >
-              Enviar Este Correo
-            </Button>
-
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.sendButton}
-              onClick={handleSendMasiveEmail}
-              disabled={loading}
-            >
-              Enviar Correo Masivo
-            </Button>
-          </div>
-
-          {loading && (
-            <div className={classes.loadingSpinner}>
-              <CircularProgress />
+              <Button className={classes.addButton} onClick={handleAddRecipient}>+</Button>
             </div>
-          )}
-        </div>
-      </div>
 
-      <Snackbar
-        open={Boolean(snackMessage)}
-        autoHideDuration={6000}
-        message={snackMessage}
-      />
-    </div>
+            <TextareaAutosize
+              className={classes.textAreaReadOnly}
+              minRows={6}
+              maxRows={6}
+              placeholder="Correos"
+              value={recipients}
+              disabled
+            />
+
+            <div className={classes.sendButtonWrapper}>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.sendButton}
+                onClick={handleSendEmail}
+              >
+                Enviar Este Correo
+              </Button>
+
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.sendButton}
+                onClick={handleSendMasiveEmail}
+                disabled={loading}
+              >
+                Enviar Correo Masivo
+              </Button>
+            </div>
+
+            {loading && (
+              <div className={classes.loadingSpinner}>
+                <CircularProgress className={classes.spinner} />
+              </div>
+            )}
+          </div>
+        </div>
+
+        <Snackbar
+          open={Boolean(snackMessage)}
+          autoHideDuration={6000}
+          message={snackMessage}
+        />
+      </div>
     </>
   );
 };
@@ -398,6 +393,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: '20px',
+    color: "green"
   },
   sendButtonWrapper: {
     display: 'flex',
@@ -435,6 +431,9 @@ const useStyles = makeStyles(() => ({
     fontWeight: 'bold',
     textTransform: 'none',
   },
+  spinner: {
+    color: "green",
+  }
 }));
 
 export default Email;
