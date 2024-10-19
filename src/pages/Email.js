@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
-import { TextField, Button, TextareaAutosize, CircularProgress, Snackbar, Autocomplete } from '@mui/material';
+import { TextField, Button, TextareaAutosize, CircularProgress, Snackbar, Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { sendEmail, sendMasiveEmail } from './../service/emailService';
 import { getInstructores } from '../service/intructorService';
 import { getCoordinadores } from '../service/coordinadorService';
@@ -21,6 +21,8 @@ const Email = () => {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [snackMessage, setSnackMessage] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     if (location.state?.pdf) {
@@ -69,6 +71,29 @@ const Email = () => {
   const handleFileChange = (event) => {
     const newFiles = Array.from(event.target.files);
     setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+  };
+
+  const handleFileClick = (file) => {
+    setSelectedFile(file);
+    setOpenDialog(true);
+  };
+
+  const handleDialogAction = (action) => {
+    switch (action) {
+      case 'abrir':
+        window.open(URL.createObjectURL(selectedFile), '_blank');
+        break;
+      case 'borrar':
+        setFiles(files.filter(f => f !== selectedFile));
+        break;
+      case 'cancelar':
+        break;
+      default:
+        alert("Acción no reconocida.");
+        break;
+    }
+    setOpenDialog(false);
+    setSelectedFile(null);
   };
 
   const handleSendEmail = async () => {
@@ -178,7 +203,7 @@ const Email = () => {
             <div className={classes.imageListWrapper}>
               <div className={classes.imageListContainer}>
                 {files.map((file, index) => (
-                  <div key={index} className={classes.imageItem}>
+                  <div key={index} className={classes.imageItem} onClick={() => handleFileClick(file)}>
                     {getFileIcon(file.name)}
                     <span className={classes.imageName}>{file.name}</span>
                   </div>
@@ -257,8 +282,21 @@ const Email = () => {
         <Snackbar
           open={Boolean(snackMessage)}
           autoHideDuration={6000}
+          onClose={() => setSnackMessage('')}
           message={snackMessage}
         />
+
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+          <DialogTitle>Archivo seleccionado</DialogTitle>
+          <DialogContent>
+            <p>¿Qué te gustaría hacer con este archivo?</p>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => handleDialogAction('abrir')} color="primary">Abrir</Button>
+            <Button onClick={() => handleDialogAction('borrar')} color="secondary">Borrar</Button>
+            <Button onClick={() => handleDialogAction('cancelar')} color="default">Cancelar</Button>
+          </DialogActions>
+        </Dialog>
       </div>
     </>
   );
