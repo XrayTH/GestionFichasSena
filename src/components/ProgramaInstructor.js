@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux'; // Para obtener permisos del estado de Redux
+import { selectUserPermisos } from '../features/userSlice'; // Importar el selector de permisos
 
 const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instructores, jornadas, fechaInicio, fechaFin, onCrearAsignacion, onEliminarAsignacion }) => {
   const navigate = useNavigate(); 
@@ -11,9 +13,11 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
   const [selectedDia, setSelectedDia] = useState('');
   const [selectedJornada, setSelectedJornada] = useState('');
   const [jornadaVisibility, setJornadaVisibility] = useState({});
-  const [fechaAsignacionInicio, setFechaAsignacionInicio] = useState(''); // Nuevo estado para la fecha de inicio
-  const [fechaAsignacionFin, setFechaAsignacionFin] = useState(''); // Nuevo estado para la fecha de fin
+  const [fechaAsignacionInicio, setFechaAsignacionInicio] = useState(''); 
+  const [fechaAsignacionFin, setFechaAsignacionFin] = useState(''); 
   const classes = useStyles();
+
+  const permisos = useSelector(selectUserPermisos); // Obtener los permisos del usuario
 
   useEffect(() => {
     if (fichas.length > 0) {
@@ -51,19 +55,20 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
   });
 
   const handleAbrirFormulario = (dia, jornada) => {
+    if (!permisos.editProgramacion) return; // Verificar si el usuario tiene permiso para editar
     setSelectedDia(dia);
     setSelectedJornada(jornada);
     setShowForm(true);
-    setFechaAsignacionInicio(''); // Reiniciar la fecha de inicio al abrir el formulario
-    setFechaAsignacionFin(''); // Reiniciar la fecha de fin al abrir el formulario
+    setFechaAsignacionInicio(''); 
+    setFechaAsignacionFin(''); 
   };
 
   const handleCrear = () => {
     const nuevaAsignacion = {
       ficha: selectedFicha,
       instructor: instructorActual.nombre,
-      inicio: fechaAsignacionInicio, // Usar la fecha de inicio del formulario
-      fin: fechaAsignacionFin, // Usar la fecha de fin del formulario
+      inicio: fechaAsignacionInicio,
+      fin: fechaAsignacionFin,
       dia: selectedDia,
       jornada: selectedJornada,
     };
@@ -72,6 +77,7 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
   };
 
   const handleEliminar = (idAsignacion) => {
+    if (!permisos.editProgramacion) return; // Verificar si el usuario tiene permiso para editar
     if (window.confirm('¿Estás seguro de que deseas eliminar esta asignación?')) {
       onEliminarAsignacion(idAsignacion);
     }
@@ -133,7 +139,10 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
                   );
 
                   return (
-                    <td key={dia} onClick={() => asignacion ? handleEliminar(asignacion.id) : handleAbrirFormulario(dia, jornada.nombre)}>
+                    <td 
+                      key={dia} 
+                      onClick={() => asignacion ? handleEliminar(asignacion.id) : handleAbrirFormulario(dia, jornada.nombre)}
+                    >
                       {asignacion ? (
                         <div className={classes.asignacion}>
                           <p><strong>{asignacion.fin}</strong></p>

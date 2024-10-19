@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import { FormControl, InputLabel, Select, MenuItem, Grid2, Typography, TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
+import { useSelector } from 'react-redux'; // Para obtener permisos del estado de Redux
+import { selectUserPermisos } from '../features/userSlice'; // Importar el selector de permisos
 import { getNumeroAsignaciones } from '../service/asignacionService'
 import { Navigate, useNavigate } from 'react-router-dom';
 
@@ -16,6 +18,10 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
     const [jornadasVisibles, setJornadasVisibles] = useState({}); 
     const [asignacionesPorInstructor, setAsignacionesPorInstructor] = useState({}); 
     const [reloadKey, setReloadKey] = useState(0); 
+
+    // Obtener los permisos del usuario desde Redux
+    const permisosUsuario = useSelector(selectUserPermisos);
+    const tienePermisoEdicion = permisosUsuario.editProgramacion;
 
     // Filtrar asignaciones basadas en la intersección de fechas
     useEffect(() => {
@@ -70,9 +76,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
     // Cuando el instructor es seleccionado, buscar el número de asignaciones
     const handleInstructorHover = async (instructor) => {
         if(instructor || instructor !== ""){
-            //if (!asignacionesPorInstructor[instructor]) {
-                await fetchAsignacionesForInstructor(instructor);
-           // }
+            await fetchAsignacionesForInstructor(instructor);
         }
     };
 
@@ -83,14 +87,12 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
         return asignacion ? asignacion.instructor : '';
     };
 
-    // Nueva función para verificar si una jornada tiene asignaciones
     const jornadaTieneInstructor = (jornadaNombre) => {
         return ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].some((day) => {
             return getInstructorForDay(jornadaNombre, day) !== '';
         });
     };
 
-    // Al montar el componente, establecer visibilidad de las jornadas
     useEffect(() => {
         const visibilidadInicial = {};
         jornadas.forEach((jornada) => {
@@ -102,42 +104,37 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
     const handleInstructorChangeChild = (jornadaNombre, day, event, asignacion) => {
         const selectedInstructor = event.target.value;
         
-        // Extraemos el inicio y fin de la asignación correspondiente
         const inicio = asignacion ? asignacion.inicio : '';
         const fin = asignacion ? asignacion.fin : '';
     
-        // Actualiza el estado de los instructores seleccionados
         setSelectedInstructors((prev) => ({
             ...prev,
             [`${jornadaNombre}-${day}`]: selectedInstructor,
         }));
     
-        // Guarda el nuevo instructor para la jornada y día seleccionados, con las fechas de la asignación
         setNewInstructor({
             ficha: ficha.codigo,
             dia: day,
             jornada: jornadaNombre,
             instructor: selectedInstructor,
-            inicio: inicio,  // Usamos la fecha de inicio de la asignación actual
-            fin: fin         // Usamos la fecha de fin de la asignación actual
+            inicio: inicio,
+            fin: fin
         });
     
-        setOpenModal(true); // Abre el modal para definir las fechas
+        setOpenModal(true); 
     };
     
     const handleConfirm = () => {
-        console.log(newInstructor)
         if (newInstructor.instructor === "" || newInstructor.instructor === undefined) {
             onInstructorChange({
                 ficha: newInstructor.ficha,
                 dia: newInstructor.dia,
                 jornada: newInstructor.jornada,
-                instructor: "",  // Esto marcaría la eliminación
-                inicio: newInstructor.inicio,      // Limpiamos las fechas
+                instructor: "", 
+                inicio: newInstructor.inicio,
                 fin: newInstructor.fin,
             });
         } else {
-            // Si se selecciona un nuevo instructor, guardar la asignación normalmente
             onInstructorChange({ 
                 ...newInstructor, 
                 inicio: startDate, 
@@ -145,16 +142,14 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
             });
         }
     
-        // Cierra el modal y actualiza la UI
         setOpenModal(false);
-        setReloadKey(prevKey => prevKey + 1);  // Forzar la recarga de la UI
+        setReloadKey(prevKey => prevKey + 1);  
     };
     
     const handleCancel = () => {
         setOpenModal(false);
     };
 
-    // Controlar visibilidad de las jornadas manualmente
     const handleCheckboxChange = (jornadaNombre, event) => {
         setJornadasVisibles(prevState => ({
             ...prevState,
@@ -168,7 +163,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
         });
       };
 
-    return (
+      return (
         <div key={reloadKey} className={classes.container}>
             <Grid2 container spacing={2}>
                 <Grid2 item xs={3}>
@@ -272,6 +267,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
                                                     value={selectedInstructors[`${jornada.nombre}-${day}`] || ""}
                                                     className={classes.select}
                                                     onMouseEnter={() => handleInstructorHover(getInstructorForDay(jornada.nombre, day))}
+                                                    disabled={!tienePermisoEdicion}
                                                 >
 
                                                     <MenuItem value="">
