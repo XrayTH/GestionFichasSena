@@ -20,7 +20,6 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
   const [coordinadorInput, setCoordinadorInput] = useState('');
   const [programaInput, setProgramaInput] = useState('');
   const [gestorInput, setGestorInput] = useState('');
-  const [municipioInput, setMunicipioInput] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;

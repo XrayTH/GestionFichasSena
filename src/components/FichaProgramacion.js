@@ -4,7 +4,7 @@ import { FormControl, InputLabel, Select, MenuItem, Grid2, Typography, TextField
 import { useSelector } from 'react-redux'; 
 import { selectUserPermisos } from '../features/userSlice'; 
 import { getNumeroAsignaciones } from '../service/asignacionService'
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInstructorChange, startDateFilter, endDateFilter }) => {
     const classes = useStyles();
@@ -53,6 +53,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
         });
     
         setSelectedInstructors(initialSelectedInstructors);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filteredAsignaciones, jornadas]);
     
 
@@ -95,6 +96,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
             visibilidadInicial[jornada.nombre] = jornadaTieneInstructor(jornada.nombre);
         });
         setJornadasVisibles(visibilidadInicial);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filteredAsignaciones, jornadas]);
 
     const handleInstructorChangeChild = (jornadaNombre, day, event, asignacion) => {
