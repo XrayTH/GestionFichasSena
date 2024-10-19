@@ -2,44 +2,40 @@ import React, { useState } from "react";
 import { makeStyles } from "@mui/styles"; 
 import { useNavigate } from "react-router-dom"; 
 import logo from "../assets/logo-sena-verde-complementario-svg-2022.svg";
-import { useDispatch } from 'react-redux'; // Importa useDispatch
-import { setUser } from '../features/userSlice'; // Importa setUser del slice actualizado
+import { useDispatch } from 'react-redux'; 
+import { setUser } from '../features/userSlice'; 
 import { verificarUsuario } from '../service/userService';
-import { encryptPassword } from '../utils/encryption'; // Importa la función de cifrado
+import { encryptPassword } from '../utils/encryption'; 
 
 const Login = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const dispatch = useDispatch(); // Inicializa el dispatch
-  const [usuario, setUsuario] = useState(''); // Estado para el usuario
-  const [contraseña, setContraseña] = useState(''); // Estado para la contraseña
-  const [error, setError] = useState(''); // Estado para manejar errores
+  const dispatch = useDispatch(); 
+  const [usuario, setUsuario] = useState(''); 
+  const [contraseña, setContraseña] = useState(''); 
+  const [error, setError] = useState(''); 
 
   const handleLoginClick = async () => {
-    setError(''); // Reinicia el error al hacer clic
+    setError(''); 
     try {
-      // Cifrar la contraseña antes de enviarla
       const encryptedPassword = encryptPassword(contraseña);
       
-      // Verificar el usuario con la función de servicio
       const userData = await verificarUsuario({ usuario, contraseña: encryptedPassword });
       
-      // Almacena toda la información del usuario excepto la contraseña
       dispatch(setUser({
-        id: userData.usuario.id, // ID del usuario
-        usuario: userData.usuario.usuario, // Nombre de usuario
-        rol: userData.usuario.rol, // Rol del usuario
-        tablas: userData.usuario.tablas, // Permiso de tablas
-        verProgramacion: userData.usuario.verProgramacion, // Permiso de ver la programación
-        editProgramacion: userData.usuario.editProgramacion, // Permiso de editar la programación
-        email: userData.usuario.email, // Permiso de email
-        gestionarUsuarios: userData.usuario.gestionarUsuarios // Permiso de gestionar usuarios
+        id: userData.usuario.id, 
+        usuario: userData.usuario.usuario, 
+        rol: userData.usuario.rol, 
+        tablas: userData.usuario.tablas, 
+        verProgramacion: userData.usuario.verProgramacion, 
+        editProgramacion: userData.usuario.editProgramacion, 
+        email: userData.usuario.email, 
+        gestionarUsuarios: userData.usuario.gestionarUsuarios 
       }));
       console.log(userData.usuario.gestionarUsuarios)
-      // Redirige al usuario a la página de inicio
       navigate("/home");
     } catch (err) {
-      setError(err.message); // Maneja el error
+      setError(err.message); 
       console.error("Error de login:", err.message);
     }
   };
@@ -52,17 +48,17 @@ const Login = () => {
           type="text"
           placeholder="Nombre de usuario"
           className={classes.input}
-          value={usuario} // Vincula el estado
-          onChange={(e) => setUsuario(e.target.value)} // Maneja el cambio
+          value={usuario} 
+          onChange={(e) => setUsuario(e.target.value)} 
         />
         <input
           type="password"
           placeholder="Contraseña"
           className={classes.input}
-          value={contraseña} // Vincula el estado
-          onChange={(e) => setContraseña(e.target.value)} // Maneja el cambio
+          value={contraseña} 
+          onChange={(e) => setContraseña(e.target.value)} 
         />
-        {error && <p className={classes.error}>{error}</p>} {/* Muestra el error */}
+        {error && <p className={classes.error}>{error}</p>} 
         <button 
           type="button"
           className={classes.button}
@@ -123,7 +119,7 @@ const useStyles = makeStyles(() => ({
     },
   },
   error: {
-    color: 'red', // Estilo para el mensaje de error
+    color: 'red', 
     marginBottom: '16px',
   },
 }));

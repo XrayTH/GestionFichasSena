@@ -48,7 +48,7 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
 
   return (
     <div className={classes.container}>
-      {/* Fila 1: Código, Coordinador, Programa, Gestor */}
+
       <div className={classes.fieldRow}>
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Código</label>
@@ -146,7 +146,6 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
         </div>
       </div>
 
-      {/* Fila 2: Ambiente, Ubicación GPS, Inicio, Fin */}
       <div className={classes.fieldRow}>
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Ambiente</label>
@@ -201,7 +200,6 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
         </div>
       </div>
 
-      {/* Fila 3: Requerimientos */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Requerimientos</label>
         <TextField
@@ -215,7 +213,6 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
         />
       </div>
 
-      {/* Botones */}
       <div className={classes.buttonRow}>
         <Button className={classes.button} onClick={handleSave}>
           Guardar
@@ -240,9 +237,9 @@ const useStyles = makeStyles(() => ({
   },
   fieldRow: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', // Ajustado para que los campos tengan un tamaño mínimo
+    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
     gridGap: '10px',
-    justifyItems: 'center', // Centrar elementos dentro de cada celda
+    justifyItems: 'center',
   },
   fieldContainer: {
     display: 'flex',

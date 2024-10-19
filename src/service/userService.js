@@ -1,9 +1,7 @@
-import { fichaSenaService } from '../utils/api'; // Asegúrate de que esta ruta sea correcta
+import { fichaSenaService } from '../utils/api'; 
 
-// Ruta base del backend
 const api = fichaSenaService;
 
-// Obtener todos los usuarios
 export const getUsuarios = async () => {
   try {
     const response = await api.get('/usuarios');
@@ -13,7 +11,6 @@ export const getUsuarios = async () => {
   }
 };
 
-// Obtener usuario por ID
 export const getUsuarioById = async (id) => {
   try {
     const response = await api.get(`/usuarios/${id}`);
@@ -23,7 +20,6 @@ export const getUsuarioById = async (id) => {
   }
 };
 
-// Crear un nuevo usuario
 export const createUsuario = async (usuarioData) => {
   try {
     const response = await api.post('/usuarios', usuarioData);
@@ -33,7 +29,6 @@ export const createUsuario = async (usuarioData) => {
   }
 };
 
-// Actualizar usuario por ID
 export const updateUsuarioById = async (id, usuarioData) => {
   try {
     const response = await api.put(`/usuarios/${id}`, usuarioData);
@@ -43,7 +38,6 @@ export const updateUsuarioById = async (id, usuarioData) => {
   }
 };
 
-// Verificar usuario y contraseña
 export const verificarUsuario = async (credentials) => {
   try {
     const response = await api.post('/usuarios/verificar', credentials);
@@ -53,7 +47,6 @@ export const verificarUsuario = async (credentials) => {
   }
 };
 
-// Eliminar usuario por ID
 export const deleteUsuarioById = async (id) => {
   try {
     const response = await api.delete(`/usuarios/${id}`);

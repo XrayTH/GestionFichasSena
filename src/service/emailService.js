@@ -1,6 +1,5 @@
-import { fichaSenaService } from '../utils/api'; // Asegúrate de que esta ruta sea correcta
+import { fichaSenaService } from '../utils/api'; 
 
-// Ruta base del backend
 const api = fichaSenaService;
 
 /**
@@ -16,12 +15,10 @@ export const sendEmail = async (emails, subject, content, files) => {
     console.log('Emails:', emails);
     const formData = new FormData();
   
-    // Agregar los campos al FormData
     formData.append('emails', JSON.stringify(emails));
     formData.append('subject', subject);
     formData.append('content', content);
   
-    // Agregar archivos al FormData
     files.forEach((file) => {
       formData.append('files', file);
     });
@@ -31,7 +28,7 @@ export const sendEmail = async (emails, subject, content, files) => {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-        timeout: 10000,  // Aumentar el timeout a 10 segundos (10000 ms)
+        timeout: 10000,  
       });
   
       return response.data;
@@ -42,9 +39,8 @@ export const sendEmail = async (emails, subject, content, files) => {
   
   export const sendMasiveEmail = async () => {
     try {
-      // Llamada al backend para ejecutar el proceso de envío de correos
       const response = await api.get('/enviar-correos', {
-        timeout: 60000  // Timeout de 60 segundos (60000 ms)
+        timeout: 60000  
       });
   
       if (response.status === 200) {
@@ -64,7 +60,6 @@ export const sendEmail = async (emails, subject, content, files) => {
         };
       }
     } catch (error) {
-      // Si el error es un timeout o cualquier otro error, lo manejamos aquí
       console.error('Error al enviar los correos:', error.message || error);
       return {
         success: false,

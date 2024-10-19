@@ -1,9 +1,7 @@
-import { fichaSenaService } from '../utils/api'; // Asegúrate de que esta ruta sea correcta
+import { fichaSenaService } from '../utils/api'; 
 
-// Ruta base del backend
 const api = fichaSenaService;
 
-// Obtener todos los coordinadores
 export const getCoordinadores = async () => {
   try {
     const response = await api.get('/coordinadores');
@@ -13,7 +11,6 @@ export const getCoordinadores = async () => {
   }
 };
 
-// Crear un nuevo coordinador
 export const createCoordinador = async (coordinadorData) => {
   try {
     const response = await api.post('/coordinadores', coordinadorData);
@@ -23,7 +20,6 @@ export const createCoordinador = async (coordinadorData) => {
   }
 };
 
-// Obtener coordinador por documento
 export const getCoordinadorByDocumento = async (documento) => {
   try {
     const response = await api.get(`/coordinadores/${documento}`);
@@ -33,7 +29,6 @@ export const getCoordinadorByDocumento = async (documento) => {
   }
 };
 
-// Obtener coordinador por nombre
 export const getCoordinadorByNombre = async (nombre) => {
   try {
     const response = await api.get(`/coordinadores/nombre/${nombre}`);
@@ -43,7 +38,6 @@ export const getCoordinadorByNombre = async (nombre) => {
   }
 };
 
-// Actualizar coordinador por documento
 export const updateCoordinadorByDocumento = async (documento, coordinadorData) => {
   try {
     const response = await api.put(`/coordinadores/${documento}`, coordinadorData);
@@ -53,7 +47,6 @@ export const updateCoordinadorByDocumento = async (documento, coordinadorData) =
   }
 };
 
-// Eliminar coordinador por documento
 export const deleteCoordinadorByDocumento = async (documento) => {
   try {
     const response = await api.delete(`/coordinadores/${documento}`);

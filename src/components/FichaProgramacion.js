@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import { FormControl, InputLabel, Select, MenuItem, Grid2, Typography, TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
-import { useSelector } from 'react-redux'; // Para obtener permisos del estado de Redux
-import { selectUserPermisos } from '../features/userSlice'; // Importar el selector de permisos
+import { useSelector } from 'react-redux'; 
+import { selectUserPermisos } from '../features/userSlice'; 
 import { getNumeroAsignaciones } from '../service/asignacionService'
 import { Navigate, useNavigate } from 'react-router-dom';
 
@@ -19,11 +19,9 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
     const [asignacionesPorInstructor, setAsignacionesPorInstructor] = useState({}); 
     const [reloadKey, setReloadKey] = useState(0); 
 
-    // Obtener los permisos del usuario desde Redux
     const permisosUsuario = useSelector(selectUserPermisos);
     const tienePermisoEdicion = permisosUsuario.editProgramacion;
 
-    // Filtrar asignaciones basadas en la intersección de fechas
     useEffect(() => {
         const startDate = startDateFilter ? new Date(startDateFilter) : null;
         const endDate = endDateFilter ? new Date(endDateFilter) : null;
@@ -58,7 +56,6 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
     }, [filteredAsignaciones, jornadas]);
     
 
-    // Obtener el número de asignaciones para un instructor en el rango de fechas
     const fetchAsignacionesForInstructor = async (instructor) => {
         try {
             const fechaInicio = startDateFilter;
@@ -73,7 +70,6 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
         }
     };
 
-    // Cuando el instructor es seleccionado, buscar el número de asignaciones
     const handleInstructorHover = async (instructor) => {
         if(instructor || instructor !== ""){
             await fetchAsignacionesForInstructor(instructor);
@@ -231,7 +227,6 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
                     </Grid2>
                 </Grid2>
 
-                {/* Mostrar las jornadas según el checkbox */}
                 {jornadas.map((jornada) => (
                     jornadasVisibles[jornada.nombre] !== false && (
                         <Grid2 item xs={12} key={jornada.id}>

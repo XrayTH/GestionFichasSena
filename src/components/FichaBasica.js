@@ -29,9 +29,9 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
 
   return (
     <div className={classes.container}>
-      {/* Fila 1: Código, Coordinador, Gestor, Programa */}
+
       <div className={classes.row}>
-        {/* Código */}
+
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Código</label>
           <TextField
@@ -42,11 +42,10 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
             InputProps={{
               readOnly: true,
             }}
-            style={{ maxWidth: '50%' }} // Establece el ancho mínimo y máximo
+            style={{ maxWidth: '50%' }} 
           />
         </div>
 
-        {/* Coordinador */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Coordinador</label>
           <Autocomplete
@@ -77,7 +76,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
                   ...params.InputProps,
                   readOnly: !isEditable,
                 }}
-                style={{ minWidth: '150px', maxWidth: '100%' }} // Establece el ancho mínimo y máximo
+                style={{ minWidth: '150px', maxWidth: '100%' }} 
               />
             )}
             freeSolo
@@ -85,7 +84,6 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
-        {/* Gestor */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Gestor</label>
           <Autocomplete
@@ -124,7 +122,6 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
-        {/* Programa */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Programa</label>
           <Autocomplete
@@ -164,9 +161,8 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         </div>
       </div>
 
-      {/* Fila 2: Ambiente, Ubicación GPS, Inicio, Fin */}
       <div className={classes.row}>
-        {/* Ambiente */}
+
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Ambiente</label>
           <TextField
@@ -181,7 +177,6 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
-        {/* Municipio */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Municipio</label>
           <Autocomplete
@@ -220,7 +215,6 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
-        {/* Ubicación GPS */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Ubicación GPS</label>
           <TextField
@@ -235,7 +229,6 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
-        {/* Inicio */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Inicio</label>
           <TextField
@@ -254,7 +247,6 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
-        {/* Fin */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Fin</label>
           <TextField
@@ -274,9 +266,8 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         </div>
       </div>
 
-      {/* Fila 3: Requerimientos */}
       <div className={classes.row}>
-        {/* Requerimientos */}
+
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Requerimientos</label>
           <TextField
@@ -294,7 +285,6 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         </div>
       </div>
 
-      {/* Botones */}
       <div className={classes.buttonRow}>
         <Button className={classes.button} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}

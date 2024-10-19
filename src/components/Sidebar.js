@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Drawer, AppBar, Toolbar, List, ListItem, ListItemText, IconButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Importar el ícono de flecha
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'; 
 import { makeStyles } from '@mui/styles';
 import logo from '../assets/logo-sena-blanco.svg';
 
 const Sidebar = () => {
   const classes = useStyles();
-  const [open, setOpen] = useState(false); // El menú está cerrado por defecto
+  const [open, setOpen] = useState(false); 
   const navigate = useNavigate();
 
   const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen); // Alternar el estado
+    setOpen((prevOpen) => !prevOpen); 
   };
 
   const MenuItem = ({ text, path }) => (
@@ -54,8 +54,8 @@ const Sidebar = () => {
         <img
           src={logo}
           alt="Logo"
-          style={{ width: '50%', height: 'auto', padding: '50px', cursor: 'pointer' }} // Añadir cursor pointer
-          onClick={() => navigate('/')} // Redirigir al hacer click en el logo
+          style={{ width: '50%', height: 'auto', padding: '50px', cursor: 'pointer' }} 
+          onClick={() => navigate('/')} 
         />
         <List>
           <MenuItem text="Inicio" path="/" />

@@ -5,7 +5,7 @@ import { sendEmail, sendMasiveEmail } from './../service/emailService';
 import { getInstructores } from '../service/intructorService';
 import { getCoordinadores } from '../service/coordinadorService';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FilePresent, PictureAsPdf } from '@mui/icons-material';  // Importa íconos de archivos
+import { FilePresent, PictureAsPdf } from '@mui/icons-material';  
 import Sidebar from './../components/Sidebar';
 
 const Email = () => {
@@ -15,12 +15,12 @@ const Email = () => {
 
   const [selectedValue, setSelectedValue] = useState('');
   const [recipients, setRecipients] = useState('');
-  const [options, setOptions] = useState([]);  // Almacena instructores y coordinadores
-  const [subject, setSubject] = useState('');  // Almacenar el asunto del correo
-  const [content, setContent] = useState('');  // Almacenar el contenido del correo
-  const [files, setFiles] = useState([]);      // Almacenar los archivos adjuntos
-  const [loading, setLoading] = useState(false); // Estado para la carga
-  const [snackMessage, setSnackMessage] = useState(''); // Mensaje de éxito o error
+  const [options, setOptions] = useState([]); 
+  const [subject, setSubject] = useState('');  
+  const [content, setContent] = useState('');  
+  const [files, setFiles] = useState([]);      
+  const [loading, setLoading] = useState(false); 
+  const [snackMessage, setSnackMessage] = useState(''); 
 
   useEffect(() => {
     if (location.state?.pdf) {
@@ -36,20 +36,18 @@ const Email = () => {
     }
   }, [location.state]);
   
-  // Cargar instructores y coordinadores al montar el componente
   useEffect(() => {
     const fetchOptions = async () => {
       try {
         const instructores = await getInstructores();
         const coordinadores = await getCoordinadores();
 
-        // Combina ambas listas y formatea los datos
         const combinedOptions = [
           ...instructores.map(inst => ({ nombre: inst.nombre, email: inst.email })),
           ...coordinadores.map(coord => ({ nombre: coord.nombre, email: coord.email }))
         ];
 
-        setOptions(combinedOptions); // Almacena en el estado
+        setOptions(combinedOptions); 
       } catch (error) {
         console.error("Error al obtener instructores o coordinadores", error);
       }
@@ -58,7 +56,6 @@ const Email = () => {
     fetchOptions();
   }, []);
 
-  // Manejo para agregar un destinatario
   const handleAddRecipient = () => {
     if (selectedValue) {
       const recipientList = recipients.split('\n');
@@ -69,28 +66,24 @@ const Email = () => {
     }
   };
 
-  // Manejo de los archivos seleccionados
   const handleFileChange = (event) => {
     const newFiles = Array.from(event.target.files);
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);  // Almacena los archivos seleccionados en el estado
+    setFiles((prevFiles) => [...prevFiles, ...newFiles]);  
   };
 
-  // Enviar el correo
   const handleSendEmail = async () => {
-    const emailList = recipients.split('\n').filter(email => email);  // Convierte en array de correos válidos
+    const emailList = recipients.split('\n').filter(email => email);  
     if (!emailList.length || !subject) {
       alert("Por favor, asegúrate de ingresar al menos un destinatario y un asunto.");
       return;
     }
 
-    setLoading(true); // Mostrar el spinner de carga
+    setLoading(true); 
 
     try {
-      // Llamada a la función sendEmail
       await sendEmail(emailList, subject, content, files);
       setSnackMessage('Correo enviado exitosamente');
-      setLoading(false); // Ocultar el spinner
-      // Resetear formulario después de enviar
+      setLoading(false); 
       setRecipients('');
       setSubject('');
       setContent('');
@@ -98,11 +91,10 @@ const Email = () => {
     } catch (error) {
       console.error('Error al enviar el correo', error);
       setSnackMessage('Hubo un error al enviar el correo.');
-      setLoading(false); // Ocultar el spinner
+      setLoading(false); 
     }
   };
 
-  // Función para obtener el ícono según el tipo de archivo
   const getFileIcon = (fileName) => {
     const ext = fileName.split('.').pop();
     switch (ext) {
@@ -117,20 +109,17 @@ const Email = () => {
   };
 
   const handleSendMasiveEmail = async () => {
-    // Preguntar al usuario si está seguro de enviar los correos
     const confirmacion = window.confirm("Esta opción enviará a cada instructor por correo la programación que le corresponde del presente mes. ¿Está seguro de hacerlo?");
     
     if (!confirmacion) {
-        return; // Si el usuario cancela, no hacemos nada
+        return; 
     }
 
-    setLoading(true); // Activar el spinner de carga
+    setLoading(true); 
     try {
-      // Llamada a la función para enviar los correos masivos
       const respuesta = await sendMasiveEmail();
       
       if (respuesta.success) {
-        // Si la respuesta es exitosa, mostramos los correos enviados y no enviados
         console.log("Proceso de envío de correos completado");
         
         if (respuesta.enviados.length > 0) {
@@ -143,16 +132,14 @@ const Email = () => {
   
         setSnackMessage('Correos enviados exitosamente');
       } else {
-        // Si la respuesta no fue exitosa, mostramos el mensaje de error
         console.error("Error en el proceso de envío:", respuesta.message);
         setSnackMessage('Hubo un error al enviar los correos.');
       }
     } catch (error) {
-      // Manejo de errores en caso de fallo en la llamada a la API
       console.error("Error al enviar los correos:", error);
       setSnackMessage('Hubo un error al enviar los correos.');
     } finally {
-      setLoading(false); // Ocultar el spinner independientemente del resultado
+      setLoading(false); 
     }
 };
 
@@ -177,8 +164,8 @@ const Email = () => {
           <TextField
             variant="outlined"
             className={classes.textField}
-            value={subject}  // Maneja el estado de asunto
-            onChange={(e) => setSubject(e.target.value)}  // Actualiza el asunto en el estado
+            value={subject}  
+            onChange={(e) => setSubject(e.target.value)}  
           />
           <br />
 
@@ -188,15 +175,15 @@ const Email = () => {
             minRows={6}
             maxRows={6}
             placeholder="Escribe el contenido aquí"
-            value={content}  // Maneja el estado del contenido
-            onChange={(e) => setContent(e.target.value)}  // Actualiza el contenido en el estado
+            value={content}  
+            onChange={(e) => setContent(e.target.value)}  
           />
 
           <div className={classes.imageListWrapper}>
             <div className={classes.imageListContainer}>
               {files.map((file, index) => (
                 <div key={index} className={classes.imageItem}>
-                  {getFileIcon(file.name)} {/* Icono según el tipo de archivo */}
+                  {getFileIcon(file.name)} 
                   <span className={classes.imageName}>{file.name}</span>
                 </div>
               ))}
@@ -206,9 +193,10 @@ const Email = () => {
           <input
               type="file"
               multiple
-              onChange={handleFileChange}  // Manejador de archivos adjuntos
+              onChange={handleFileChange}  
               id="file-upload"
-              className={classes.fileInput}            />
+              className={classes.fileInput}            
+              />
         </div>
 
         <div className={classes.rightSection}>
@@ -219,14 +207,14 @@ const Email = () => {
               className={classes.dropdown}
               displayEmpty
               value={selectedValue}
-              onChange={(e) => setSelectedValue(e.target.value)}  // Aquí se almacena el email
+              onChange={(e) => setSelectedValue(e.target.value)}  
             >
               <MenuItem value="">
                 <em>Seleccionar destinatario</em>
               </MenuItem>
               {options.map((option, index) => (
                 <MenuItem key={index} value={option.email}>
-                  {option.nombre}  {/* Muestra el nombre, guarda el email */}
+                  {option.nombre}  
                 </MenuItem>
               ))}
             </Select>
@@ -435,13 +423,13 @@ const useStyles = makeStyles(() => ({
     marginBottom: '20px',
   },
   returnButton: {
-    backgroundColor: '#f44336',  // Color de fondo rojo
-    color: '#fff',  // Color del texto blanco
+    backgroundColor: '#f44336',  
+    color: '#fff',  
     padding: '10px 20px',
     borderRadius: '4px',
-    marginTop: '10px', // Reducido el margen superior
+    marginTop: '10px', 
     '&:hover': {
-      backgroundColor: '#d32f2f',  // Color de fondo en hover más oscuro
+      backgroundColor: '#d32f2f',  
     },
     fontSize: '16px',
     fontWeight: 'bold',

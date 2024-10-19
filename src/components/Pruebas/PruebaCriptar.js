@@ -1,23 +1,23 @@
 // src/components/PruebaCriptar.js
 import React, { useState } from 'react';
 import { makeStyles } from '@mui/styles';
-import { encryptPassword, decryptPassword } from '../../utils/encryption'; // Asegúrate de importar las funciones de cifrado
+import { encryptPassword, decryptPassword } from '../../utils/encryption'; 
 
 const PruebaCriptar = () => {
   const classes = useStyles();
-  const [inputText, setInputText] = useState(''); // Estado para el texto de entrada
-  const [encryptedText, setEncryptedText] = useState(''); // Estado para el texto cifrado
-  const [decryptedText, setDecryptedText] = useState(''); // Estado para el texto desencriptado
-  const [error, setError] = useState(''); // Estado para manejar errores
+  const [inputText, setInputText] = useState(''); 
+  const [encryptedText, setEncryptedText] = useState(''); 
+  const [decryptedText, setDecryptedText] = useState(''); 
+  const [error, setError] = useState(''); 
 
   const handleEncrypt = () => {
     try {
       const encrypted = encryptPassword(inputText);
-      setEncryptedText(encrypted); // Actualiza el texto cifrado
-      setDecryptedText(''); // Limpia el texto desencriptado
-      setError(''); // Limpia el error
+      setEncryptedText(encrypted); 
+      setDecryptedText(''); 
+      setError(''); 
     } catch (err) {
-      setError(err.message); // Maneja el error
+      setError(err.message); 
       console.error("Error de cifrado:", err.message);
     }
   };
@@ -25,10 +25,10 @@ const PruebaCriptar = () => {
   const handleDecrypt = () => {
     try {
       const decrypted = decryptPassword(encryptedText);
-      setDecryptedText(decrypted); // Actualiza el texto desencriptado
-      setError(''); // Limpia el error
+      setDecryptedText(decrypted); 
+      setError('');
     } catch (err) {
-      setError(err.message); // Maneja el error
+      setError(err.message); 
       console.error("Error de descifrado:", err.message);
     }
   };
@@ -68,7 +68,7 @@ const PruebaCriptar = () => {
         </>
       )}
 
-      {error && <p className={classes.error}>{error}</p>} {/* Muestra el error */}
+      {error && <p className={classes.error}>{error}</p>}
     </div>
   );
 };
@@ -119,7 +119,7 @@ const useStyles = makeStyles(() => ({
     fontSize: "16px",
   },
   error: {
-    color: 'red', // Estilo para el mensaje de error
+    color: 'red', 
   },
 }));
 

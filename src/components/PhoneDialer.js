@@ -28,7 +28,7 @@ const PhoneDialer = ({ phoneNumber }) => {
       color="primary"
       onClick={handlePhoneClick}
       sx={{
-        padding: 0.5, // Tamaño pequeño
+        padding: 0.5, 
       }}
     >
       <PhoneIcon fontSize="small" />

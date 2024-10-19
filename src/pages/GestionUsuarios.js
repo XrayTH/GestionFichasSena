@@ -14,16 +14,15 @@ const GestionUsuarios = () => {
   const [mostrarFormularioNuevoUsuario, setMostrarFormularioNuevoUsuario] = useState(false);
   const [textoBusqueda, setTextoBusqueda] = useState('');
   const [rolSeleccionado, setRolSeleccionado] = useState('');
-  const [mensaje, setMensaje] = useState(null); // Manejar mensajes del sistema
+  const [mensaje, setMensaje] = useState(null); 
 
   useEffect(() => {
     const cargarUsuarios = async () => {
       try {
         const usuariosDesdeApi = await getUsuarios();
-        // Desencriptar la contraseña de cada usuario
         const usuariosConContraseñasDesencriptadas = usuariosDesdeApi.map(usuario => ({
           ...usuario,
-          contraseña: decryptPassword(usuario.contraseña), // Suponiendo que la propiedad se llama 'contraseña'
+          contraseña: decryptPassword(usuario.contraseña), 
         }));
         setUsuarios(usuariosConContraseñasDesencriptadas);
       } catch (error) {
@@ -39,10 +38,9 @@ const GestionUsuarios = () => {
   
   const manejarGuardarNuevoUsuario = async (nuevoUsuario) => {
     try {
-      // Encriptar la contraseña antes de guardar el usuario
       const usuarioConContraseñaEncriptada = {
         ...nuevoUsuario,
-        contraseña: encryptPassword(nuevoUsuario.contraseña), // Asumiendo que el campo se llama 'contraseña'
+        contraseña: encryptPassword(nuevoUsuario.contraseña), 
       };
       
       await createUsuario(usuarioConContraseñaEncriptada);
@@ -76,10 +74,9 @@ const GestionUsuarios = () => {
 
   const manejarActualizarUsuario = async (usuarioActualizado) => {
     try {
-      // Encriptar la contraseña antes de actualizar el usuario
       const usuarioConContraseñaEncriptada = {
         ...usuarioActualizado,
-        contraseña: encryptPassword(usuarioActualizado.contraseña), // Encriptar la contraseña si es necesario
+        contraseña: encryptPassword(usuarioActualizado.contraseña), 
       };
   
       await updateUsuarioById(usuarioConContraseñaEncriptada.id, usuarioConContraseñaEncriptada);
@@ -111,7 +108,6 @@ const GestionUsuarios = () => {
     <>
     <Sidebar/>
     <div className={classes.container}>
-      {/* Componente de mensajes del sistema */}
       {mensaje && (
         <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
           <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>

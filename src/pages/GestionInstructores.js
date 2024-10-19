@@ -12,14 +12,13 @@ const GestionInstructores = () => {
   const [instructores, setInstructores] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewInstructorForm, setShowNewInstructorForm] = useState(false);
-  const [mensaje, setMensaje] = useState(null); // Manejar mensajes del sistema
+  const [mensaje, setMensaje] = useState(null); 
 
-  // Hook para cargar los instructores al cargar la página
   useEffect(() => {
     const fetchInstructores = async () => {
       try {
-        const data = await getInstructores(); // Llamada al método correcto para obtener los instructores
-        setInstructores(data); // Llena el estado con los datos obtenidos
+        const data = await getInstructores(); 
+        setInstructores(data); 
       } catch (error) {
         console.error('Error al obtener los instructores:', error);
         setMensaje({ text: error.message, severity: 'error' });
@@ -33,10 +32,8 @@ const GestionInstructores = () => {
 
   const handleSaveNewInstructor = async (newInstructor) => {
     try {
-      // Envía el nuevo instructor a la base de datos
       const createdInstructor = await createInstructor(newInstructor);
   
-      // Si la creación fue exitosa, actualizamos el estado local
       setInstructores((prevInstructores) => [...prevInstructores, createdInstructor]);
       setShowNewInstructorForm(false);
       setMensaje({ text: 'Instructor creado con éxito', severity: 'success' });
@@ -68,10 +65,10 @@ const GestionInstructores = () => {
 
   const handleDeleteInstructor = async (documento) => {
     try {
-      await deleteInstructorByDocumento(documento); // Llama a la función de eliminación
+      await deleteInstructorByDocumento(documento); 
       setInstructores((prevInstructores) =>
         prevInstructores.filter((instructor) => instructor.documento !== documento)
-      ); // Actualiza el estado para eliminar al instructor de la lista
+      ); 
       setMensaje({ text: 'Instructor eliminado con éxito', severity: 'success' });
     } catch (error) {
       console.error('Error al eliminar el instructor:', error);
@@ -92,7 +89,6 @@ const GestionInstructores = () => {
     <>
       <Sidebar />
       <div className={classes.container}>
-        {/* Componente de mensajes del sistema */}
         {mensaje && (
           <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
             <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>

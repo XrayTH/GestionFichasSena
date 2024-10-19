@@ -1,8 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
-import { useDispatch, useSelector } from 'react-redux'; // Importa useSelector para acceder a los permisos
+import { useDispatch, useSelector } from 'react-redux'; 
 import { useNavigate } from 'react-router-dom';
-import { logout, selectUserPermisos } from '../features/userSlice'; // Importa el selector de permisos
+import { logout, selectUserPermisos } from '../features/userSlice'; 
 import { Typography } from '@mui/material';
 
 const Home = () => {
@@ -10,7 +10,6 @@ const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
-  // Obtiene los permisos del usuario desde el estado global
   const permisos = useSelector(selectUserPermisos);
 
   const handleGestionUsuarios = () => {
@@ -56,7 +55,6 @@ const Home = () => {
       </Typography>
       <br />
       
-      {/* Renderiza los botones según los permisos */}
       {permisos.gestionarUsuarios && (
         <button className={classes.button} onClick={handleGestionUsuarios}>
           Gestionar Usuarios

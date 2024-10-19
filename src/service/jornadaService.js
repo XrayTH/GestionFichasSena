@@ -1,9 +1,7 @@
-import { fichaSenaService } from '../utils/api'; // Asegúrate de que esta ruta sea correcta
+import { fichaSenaService } from '../utils/api'; 
 
-// Ruta base del backend
 const api = fichaSenaService;
 
-// Obtener todas las jornadas
 export const getJornadas = async () => {
   try {
     const response = await api.get('/jornadas');
@@ -13,7 +11,6 @@ export const getJornadas = async () => {
   }
 };
 
-// Obtener jornada por ID
 export const getJornadaById = async (id) => {
   try {
     const response = await api.get(`/jornadas/${id}`);
@@ -23,7 +20,6 @@ export const getJornadaById = async (id) => {
   }
 };
 
-// Crear una nueva jornada
 export const createJornada = async (jornadaData) => {
   try {
     const response = await api.post('/jornadas', jornadaData);
@@ -33,7 +29,6 @@ export const createJornada = async (jornadaData) => {
   }
 };
 
-// Actualizar jornada por ID
 export const updateJornadaById = async (id, jornadaData) => {
   try {
     const response = await api.put(`/jornadas/${id}`, jornadaData);
@@ -43,7 +38,6 @@ export const updateJornadaById = async (id, jornadaData) => {
   }
 };
 
-// Eliminar jornada por ID
 export const deleteJornadaById = async (id) => {
   try {
     const response = await api.delete(`/jornadas/${id}`);

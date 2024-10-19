@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux'; // Importar useSelector
-import { selectUserPermisos } from '../features/userSlice'; // Importar el selector de permisos
+import { useSelector } from 'react-redux'; 
+import { selectUserPermisos } from '../features/userSlice'; 
 import { getJornadas, createJornada, updateJornadaById, deleteJornadaById } from '../service/jornadaService';
 import { makeStyles } from '@mui/styles';
 
 const Jornadas = () => {
   const classes = useStyles();
 
-  // Obtener los permisos del usuario desde el estado de Redux
   const permisos = useSelector(selectUserPermisos);
 
   const [jornadas, setJornadas] = useState([]);
@@ -27,9 +26,8 @@ const Jornadas = () => {
     fetchJornadas();
   }, []);
 
-  // Comprobar si el usuario tiene permiso para ver "tablas"
   if (!permisos.tablas) {
-    return null; // Si no tiene permiso, no renderiza nada
+    return null; 
   }
 
   const handleCreate = async () => {

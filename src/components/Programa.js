@@ -29,7 +29,7 @@ const Programa = ({ programa, onUpdate, onDelete }) => {
 
   return (
     <div className={classes.container}>
-      {/* Nombre */}
+
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Nombre</label>
         <TextField
@@ -44,7 +44,6 @@ const Programa = ({ programa, onUpdate, onDelete }) => {
         />
       </div>
 
-      {/* Nombre Corto */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Nombre Corto</label>
         <TextField
@@ -59,7 +58,6 @@ const Programa = ({ programa, onUpdate, onDelete }) => {
         />
       </div>
 
-      {/* Botones */}
       <div className={classes.buttonRow}>
         <Button className={classes.button} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}

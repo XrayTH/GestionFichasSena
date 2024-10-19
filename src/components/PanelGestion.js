@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useNavigate } from 'react-router-dom'; // Importa el hook useNavigate
+import { useNavigate } from 'react-router-dom'; 
 
 const PanelGestion = () => {
   const classes = useStyles();
-  const navigate = useNavigate(); // Inicializa el hook useNavigate
+  const navigate = useNavigate(); 
 
   const handleNavigate = (path) => {
     navigate(path);

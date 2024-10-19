@@ -135,7 +135,6 @@ const Programar = () => {
                 setMensaje({ text: `Error inesperado: ${error.message}`, severity: 'error' });
             }
     
-            // Forzar el re-render del contenedor de fichas al cambiar el valor de "reload"
             setReload((prev) => !prev);
         }
     };
@@ -248,14 +247,14 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#ffffff',
     },
     fichasContainer: {
-        display: 'flex',  // Usamos Flexbox
-        flexWrap: 'wrap',  // Permite que las fichas se ajusten en múltiples filas si es necesario
-        justifyContent: 'center',  // Centra las fichas horizontalmente
+        display: 'flex',  
+        flexWrap: 'wrap',  
+        justifyContent: 'center',  
         marginTop: '20px',
     },
     fichaWrapper: {
-        width: 'auto',  // Las fichas ocuparán solo el espacio necesario
-        margin: '10px',  // Espacio entre fichas
+        width: 'auto',  
+        margin: '10px',  
     },
     ficha: {
         backgroundColor: '#b2195e',
@@ -270,7 +269,5 @@ const useStyles = makeStyles((theme) => ({
         gap: '16px',
     },
 }));
-
-
 
 export default Programar;

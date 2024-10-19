@@ -27,7 +27,7 @@ const NewUserForm = ({ onSave, onCancel }) => {
 
   return (
     <div className={classes.container}>
-      {/* 1. Usuario */}
+
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Usuario</label>
         <TextField
@@ -39,7 +39,6 @@ const NewUserForm = ({ onSave, onCancel }) => {
         />
       </div>
 
-      {/* 2. Contraseña */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Contraseña</label>
         <TextField
@@ -52,7 +51,6 @@ const NewUserForm = ({ onSave, onCancel }) => {
         />
       </div>
 
-      {/* 3. Rol */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Rol</label>
         <TextField
@@ -64,7 +62,6 @@ const NewUserForm = ({ onSave, onCancel }) => {
         />
       </div>
 
-      {/* 4. Botones */}
       <div className={classes.fieldContainer}>
         <Button className={classes.button} onClick={handleSave}>
           Guardar
@@ -80,7 +77,7 @@ const NewUserForm = ({ onSave, onCancel }) => {
 const useStyles = makeStyles(() => ({
   container: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', // Cambiado para ser responsivo
+    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
     gridGap: '10px',
     backgroundColor: '#f5f5f5',
     padding: '20px',

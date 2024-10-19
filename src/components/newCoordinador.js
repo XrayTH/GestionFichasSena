@@ -9,7 +9,7 @@ const NewCoordinador = ({ onSave, onCancel }) => {
     documento: '',
     nombre: '',
     email: '',
-    telefono: '', // Agregando el campo de teléfono
+    telefono: '', 
   });
 
   const handleChange = (e) => {
@@ -26,7 +26,7 @@ const NewCoordinador = ({ onSave, onCancel }) => {
 
   return (
     <div className={classes.container}>
-      {/* Documento */}
+
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Documento</label>
         <TextField
@@ -38,7 +38,6 @@ const NewCoordinador = ({ onSave, onCancel }) => {
         />
       </div>
 
-      {/* Nombre */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Nombre</label>
         <TextField
@@ -50,7 +49,6 @@ const NewCoordinador = ({ onSave, onCancel }) => {
         />
       </div>
 
-      {/* Email */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Email</label>
         <TextField
@@ -62,7 +60,6 @@ const NewCoordinador = ({ onSave, onCancel }) => {
         />
       </div>
 
-      {/* Teléfono */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Teléfono</label>
         <TextField
@@ -74,7 +71,6 @@ const NewCoordinador = ({ onSave, onCancel }) => {
         />
       </div>
 
-      {/* Botones */}
       <div className={classes.buttonRow}>
         <Button className={classes.button} onClick={handleSave}>
           Guardar

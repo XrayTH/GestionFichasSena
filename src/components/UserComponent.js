@@ -30,9 +30,9 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
 
   return (
     <div className={classes.container}>
-      {/* 1. Campos de texto */}
+
       <div className={classes.textFields}>
-        {/* Usuario */}
+
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Usuario</label>
           <TextField
@@ -47,7 +47,6 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
           />
         </div>
 
-        {/* Contraseña */}
         <div className={classes.fieldContainer}>
           <div className={classes.labelWithButton}>
             <label className={classes.label}>Contraseña</label>
@@ -72,7 +71,6 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
           />
         </div>
 
-        {/* Rol */}
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Rol</label>
           <TextField
@@ -88,7 +86,6 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
         </div>
       </div>
 
-      {/* 2. Switches */}
       <div className={classes.switches}>
         <div className={classes.switchContainer}>
           <label className={classes.label}>Gestión Tablas</label>
@@ -154,7 +151,6 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
         </div>
       </div>
 
-      {/* 3. Botones */}
       <div className={classes.buttons}>
         <Button className={classes.button} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}

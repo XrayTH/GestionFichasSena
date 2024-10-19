@@ -26,9 +26,9 @@ function AccessDenied() {
 
 const useStyles = makeStyles({
   container: {
-    backgroundColor: '#d32f2f', // Color de fondo (rojo para acceso denegado)
-    color: '#fff', // Color de texto
-    height: '100vh', // Altura de la pantalla completa
+    backgroundColor: '#d32f2f',
+    color: '#fff',
+    height: '100vh',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -36,7 +36,7 @@ const useStyles = makeStyles({
     textAlign: 'center',
   },
   logo: {
-    width: '150px', // Ajusta el tamaño del logo según sea necesario
+    width: '150px', 
     marginBottom: '20px',
   },
   message: {

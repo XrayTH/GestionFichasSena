@@ -5,11 +5,10 @@ import { Grid2, Typography, TextField } from '@mui/material';
 const PreViewFicha = ({ ficha, inDay, selectedDay }) => {  
     const classes = useStyles();
 
-    // Determina el color del borde según inDay
     const borderColor = inDay ? '#195eb2' : '#b2195e';
 
     return (
-        <div className={classes.container} style={{ border: `2px solid ${borderColor}` }}> {/* Estilo inline para el borde */}
+        <div className={classes.container} style={{ border: `2px solid ${borderColor}` }}>
             <div className={classes.header}>
                 <Grid2 container spacing={2}>
                     <Grid2 item xs={12} sm={6} md={3}>
@@ -33,7 +32,7 @@ const PreViewFicha = ({ ficha, inDay, selectedDay }) => {
 
             <Grid2 container spacing={2} justifyContent="center">
                 {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']
-                    .filter(day => selectedDay.toLowerCase() === day.toLowerCase())  // Filtra solo el día seleccionado
+                    .filter(day => selectedDay.toLowerCase() === day.toLowerCase())  
                     .map((day) => (
                         <Grid2 item xs={12} sm={6} md={2} key={day}>
                             <Typography className={classes.dayLabel}>{day}</Typography>

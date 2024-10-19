@@ -142,9 +142,8 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridGap: '10px',
-    // Media query para cambiar a columnas apiladas en pantallas pequeñas
     '@media (max-width: 600px)': {
-      gridTemplateColumns: 'repeat(1, 1fr)', // Solo una columna
+      gridTemplateColumns: 'repeat(1, 1fr)',
     },
   },
 }));

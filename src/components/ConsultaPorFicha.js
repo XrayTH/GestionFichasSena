@@ -45,7 +45,6 @@ const ConsultaPorFicha = () => {
   const [jornadaColors, setJornadaColors] = useState({});
   const [pdf, setPdf] = useState(null);
 
-  // Obtener permisos del usuario desde el estado de Redux
   const permisosUsuario = useSelector((state) => state.user.usuario.permisos);
 
   useEffect(() => {

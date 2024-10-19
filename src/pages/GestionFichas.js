@@ -22,7 +22,7 @@ const GestionFichas = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewFichaForm, setShowNewFichaForm] = useState(false);
-  const [mensaje, setMensaje] = useState(null); // Manejar mensajes del sistema
+  const [mensaje, setMensaje] = useState(null); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,10 +49,10 @@ const GestionFichas = () => {
       const createdFicha = await createFicha(newFicha);
       setFichas((prevFichas) => [...prevFichas, createdFicha]);
       setShowNewFichaForm(false);
-      setMensaje({ text: 'Ficha creada con éxito', severity: 'success' }); // Mensaje de éxito
+      setMensaje({ text: 'Ficha creada con éxito', severity: 'success' }); 
     } catch (error) {
       console.error("Error al crear ficha:", error.message);
-      setMensaje({ text: error.message, severity: 'error' }); // Mensaje de error
+      setMensaje({ text: error.message, severity: 'error' }); 
     }
   };
 
@@ -64,10 +64,10 @@ const GestionFichas = () => {
       setFichas((prevFichas) =>
         prevFichas.map((ficha) => (ficha.codigo === updated.codigo ? updated : ficha))
       );
-      setMensaje({ text: 'Ficha actualizada con éxito', severity: 'success' }); // Mensaje de éxito
+      setMensaje({ text: 'Ficha actualizada con éxito', severity: 'success' }); 
     } catch (error) {
       console.error("Error al actualizar ficha:", error.message);
-      setMensaje({ text: error.message, severity: 'error' }); // Mensaje de error
+      setMensaje({ text: error.message, severity: 'error' }); 
     }
   };
 
@@ -75,10 +75,10 @@ const GestionFichas = () => {
     try {
       await deleteFichaByCodigo(codigo);
       setFichas((prevFichas) => prevFichas.filter((ficha) => ficha.codigo !== codigo));
-      setMensaje({ text: 'Ficha eliminada con éxito', severity: 'success' }); // Mensaje de éxito
+      setMensaje({ text: 'Ficha eliminada con éxito', severity: 'success' }); 
     } catch (error) {
       console.error("Error al eliminar ficha:", error.message);
-      setMensaje({ text: error.message, severity: 'error' }); // Mensaje de error
+      setMensaje({ text: error.message, severity: 'error' }); 
     }
   };
 
@@ -97,7 +97,6 @@ const GestionFichas = () => {
     <Sidebar/>
     <div className={classes.container}>
       <DireccionBuscador/>
-      {/* Componente de mensajes del sistema */}
       {mensaje && (
         <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
           <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>

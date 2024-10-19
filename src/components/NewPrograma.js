@@ -24,7 +24,6 @@ const NewPrograma = ({ onSave, onCancel }) => {
 
   return (
     <div className={classes.container}>
-      {/* Nombre */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Nombre</label>
         <TextField
@@ -36,7 +35,6 @@ const NewPrograma = ({ onSave, onCancel }) => {
         />
       </div>
 
-      {/* Nombre Corto */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Nombre Corto</label>
         <TextField
@@ -48,7 +46,6 @@ const NewPrograma = ({ onSave, onCancel }) => {
         />
       </div>
 
-      {/* Botones */}
       <div className={classes.buttonRow}>
         <Button className={classes.button} onClick={handleSave}>
           Guardar

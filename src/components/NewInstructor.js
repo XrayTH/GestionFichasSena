@@ -27,7 +27,7 @@ const NewInstructor = ({ onSave, onCancel }) => {
 
   return (
     <div className={classes.container}>
-      {/* Documento */}
+
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Documento</label>
         <TextField
@@ -39,7 +39,6 @@ const NewInstructor = ({ onSave, onCancel }) => {
         />
       </div>
 
-      {/* Nombre */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Nombre</label>
         <TextField
@@ -51,7 +50,6 @@ const NewInstructor = ({ onSave, onCancel }) => {
         />
       </div>
 
-      {/* Email */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Email</label>
         <TextField
@@ -63,7 +61,6 @@ const NewInstructor = ({ onSave, onCancel }) => {
         />
       </div>
 
-      {/* Teléfono */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Teléfono</label>
         <TextField
@@ -75,7 +72,6 @@ const NewInstructor = ({ onSave, onCancel }) => {
         />
       </div>
 
-      {/* Área Temática */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Área Temática</label>
         <TextField
@@ -87,7 +83,6 @@ const NewInstructor = ({ onSave, onCancel }) => {
         />
       </div>
 
-      {/* Botones */}
       <div className={classes.buttonRow}>
         <Button className={classes.button} onClick={handleSave}>
           Guardar

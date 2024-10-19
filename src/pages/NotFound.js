@@ -25,9 +25,9 @@ function NotFound() {
 }
 const useStyles = makeStyles({
     container: {
-      backgroundColor: '#5eb219', // Color de fondo
-      color: '#fff', // Color de texto
-      height: '100vh', // Altura de la pantalla completa
+      backgroundColor: '#5eb219', 
+      color: '#fff', 
+      height: '100vh', 
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
       textAlign: 'center',
     },
     logo: {
-      width: '150px', // Ajusta el tamaño del logo según sea necesario
+      width: '150px', 
       marginBottom: '20px',
     },
     message: {

@@ -17,7 +17,7 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
 
   const handleDeleteClick = () => {
     if (onDelete) {
-      onDelete(instructor.documento); // Pasamos el documento del instructor a borrar
+      onDelete(instructor.documento); 
     }
   }
 
@@ -31,7 +31,7 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
 
   return (
     <div className={classes.container}>
-      {/* Documento */}
+
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Documento</label>
         <TextField
@@ -46,7 +46,6 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         />
       </div>
 
-      {/* Nombre */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Nombre</label>
         <TextField
@@ -61,7 +60,6 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         />
       </div>
 
-      {/* Email */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Email</label>
         <TextField
@@ -76,7 +74,6 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         />
       </div>
 
-      {/* Teléfono */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Teléfono</label>
         <TextField
@@ -91,7 +88,6 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         />
       </div>
 
-      {/* Área Temática */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Área Temática</label>
         <TextField
@@ -106,7 +102,6 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         />
       </div>
 
-      {/* Botones */}
       <div className={classes.buttonRow}>
         <Button className={classes.button} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}

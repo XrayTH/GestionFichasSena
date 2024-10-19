@@ -1,9 +1,7 @@
-import { fichaSenaService } from '../utils/api'; // Asegúrate de que esta ruta sea correcta
+import { fichaSenaService } from '../utils/api'; 
 
-// Ruta base del backend
 const api = fichaSenaService;
 
-// Obtener todas las asignaciones
 export const getAllAsignaciones = async () => {
   try {
     const response = await api.get('/asignacion');
@@ -13,7 +11,6 @@ export const getAllAsignaciones = async () => {
   }
 };
 
-// Obtener asignación por ID
 export const getAsignacionById = async (id) => {
   try {
     const response = await api.get(`/asignacion/${id}`);
@@ -23,7 +20,6 @@ export const getAsignacionById = async (id) => {
   }
 };
 
-// Obtener asignaciones por ficha
 export const getAsignacionesByFicha = async (ficha) => {
   try {
     const response = await api.get(`/asignacion/ficha/${ficha}`);
@@ -33,7 +29,6 @@ export const getAsignacionesByFicha = async (ficha) => {
   }
 };
 
-// Obtener asignaciones por instructor
 export const getAsignacionesByInstructor = async (instructor) => {
   try {
     const response = await api.get(`/asignacion/instructor/${instructor}`);
@@ -43,7 +38,6 @@ export const getAsignacionesByInstructor = async (instructor) => {
   }
 };
 
-// Obtener asignaciones por día
 export const getAsignacionesByDia = async (dia) => {
   try {
     const response = await api.get(`/asignacion/dia/${dia}`);
@@ -53,7 +47,6 @@ export const getAsignacionesByDia = async (dia) => {
   }
 };
 
-// Obtener asignaciones por jornada
 export const getAsignacionesByJornada = async (jornada) => {
   try {
     const response = await api.get(`/asignacion/jornada/${jornada}`);
@@ -63,30 +56,24 @@ export const getAsignacionesByJornada = async (jornada) => {
   }
 };
 
-// Crear una nueva asignación
 export const createAsignacion = async (asignacionData) => {
   try {
     const response = await api.post('/asignacion', asignacionData);
     return response.data;
   } catch (error) {
-    // Cambiar para capturar 'data.error' en lugar de 'data.message'
     throw new Error(error.response?.data.error || 'Error al crear la asignación');
   }
 };
 
-// Actualizar una asignación por ID
 export const updateAsignacionById = async (id, asignacionData) => {
   try {
     const response = await api.put(`/asignacion/${id}`, asignacionData);
     return response.data;
   } catch (error) {
-    // Cambiar para capturar 'data.error' en lugar de 'data.message'
     throw new Error(error.response?.data.error || 'Error al actualizar la asignación');
   }
 };
 
-
-// Eliminar una asignación por ID
 export const deleteAsignacionById = async (id) => {
   try {
     const response = await api.delete(`/asignacion/${id}`);
@@ -96,7 +83,6 @@ export const deleteAsignacionById = async (id) => {
   }
 };
 
-// Obtener el número de asignaciones de un instructor en un rango de fechas
 export const getNumeroAsignaciones = async (instructor, fechaInicio, fechaFin) => {
   try {
     const response = await api.get(`/asignacion/instructor/${instructor}/numero`, {

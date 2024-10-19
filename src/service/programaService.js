@@ -1,10 +1,8 @@
-import { fichaSenaService } from '../utils/api'; // Asegúrate de que esta ruta sea correcta
+import { fichaSenaService } from '../utils/api'; 
 
-// Crear un nuevo programa
 export const crearPrograma = async (programaData) => {
   const { nombre, nombreCorto } = programaData;
 
-  // Validaciones
   if (!nombre || !nombreCorto) {
     throw new Error('Los campos nombre y nombreCorto son obligatorios');
   }
@@ -17,7 +15,6 @@ export const crearPrograma = async (programaData) => {
   }
 };
 
-// Obtener todos los programas
 export const obtenerProgramas = async () => {
   try {
     const response = await fichaSenaService.get('/programas');
@@ -27,11 +24,9 @@ export const obtenerProgramas = async () => {
   }
 };
 
-// Actualizar programa por ID
 export const actualizarProgramaPorId = async (id, programaData) => {
   const { nombre, nombreCorto } = programaData;
 
-  // Validaciones
   if (!nombre || !nombreCorto) {
     throw new Error('Los campos nombre y nombreCorto son obligatorios');
   }
@@ -44,7 +39,6 @@ export const actualizarProgramaPorId = async (id, programaData) => {
   }
 };
 
-// Obtener programa por nombre
 export const obtenerProgramaPorNombre = async (nombre) => {
   try {
     const response = await fichaSenaService.get(`/programas/nombre/${nombre}`);
@@ -54,7 +48,6 @@ export const obtenerProgramaPorNombre = async (nombre) => {
   }
 };
 
-// Obtener programa por ID
 export const obtenerProgramaPorId = async (id) => {
   try {
     const response = await fichaSenaService.get(`/programas/${id}`);
@@ -64,7 +57,6 @@ export const obtenerProgramaPorId = async (id) => {
   }
 };
 
-// Eliminar programa por ID
 export const eliminarProgramaPorId = async (id) => {
   try {
     const response = await fichaSenaService.delete(`/programas/${id}`);

@@ -29,7 +29,7 @@ const Coordinador = ({ coordinador, onUpdate, onDelete}) => {
 
   return (
     <div className={classes.container}>
-      {/* Documento */}
+
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Documento</label>
         <TextField
@@ -44,7 +44,6 @@ const Coordinador = ({ coordinador, onUpdate, onDelete}) => {
         />
       </div>
 
-      {/* Nombre */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Nombre</label>
         <TextField
@@ -59,7 +58,6 @@ const Coordinador = ({ coordinador, onUpdate, onDelete}) => {
         />
       </div>
 
-      {/* Email */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Email</label>
         <TextField
@@ -74,7 +72,6 @@ const Coordinador = ({ coordinador, onUpdate, onDelete}) => {
         />
       </div>
 
-      {/* Teléfono */}
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Teléfono</label>
         <TextField
@@ -89,7 +86,6 @@ const Coordinador = ({ coordinador, onUpdate, onDelete}) => {
         />
       </div>
 
-      {/* Botones */}
       <div className={classes.buttonRow}>
         <Button className={classes.button} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}
@@ -109,9 +105,9 @@ const useStyles = makeStyles(() => ({
     padding: '20px',
     borderRadius: '8px',
     border: '2px solid black',
-    maxWidth: '700px', // Establece la anchura máxima del contenedor
-    width: '100%', // Asegúrate de que el contenedor use el ancho completo disponible
-    margin: '0 auto', // Centra el componente
+    maxWidth: '700px', 
+    width: '100%', 
+    margin: '0 auto', 
     '@media (max-width: 768px)': {
       gridTemplateColumns: '1fr',
     },
@@ -136,7 +132,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: '10px',
-    gridColumn: '1 / -1', // Asegúrate de que ocupe toda la fila
+    gridColumn: '1 / -1', 
   },
   button: {
     backgroundColor: '#5eb219',
@@ -144,7 +140,7 @@ const useStyles = makeStyles(() => ({
     '&:hover': {
       backgroundColor: '#4cae14',
     },
-    marginRight: '10px', // Espaciado entre botones
+    marginRight: '10px', 
   },
   deleteButton: {
     backgroundColor: '#b2195e',

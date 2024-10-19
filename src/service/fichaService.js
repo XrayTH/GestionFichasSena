@@ -1,9 +1,7 @@
-import { fichaSenaService } from '../utils/api'; // Asegúrate de que esta ruta sea correcta
+import { fichaSenaService } from '../utils/api'; 
 
-// Ruta base del backend
 const api = fichaSenaService;
 
-// Obtener todas las fichas
 export const getFichas = async () => {
   try {
     const response = await api.get('/fichas');
@@ -13,7 +11,6 @@ export const getFichas = async () => {
   }
 };
 
-// Obtener ficha por código
 export const getFichaByCodigo = async (codigo) => {
   try {
     const response = await api.get(`/fichas/${codigo}`);
@@ -23,7 +20,6 @@ export const getFichaByCodigo = async (codigo) => {
   }
 };
 
-// Crear una nueva ficha
 export const createFicha = async (fichaData) => {
   try {
     const response = await api.post('/fichas', fichaData);
@@ -33,7 +29,6 @@ export const createFicha = async (fichaData) => {
   }
 };
 
-// Actualizar ficha por código
 export const updateFichaByCodigo = async (codigo, fichaData) => {
   try {
     const response = await api.put(`/fichas/${codigo}`, fichaData);
@@ -43,7 +38,6 @@ export const updateFichaByCodigo = async (codigo, fichaData) => {
   }
 };
 
-// Eliminar ficha por código
 export const deleteFichaByCodigo = async (codigo) => {
   try {
     const response = await api.delete(`/fichas/${codigo}`);

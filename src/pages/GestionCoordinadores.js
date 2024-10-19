@@ -12,14 +12,13 @@ const GestionCoordinadores = () => {
   const [coordinadores, setCoordinadores] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewCoordinadorForm, setShowNewCoordinadorForm] = useState(false);
-  const [mensaje, setMensaje] = useState(null); // Manejar mensajes del sistema
+  const [mensaje, setMensaje] = useState(null); 
 
-  // Hook para cargar los coordinadores al cargar la página
   useEffect(() => {
     const fetchCoordinadores = async () => {
       try {
-        const data = await getCoordinadores(); // Llamada al método correcto para obtener los coordinadores
-        setCoordinadores(data); // Llena el estado con los datos obtenidos
+        const data = await getCoordinadores(); 
+        setCoordinadores(data); 
       } catch (error) {
         console.error('Error al obtener los coordinadores:', error);
         setMensaje({ text: error.message, severity: 'error' });
@@ -33,10 +32,8 @@ const GestionCoordinadores = () => {
 
   const handleSaveNewCoordinador = async (newCoordinador) => {
     try {
-      // Envía el nuevo coordinador a la base de datos
       const createdCoordinador = await createCoordinador(newCoordinador);
   
-      // Si la creación fue exitosa, actualizamos el estado local
       setCoordinadores((prevCoordinadores) => [...prevCoordinadores, createdCoordinador]);
       setShowNewCoordinadorForm(false);
       setMensaje({ text: 'Coordinador creado con éxito', severity: 'success' });
@@ -48,10 +45,7 @@ const GestionCoordinadores = () => {
 
   const handleDeleteCoordinador = async (documento) => {
     try {
-      // Llamar a la función para eliminar el coordinador en la base de datos
-      await deleteCoordinadorByDocumento(documento); // Asegúrate de tener esta función en tu servicio
-  
-      // Actualizar el estado local eliminando el coordinador
+      await deleteCoordinadorByDocumento(documento); 
       setCoordinadores((prevCoordinadores) =>
         prevCoordinadores.filter((coordinador) => coordinador.documento !== documento)
       );
@@ -96,7 +90,6 @@ const GestionCoordinadores = () => {
     <>
       <Sidebar />
       <div className={classes.container}>
-        {/* Componente de mensajes del sistema */}
         {mensaje && (
           <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
             <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
