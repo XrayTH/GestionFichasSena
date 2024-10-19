@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import Coordinador from './Coordinador';
-import NewCoordinador from './NewCoordinador';
+import Coordinador from '../components/Coordinador';
+import NewCoordinador from '../components/NewCoordinador';
 import { TextField, Button, Snackbar, Alert } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { getCoordinadores, createCoordinador, updateCoordinadorByDocumento, deleteCoordinadorByDocumento } from '../service/coordinadorService';
-import Sidebar from './Sidebar';
+import Sidebar from '../components/Sidebar';
 
 const GestionCoordinadores = () => {
   const classes = useStyles();

@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import Instructor from './Instructor';
-import NewInstructor from './NewInstructor';
+import Instructor from '../components/Instructor';
+import NewInstructor from '../components/NewInstructor';
 import { TextField, Button, Snackbar, Alert } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { getInstructores, createInstructor, updateInstructorByDocumento, deleteInstructorByDocumento } from '../service/intructorService';
-import Sidebar from './Sidebar';
+import Sidebar from '../components/Sidebar';
 
 const GestionInstructores = () => {
   const classes = useStyles();

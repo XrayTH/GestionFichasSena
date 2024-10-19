@@ -5,10 +5,10 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Email from './pages/Email';
 import GesUsu from './pages/GestionUsuarios';
-import GesFicha from './components/GestionFichas';
-import GesCoo from './components/GestionCoordinadores';
-import GesIns from './components/GestionInstructores';
-import GesPro from './components/GestionPrograma'
+import GesFicha from './pages/GestionFichas';
+import GesCoo from './pages/GestionCoordinadores';
+import GesIns from './pages/GestionInstructores';
+import GesPro from './pages/GestionPrograma'
 import Programar from './pages/Programar';
 import ProIns from "./pages/ProgramarPorInstructor";
 import NotFound from './pages/NotFound';
@@ -33,7 +33,7 @@ function App() {
         } />
 
         <Route path="/gestion-usuarios" element={
-          <ProtectedRoute requiredPermissions={['gestionUsuarios']}>
+          <ProtectedRoute requiredPermissions={['gestionarUsuarios']}>
             <GesUsu />
           </ProtectedRoute>
         } />

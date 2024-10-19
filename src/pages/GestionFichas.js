@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Button, TextField, Snackbar, Alert } from '@mui/material';
-import FichaBasica from './FichaBasica';
-import NewFichaBasica from './NewFichaBasica';
+import FichaBasica from '../components/FichaBasica';
+import NewFichaBasica from '../components/NewFichaBasica';
 import { makeStyles } from '@mui/styles';
 import { getFichas, createFicha, updateFichaByCodigo, deleteFichaByCodigo } from '../service/fichaService';
 import { getInstructores } from '../service/intructorService';
@@ -9,7 +9,7 @@ import { getCoordinadores } from '../service/coordinadorService';
 import { obtenerProgramas } from '../service/programaService';
 import Municipios from '../data/municipios.json';
 import Sidebar from '../components/Sidebar';
-import DireccionBuscador from './DireccionBuscador';
+import DireccionBuscador from '../components/DireccionBuscador';
 
 const GestionFichas = () => {
   const classes = useStyles();

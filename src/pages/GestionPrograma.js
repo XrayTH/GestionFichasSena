@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import Programa from './Programa';
+import Programa from '../components/Programa';
 import { TextField, Button, Snackbar, Alert } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { obtenerProgramas, crearPrograma, actualizarProgramaPorId, eliminarProgramaPorId } from '../service/programaService';
-import NewPrograma from './NewPrograma';
-import Sidebar from './Sidebar';
+import NewPrograma from '../components/NewPrograma';
+import Sidebar from '../components/Sidebar';
 
 const GestionPrograma = () => {
   const classes = useStyles();

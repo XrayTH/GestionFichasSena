@@ -1,7 +1,7 @@
 // src/components/PruebaCriptar.js
 import React, { useState } from 'react';
 import { makeStyles } from '@mui/styles';
-import { encryptPassword, decryptPassword } from '../utils/encryption'; // Asegúrate de importar las funciones de cifrado
+import { encryptPassword, decryptPassword } from '../../utils/encryption'; // Asegúrate de importar las funciones de cifrado
 
 const PruebaCriptar = () => {
   const classes = useStyles();

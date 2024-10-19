@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import FichaProgramacion from './FichaProgramacion';
-import { getFichas } from '../service/fichaService';
-import { getJornadas } from '../service/jornadaService';
-import { getInstructores } from '../service/intructorService'; 
-import { getAllAsignaciones } from '../service/asignacionService';
+import FichaProgramacion from '../FichaProgramacion';
+import { getFichas } from '../../service/fichaService';
+import { getJornadas } from '../../service/jornadaService';
+import { getInstructores } from '../../service/intructorService'; 
+import { getAllAsignaciones } from '../../service/asignacionService';
 
 const Pruebas = () => {
     const [fichas, setFichas] = useState([]);
