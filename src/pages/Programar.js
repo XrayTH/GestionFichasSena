@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import FichaProgramacion from '../components/FichaProgramacion';
-import { TextField, Snackbar, Alert, Grid } from '@mui/material'; // Usa Grid de Material-UI
+import { TextField, Snackbar, Alert, Grid } from '@mui/material'; 
 import { makeStyles } from '@mui/styles';
 import { getFichas } from '../service/fichaService';
 import { getJornadas } from '../service/jornadaService';
