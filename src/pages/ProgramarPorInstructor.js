@@ -7,9 +7,12 @@ import { getInstructores } from '../service/intructorService';
 import { getAllAsignaciones, createAsignacion, deleteAsignacionById } from '../service/asignacionService';
 import Jornadas from '../components/Jornadas';
 import Sidebar from '../components/Sidebar';
-import { getStartOfMonth, getEndOfMonth } from '../utils/date'
+import { getStartOfMonth, getEndOfMonth } from '../utils/date';
+import { makeStyles } from '@mui/styles';
 
 const ProgramarPorInstructor = () => {
+  const classes = useStyles();
+
   const [fichas, setFichas] = useState([]);
   const [jornadas, setJornadas] = useState([]);
   const [asignaciones, setAsignaciones] = useState([]);
@@ -89,25 +92,25 @@ const ProgramarPorInstructor = () => {
         placeholder="Buscar por nombre del instructor"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ marginBottom: '20px', padding: '10px', width: '100%' }}
+        className={classes.inputSearch}
       />
             
-      <Jornadas />
+      <Jornadas className={classes.jornadas} />
 
-      <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
-        <p>Inicio: </p>
+      <div className={classes.dateInputsContainer}>
+        <p className={classes.dateLabel}>Inicio: </p>
         <input
           type="date"
           value={fechaInicio}
           onChange={(e) => setFechaInicio(e.target.value)}
-          style={{ marginRight: '10px', padding: '10px' }}
+          className={classes.dateInput}
         />
-        <p>Fin: </p>
+        <p className={classes.dateLabel}>Fin: </p>
         <input
           type="date"
           value={fechaFin}
           onChange={(e) => setFechaFin(e.target.value)}
-          style={{ padding: '10px' }}
+          className={classes.dateInput}
         />
       </div>
 
@@ -128,5 +131,30 @@ const ProgramarPorInstructor = () => {
     </div>
   );
 };
+
+const useStyles = makeStyles({
+  inputSearch: {
+    marginTop: '20px',
+    padding: '10px',
+    width: '98%',
+    marginBottom: '20px', 
+  },
+  jornadas: {
+    marginTop: '20px', 
+  },
+  dateInputsContainer: {
+    marginBottom: '20px',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  dateInput: {
+    padding: '10px',
+    marginRight: '10px',
+  },
+  dateLabel: {
+    margin: '0 10px',
+  },
+});
+
 
 export default ProgramarPorInstructor;
