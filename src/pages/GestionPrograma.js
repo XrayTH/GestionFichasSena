@@ -145,6 +145,7 @@ const useStyles = makeStyles(() => ({
     '@media (max-width: 600px)': {
       gridTemplateColumns: 'repeat(1, 1fr)',
     },
+    margin: '10px',
   },
 }));
 

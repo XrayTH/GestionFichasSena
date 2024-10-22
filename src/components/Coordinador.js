@@ -104,7 +104,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#f5f5f5',
     padding: '20px',
     borderRadius: '8px',
-    border: '2px solid black',
+    border: '2px solid #5eb219',
     maxWidth: '700px', 
     width: '100%', 
     margin: '0 auto', 

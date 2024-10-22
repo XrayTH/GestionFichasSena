@@ -159,6 +159,7 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridGap: '10px',
+    margin: '10px'
   },
 }));
 

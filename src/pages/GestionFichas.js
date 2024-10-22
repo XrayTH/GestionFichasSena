@@ -189,7 +189,7 @@ const useStyles = makeStyles(() => ({
   },
   fichaComponent: {
     marginBottom: '15px',
-    border: `1px solid #195eb2`,
+    border: `1px solid #5eb219`,
     borderRadius: '5px',
     padding: '10px',
     backgroundColor: '#ffffff',
