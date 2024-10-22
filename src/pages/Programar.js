@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import FichaProgramacion from '../components/FichaProgramacion';
-import { TextField, Snackbar, Alert } from '@mui/material';
+import { TextField, Snackbar, Alert, Grid } from '@mui/material'; // Usa Grid de Material-UI
 import { makeStyles } from '@mui/styles';
 import { getFichas } from '../service/fichaService';
 import { getJornadas } from '../service/jornadaService';
@@ -145,62 +145,75 @@ const Programar = () => {
         <>
             <Sidebar />
             <div className={classes.container}>
-            <div className={classes.filtrosContainer}>
-                <label>Filtros:</label>
-                <TextField
-                    label="Buscar por codigo"
-                    variant="outlined"
-                    fullWidth
-                    onChange={handleIdFilterChange}
-                    value={idFilter}
-                    className={classes.textField}
-                />
-                <TextField
-                    label="Buscar por Coordinador"
-                    variant="outlined"
-                    fullWidth
-                    onChange={handleCoordinadorFilterChange}
-                    value={coordinadorFilter}
-                    className={classes.textField}
-                />
-                <TextField
-                    label="Buscar por Programa"
-                    variant="outlined"
-                    fullWidth
-                    onChange={handleProgramaFilterChange}
-                    value={programaFilter}
-                    className={classes.textField}
-                />
-                <TextField
-                    label="Buscar por Gestor"
-                    variant="outlined"
-                    fullWidth
-                    onChange={handleGestorFilterChange}
-                    value={gestorFilter}
-                    className={classes.textField}
-                />
-                <TextField
-                    label="Fecha de inicio"
-                    type="date"
-                    value={startDateFilter}
-                    onChange={(e) => setStartDateFilter(e.target.value)}
-                    fullWidth
-                    InputLabelProps={{ shrink: true }}
-                    variant="outlined"
-                    className={classes.textField}
-                />
-                <TextField
-                    label="Fecha de fin"
-                    type="date"
-                    value={endDateFilter}
-                    onChange={(e) => setEndDateFilter(e.target.value)}
-                    fullWidth
-                    InputLabelProps={{ shrink: true }}
-                    variant="outlined"
-                    className={classes.textField}
-                />
-                <Jornadas />
-                </div>
+                <Grid container spacing={2} className={classes.filtrosContainer}>
+                    <Grid item xs={12} sm={6} md={4}>
+                        <TextField
+                            label="Buscar por codigo"
+                            variant="outlined"
+                            fullWidth
+                            onChange={handleIdFilterChange}
+                            value={idFilter}
+                            className={classes.textField}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4}>
+                        <TextField
+                            label="Buscar por Coordinador"
+                            variant="outlined"
+                            fullWidth
+                            onChange={handleCoordinadorFilterChange}
+                            value={coordinadorFilter}
+                            className={classes.textField}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4}>
+                        <TextField
+                            label="Buscar por Programa"
+                            variant="outlined"
+                            fullWidth
+                            onChange={handleProgramaFilterChange}
+                            value={programaFilter}
+                            className={classes.textField}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4}>
+                        <TextField
+                            label="Buscar por Gestor"
+                            variant="outlined"
+                            fullWidth
+                            onChange={handleGestorFilterChange}
+                            value={gestorFilter}
+                            className={classes.textField}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4}>
+                        <TextField
+                            label="Fecha de inicio"
+                            type="date"
+                            value={startDateFilter}
+                            onChange={(e) => setStartDateFilter(e.target.value)}
+                            fullWidth
+                            InputLabelProps={{ shrink: true }}
+                            variant="outlined"
+                            className={classes.textField}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4}>
+                        <TextField
+                            label="Fecha de fin"
+                            type="date"
+                            value={endDateFilter}
+                            onChange={(e) => setEndDateFilter(e.target.value)}
+                            fullWidth
+                            InputLabelProps={{ shrink: true }}
+                            variant="outlined"
+                            className={classes.textField}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Jornadas />
+                    </Grid>
+                </Grid>
 
                 <div className={classes.fichasContainer}>
                     {filteredFichas.map((ficha) => (
@@ -243,18 +256,15 @@ const useStyles = makeStyles((theme) => ({
         margin: '10px 20px',
     },
     textField: {
-        margin: '16px 16px',
+        margin: '8px 0',
         backgroundColor: '#ffffff',
     },
     fichasContainer: {
-        //display: 'flex',  
-        //flexWrap: 'wrap',  
-        //justifyContent: 'center',  
         marginTop: '20px',
     },
     fichaWrapper: {
-        width: 'auto',  
-        margin: '10px',  
+        width: 'auto',
+        margin: '10px',
     },
     ficha: {
         backgroundColor: '#b2195e',
@@ -264,9 +274,7 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.2)',
     },
     filtrosContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
+        marginBottom: '20px',
     },
 }));
 
