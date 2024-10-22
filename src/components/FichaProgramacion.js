@@ -44,7 +44,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
         const initialSelectedInstructors = {};
         
         jornadas.forEach((jornada) => {
-            ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].forEach((day) => {
+            ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'].forEach((day) => {
                 const instructor = getInstructorForDay(jornada.nombre, day);
                 if (instructor) {
                     initialSelectedInstructors[`${jornada.nombre}-${day}`] = instructor;
@@ -85,7 +85,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
     };
 
     const jornadaTieneInstructor = (jornadaNombre) => {
-        return ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].some((day) => {
+        return ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'].some((day) => {
             return getInstructorForDay(jornadaNombre, day) !== '';
         });
     };
@@ -234,7 +234,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
                         <Grid2 item xs={12} key={jornada.id}>
                             <Typography className={classes.jornadaLabel}>{jornada.nombre}</Typography>
                             <Grid2 container spacing={2}>
-                                {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].map((day) => (
+                                {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'].map((day) => (
                                     <Grid2 item xs={12} sm={2} key={day}>
                                         <FormControl fullWidth>
                                             <InputLabel id={`select-${jornada.nombre}-${day}`} className={classes.label}>{day}</InputLabel>

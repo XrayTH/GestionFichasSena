@@ -247,9 +247,9 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#ffffff',
     },
     fichasContainer: {
-        display: 'flex',  
-        flexWrap: 'wrap',  
-        justifyContent: 'center',  
+        //display: 'flex',  
+        //flexWrap: 'wrap',  
+        //justifyContent: 'center',  
         marginTop: '20px',
     },
     fichaWrapper: {

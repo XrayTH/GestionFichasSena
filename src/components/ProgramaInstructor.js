@@ -125,6 +125,7 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
             <th>Miércoles</th>
             <th>Jueves</th>
             <th>Viernes</th>
+            <th>Sabado</th>
           </tr>
         </thead>
         <tbody>
@@ -133,7 +134,7 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
               <tr key={jornada.id}>
                 <td>{instructorActual ? instructorActual.nombre : 'Instructor no encontrado'}</td>
                 <td>{jornada.nombre}</td>
-                {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].map((dia) => {
+                {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'].map((dia) => {
                   const asignacion = asignacionesInstructor.find(
                     (a) => a.jornada === jornada.nombre && a.dia === dia
                   );
