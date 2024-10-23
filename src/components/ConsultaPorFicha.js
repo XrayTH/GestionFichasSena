@@ -26,13 +26,14 @@ const daysMap = {
 };
 
 const colorScale = [
-  '#FFFF00',
-  '#FFD700',
-  '#FF4500',
-  '#FF0000',
-  '#8B0000',
-  '#0000FF',
-  '#00008B',
+  '#F6EB61', 
+  '#F39C12', 
+  '#D35400', 
+  '#E74C3C', 
+  '#C0392B', 
+  '#3498DB', 
+  '#2980B9', 
+  '#2C3E50', 
 ];
 
 const ConsultaPorFicha = () => {
