@@ -78,13 +78,21 @@ const GestionCoordinadores = () => {
   };
 
   const filteredCoordinadores = useMemo(() => {
-    return coordinadores.filter((coordinador) =>
-      coordinador.areaTematica?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      coordinador.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      coordinador.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      coordinador.documento?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    return coordinadores.filter((coordinador) => {
+      const areaTematica = coordinador.areaTematica?.toLowerCase() || "";
+      const email = coordinador.email?.toLowerCase() || "";
+      const nombre = coordinador.nombre?.toLowerCase() || "";
+      const documento = coordinador.documento?.toString().toLowerCase() || "";
+  
+      return (
+        areaTematica.includes(searchTerm.toLowerCase()) ||
+        email.includes(searchTerm.toLowerCase()) ||
+        nombre.includes(searchTerm.toLowerCase()) ||
+        documento.includes(searchTerm.toLowerCase())
+      );
+    });
   }, [coordinadores, searchTerm]);
+  
 
   return (
     <>

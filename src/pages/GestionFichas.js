@@ -83,14 +83,23 @@ const GestionFichas = () => {
   };
 
   const filteredFichas = useMemo(() => {
-    return fichas.filter((ficha) =>
-      ficha.coordinador.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ficha.programa.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ficha.ambiente.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ficha.gestor.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ficha.codigo.toString().includes(searchTerm)
-    );
+    return fichas.filter((ficha) => {
+      const coordinador = ficha.coordinador?.toLowerCase() || "";
+      const programa = ficha.programa?.toLowerCase() || "";
+      const ambiente = ficha.ambiente?.toLowerCase() || "";
+      const gestor = ficha.gestor?.toLowerCase() || "";
+      const codigo = ficha.codigo?.toString() || "";
+  
+      return (
+        coordinador.includes(searchTerm.toLowerCase()) ||
+        programa.includes(searchTerm.toLowerCase()) ||
+        ambiente.includes(searchTerm.toLowerCase()) ||
+        gestor.includes(searchTerm.toLowerCase()) ||
+        codigo.includes(searchTerm)
+      );
+    });
   }, [fichas, searchTerm]);
+  
 
   return (
     <>

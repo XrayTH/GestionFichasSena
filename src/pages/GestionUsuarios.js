@@ -98,11 +98,13 @@ const GestionUsuarios = () => {
 
   const usuariosFiltrados = useMemo(() => {
     return usuarios.filter((usuario) => {
-      const coincideBusqueda = usuario.usuario.toLowerCase().includes(textoBusqueda.toLowerCase());
+      const nombreUsuario = usuario.usuario?.toLowerCase() || ""; 
+      const coincideBusqueda = nombreUsuario.includes(textoBusqueda.toLowerCase());
       const coincideRol = rolSeleccionado ? usuario.rol === rolSeleccionado : true;
       return coincideBusqueda && coincideRol;
     });
   }, [usuarios, textoBusqueda, rolSeleccionado]);
+  
 
   return (
     <>

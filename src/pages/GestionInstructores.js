@@ -77,13 +77,21 @@ const GestionInstructores = () => {
   };
 
   const filteredInstructores = useMemo(() => {
-    return instructores.filter((instructor) =>
-      instructor.areaTematica?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      instructor.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      instructor.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      instructor.documento?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    return instructores.filter((instructor) => {
+      const areaTematica = instructor.areaTematica?.toLowerCase() || "";
+      const email = instructor.email?.toLowerCase() || "";
+      const nombre = instructor.nombre?.toLowerCase() || "";
+      const documento = instructor.documento?.toString().toLowerCase() || "";
+  
+      return (
+        areaTematica.includes(searchTerm.toLowerCase()) ||
+        email.includes(searchTerm.toLowerCase()) ||
+        nombre.includes(searchTerm.toLowerCase()) ||
+        documento.includes(searchTerm.toLowerCase())
+      );
+    });
   }, [instructores, searchTerm]);
+  
   
   return (
     <>

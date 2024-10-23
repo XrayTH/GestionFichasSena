@@ -62,11 +62,17 @@ const GestionPrograma = () => {
   };
 
   const filteredProgramas = useMemo(() => {
-    return programas.filter((programa) =>
-      programa.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      programa.nombreCorto?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    return programas.filter((programa) => {
+      const nombre = programa.nombre?.toLowerCase() || "";
+      const nombreCorto = programa.nombreCorto?.toLowerCase() || "";
+  
+      return (
+        nombre.includes(searchTerm.toLowerCase()) ||
+        nombreCorto.includes(searchTerm.toLowerCase())
+      );
+    });
   }, [programas, searchTerm]);
+  
 
   return (
     <>

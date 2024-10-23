@@ -118,7 +118,7 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
       <table className={classes.table}>
         <thead>
           <tr>
-            <th>Instructor</th>
+            <th>Instructor: {instructorActual?.nombre || ""}</th>
             <th>Jornada</th>
             <th>Lunes</th>
             <th>Martes</th>
