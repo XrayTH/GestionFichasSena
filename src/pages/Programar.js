@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import FichaProgramacion from '../components/FichaProgramacion';
-import { TextField, Snackbar, Alert, Grid } from '@mui/material'; 
+import { TextField, Snackbar, Alert, Grid, CircularProgress } from '@mui/material'; 
 import { makeStyles } from '@mui/styles';
 import { getFichas } from '../service/fichaService';
 import { getJornadas } from '../service/jornadaService';
@@ -17,6 +17,7 @@ const Programar = () => {
     const [asignaciones, setAsignaciones] = useState([]);
     const [instructores, setInstructores] = useState([]);
     const [jornadas, setJornadas] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const [startDateFilter, setStartDateFilter] = useState('');
     const [endDateFilter, setEndDateFilter] = useState('');
@@ -31,6 +32,7 @@ const Programar = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true); 
             try {
                 const fichasData = await getFichas();
                 const asignacionesData = await getAllAsignaciones();
@@ -43,6 +45,8 @@ const Programar = () => {
                 setJornadas(jornadasData);
             } catch (error) {
                 setMensaje({ text: 'Error al cargar los datos', severity: 'error' });
+            } finally {
+                setLoading(false); 
             }
         };
     
@@ -216,20 +220,30 @@ const Programar = () => {
                 </Grid>
 
                 <div className={classes.fichasContainer}>
-                    {filteredFichas.map((ficha) => (
-                        <div className={classes.fichaWrapper} key={ficha.codigo}>
-                            <FichaProgramacion
-                                ficha={ficha}
-                                asignaciones={asignaciones}
-                                instructores={instructores}
-                                jornadas={jornadas}
-                                onInstructorChange={handleInstructorChange}
-                                startDateFilter={startDateFilter}  
-                                endDateFilter={endDateFilter}      
-                                className={classes.ficha}
-                            />
+                    {loading ? ( 
+                        <div className={classes.loaderContainer}>
+                            <CircularProgress className={classes.loader}/>
+                            Cargando...
                         </div>
-                    ))}
+                    ) : (
+                        filteredFichas.map((ficha) => (
+                            <div className={classes.fichaWrapper} key={ficha.codigo}>
+                                <FichaProgramacion
+                                    ficha={ficha}
+                                    asignaciones={asignaciones}
+                                    instructores={instructores}
+                                    jornadas={jornadas}
+                                    startDateFilter={startDateFilter}
+                                    endDateFilter={endDateFilter}
+                                    onInstructorChange={handleInstructorChange}
+                                    className={classes.ficha}
+                                />
+                            </div>
+                        ))
+                    )}
+                    {filteredFichas.length === 0 && !loading && (
+                        <p>No se encontraron fichas que coincidan con los filtros.</p>
+                    )}
                 </div>
 
                 {mensaje && (
@@ -275,6 +289,12 @@ const useStyles = makeStyles((theme) => ({
     },
     filtrosContainer: {
         marginBottom: '20px',
+    },
+    loaderContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
     },
 }));
 
