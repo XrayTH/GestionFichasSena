@@ -70,16 +70,14 @@ const Programa = ({ programa, onUpdate, onDelete }) => {
 
 const useStyles = makeStyles(() => ({
   container: {
-    display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
     gridGap: '10px',
     backgroundColor: '#f5f5f5',
     padding: '20px',
     borderRadius: '8px',
     border: '2px solid #5eb219',
-    maxWidth: '300px',
-    width: '100%',
-    margin: '0 auto',
+    maxWidth: '400px',
+    width: '70%',
     '@media (max-width: 768px)': {
       gridTemplateColumns: '1fr',
     },

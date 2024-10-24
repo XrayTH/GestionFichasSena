@@ -53,6 +53,13 @@ const PruebaCriptar = () => {
             readOnly
             className={classes.textArea}
           />
+          <input
+            type="text"
+            placeholder="Ingresa el texto a desencriptar"
+            className={classes.input}
+            value={encryptedText} // Aquí utilizamos el texto cifrado
+            onChange={(e) => setEncryptedText(e.target.value)}
+          />
           <button onClick={handleDecrypt} className={classes.button}>Desencriptar</button>
         </>
       )}

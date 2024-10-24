@@ -58,6 +58,12 @@ const GestionUsuarios = () => {
   
 
   const manejarEliminarUsuario = async (usuarioId) => {
+    const confirmarEliminacion = window.confirm("¿Estás seguro de que deseas eliminar este usuario?");
+  
+    if (!confirmarEliminacion) {
+      return; 
+    }
+  
     try {
       await deleteUsuarioById(usuarioId);
       setUsuarios((usuariosPrevios) => 
@@ -69,6 +75,7 @@ const GestionUsuarios = () => {
       setMensaje({ text: error.message, severity: 'error' });
     }
   };
+  
   
   const manejarCancelarNuevoUsuario = () => setMostrarFormularioNuevoUsuario(false);
 

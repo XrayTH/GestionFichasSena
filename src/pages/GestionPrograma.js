@@ -145,13 +145,11 @@ const useStyles = makeStyles(() => ({
     marginBottom: '20px',
   },
   programaList: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gridGap: '10px',
-    '@media (max-width: 600px)': {
-      gridTemplateColumns: 'repeat(1, 1fr)',
-    },
+    display: 'flex',               
+    flexDirection: 'column',      
+    alignItems: 'center',          
     margin: '10px',
+    gap: '10px',                  
   },
 }));
 

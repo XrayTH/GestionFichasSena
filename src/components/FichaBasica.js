@@ -51,19 +51,17 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           <Autocomplete
             value={formState.coordinador || ''}
             onChange={(event, newValue) => {
-              setFormState((prevState) => ({
-                ...prevState,
-                coordinador: newValue,
-              }));
+              if (isEditable) {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  coordinador: newValue,
+                }));
+              }
             }}
             inputValue={coordinadorInput}
             onInputChange={(event, newInputValue) => {
-              setCoordinadorInput(newInputValue);
-              if (!isEditable) {
-                setFormState((prevState) => ({
-                  ...prevState,
-                  coordinador: newInputValue,
-                }));
+              if (isEditable) {
+                setCoordinadorInput(newInputValue);
               }
             }}
             options={coordinadores.map((coordinador) => coordinador.nombre)}
@@ -79,7 +77,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
                 style={{ minWidth: '150px', maxWidth: '100%' }} 
               />
             )}
-            freeSolo
+            freeSolo={!isEditable}  
             disableClearable
           />
         </div>
@@ -89,19 +87,17 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           <Autocomplete
             value={formState.gestor || ''}
             onChange={(event, newValue) => {
-              setFormState((prevState) => ({
-                ...prevState,
-                gestor: newValue,
-              }));
+              if (isEditable) {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  gestor: newValue,
+                }));
+              }
             }}
             inputValue={gestorInput}
             onInputChange={(event, newInputValue) => {
-              setGestorInput(newInputValue);
-              if (!isEditable) {
-                setFormState((prevState) => ({
-                  ...prevState,
-                  gestor: newInputValue,
-                }));
+              if (isEditable) {
+                setGestorInput(newInputValue);
               }
             }}
             options={gestores.map((gestor) => gestor.nombre)}
@@ -117,7 +113,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
                 style={{ minWidth: '150px', maxWidth: '100%' }}
               />
             )}
-            freeSolo
+            freeSolo={!isEditable}
             disableClearable
           />
         </div>
@@ -127,19 +123,17 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           <Autocomplete
             value={formState.programa || ''}
             onChange={(event, newValue) => {
-              setFormState((prevState) => ({
-                ...prevState,
-                programa: newValue,
-              }));
+              if (isEditable) {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  programa: newValue,
+                }));
+              }
             }}
             inputValue={programaInput}
             onInputChange={(event, newInputValue) => {
-              setProgramaInput(newInputValue);
-              if (!isEditable) {
-                setFormState((prevState) => ({
-                  ...prevState,
-                  programa: newInputValue,
-                }));
+              if (isEditable) {
+                setProgramaInput(newInputValue);
               }
             }}
             options={programas.map((programa) => programa.nombre)}
@@ -155,7 +149,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
                 style={{ minWidth: '350px', maxWidth: '100%' }}
               />
             )}
-            freeSolo
+            freeSolo={!isEditable}
             disableClearable
           />
         </div>
@@ -182,19 +176,17 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           <Autocomplete
             value={formState.municipio || ''}
             onChange={(event, newValue) => {
-              setFormState((prevState) => ({
-                ...prevState,
-                municipio: newValue,
-              }));
+              if (isEditable) {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  municipio: newValue,
+                }));
+              }
             }}
             inputValue={municipioInput}
             onInputChange={(event, newInputValue) => {
-              setMunicipioInput(newInputValue);
-              if (!isEditable) {
-                setFormState((prevState) => ({
-                  ...prevState,
-                  municipio: newInputValue,
-                }));
+              if (isEditable) {
+                setMunicipioInput(newInputValue);
               }
             }}
             options={municipios}
@@ -210,7 +202,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
                 style={{ minWidth: '150px', maxWidth: '100%' }}
               />
             )}
-            freeSolo
+            freeSolo={!isEditable}
             disableClearable
           />
         </div>
@@ -315,13 +307,10 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     width: '100%',
     alignItems: 'center',
-    flex: '1 1 150px', // Permite que los campos se redimensionen
+    flex: '1 1 150px',
     margin: '5px',
   },
   label: {
-    fontWeight: 'bold',
-    color: '#5eb219',
-    alignSelf: 'center',
     marginBottom: '5px',
   },
   textField: {
@@ -329,25 +318,16 @@ const useStyles = makeStyles(() => ({
   },
   buttonRow: {
     display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: '10px',
-    gridColumn: '1 / -1',
+    justifyContent: 'space-between',
+    marginTop: '20px',
   },
   button: {
     backgroundColor: '#5eb219',
     color: '#fff',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-    marginRight: '10px',
   },
   deleteButton: {
-    backgroundColor: '#b2195e',
+    backgroundColor: '#d32f2f',
     color: '#fff',
-    '&:hover': {
-      backgroundColor: '#d81b60',
-    },
   },
 }));
 

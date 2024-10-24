@@ -168,6 +168,13 @@ const Email = () => {
     }
   };
 
+  const handleRemoveRecipient = (email) => {
+    const confirmDelete = window.confirm(`¿Quieres borrar el correo ${email} de la lista?`);
+    if (confirmDelete) {
+      setRecipients((prev) => prev.split('\n').filter((item) => item !== email).join('\n'));
+    }
+  };  
+
   const handleRegresar = () => {
     navigate(-1);
   };
@@ -241,14 +248,23 @@ const Email = () => {
               <Button className={classes.addButton} onClick={handleAddRecipient}>+</Button>
             </div>
 
-            <TextareaAutosize
-              className={classes.textAreaReadOnly}
-              minRows={6}
-              maxRows={6}
-              placeholder="Correos"
-              value={recipients}
-              disabled
-            />
+            <div className={classes.recipientsList}>
+              {recipients.trim() === '' ? (
+                <div className={classes.emptyMessage}>
+                  Los correos se añadirán aquí
+                </div>
+              ) : (
+                recipients.split('\n').map((email, index) => (
+                  <div
+                    key={index}
+                    className={classes.recipientItem}
+                    onClick={() => handleRemoveRecipient(email)}
+                  >
+                    {email}
+                  </div>
+                ))
+              )}
+            </div>
 
             <div className={classes.sendButtonWrapper}>
               <Button
@@ -352,15 +368,25 @@ const useStyles = makeStyles(() => ({
     fontSize: '16px',
     width: '95%',
   },
-  textAreaReadOnly: {
+  recipientItem: {
+    padding: '8px',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    marginBottom: '8px',
+    cursor: 'pointer',
+    backgroundColor: '#f5f5f5',
+    '&:hover': {
+      backgroundColor: '#e0e0e0',
+    },
+  },
+  recipientsList: {
+    maxHeight: '150px',
+    overflowY: 'auto',
+    marginBottom: '20px',
+    border: '1px solid #ccc',
     borderRadius: '4px',
     padding: '10px',
-    border: '1px solid #ccc',
-    marginBottom: '20px',
-    backgroundColor: '#e8f5e9',
-    resize: 'none',
-    fontSize: '16px',
-  },
+  },  
   imageListWrapper: {
     display: 'flex',
     alignItems: 'center',

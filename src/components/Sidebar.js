@@ -4,22 +4,29 @@ import { Drawer, AppBar, Toolbar, List, ListItem, ListItemText, IconButton, Typo
 import MenuIcon from '@mui/icons-material/Menu';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'; 
 import { makeStyles } from '@mui/styles';
+import { useDispatch, useSelector } from 'react-redux'; 
+import { selectUserPermisos } from '../features/userSlice'; 
 import logo from '../assets/logo-sena-blanco.svg';
 
 const Sidebar = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false); 
   const navigate = useNavigate();
+  
+  const permisos = useSelector(selectUserPermisos);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen); 
   };
 
-  const MenuItem = ({ text, path }) => (
-    <ListItem className={classes.listItem} onClick={() => navigate(path)}>
-      <ListItemText primary={text} />
-    </ListItem>
-  );
+  const MenuItem = ({ text, path, permiso }) => {
+    if (!permiso) return null; 
+    return (
+      <ListItem className={classes.listItem} onClick={() => navigate(path)}>
+        <ListItemText primary={text} />
+      </ListItem>
+    );
+  };
 
   return (
     <>
@@ -30,7 +37,7 @@ const Sidebar = () => {
             color="inherit"
             onClick={handleToggle}
           >
-            {open ? <ArrowBackIcon /> : <MenuIcon />} {/* Alternar entre íconos */}
+            {open ? <ArrowBackIcon /> : <MenuIcon />}
           </IconButton>
           <Typography variant="h6" component="h1" className={classes.title}>
             SISTEMA DE GESTIÓN DE FICHAS - SENA
@@ -58,15 +65,15 @@ const Sidebar = () => {
           onClick={() => navigate('/')} 
         />
         <List>
-          <MenuItem text="Inicio" path="/" />
-          <MenuItem text="Gestión de Usuarios" path="/gestion-usuarios" />
-          <MenuItem text="Programar por Ficha" path="/programar" />
-          <MenuItem text="Programar por Instructor" path="/programar-instructor" />
-          <MenuItem text="Gestión de Fichas" path="/gestion-fichas" />
-          <MenuItem text="Gestión de Coordinadores" path="/gestion-coordinadores" />
-          <MenuItem text="Gestión de Instructores" path="/gestion-instructores" />
-          <MenuItem text="Gestión de Programas" path="/gestion-programas" />
-          <MenuItem text="Enviar Email" path="/enviar-email" />
+          <MenuItem text="Inicio" path="/" permiso/>
+          <MenuItem text="Gestión de Usuarios" path="/gestion-usuarios" permiso={permisos.gestionarUsuarios} />
+          <MenuItem text="Programar por Ficha" path="/programar" permiso={permisos.verProgramacion || permisos.editProgramacion} />
+          <MenuItem text="Programar por Instructor" path="/programar-instructor" permiso={permisos.verProgramacion || permisos.editProgramacion} />
+          <MenuItem text="Gestión de Fichas" path="/gestion-fichas" permiso={permisos.tablas} />
+          <MenuItem text="Gestión de Coordinadores" path="/gestion-coordinadores" permiso={permisos.tablas} />
+          <MenuItem text="Gestión de Instructores" path="/gestion-instructores" permiso={permisos.tablas} />
+          <MenuItem text="Gestión de Programas" path="/gestion-programas" permiso={permisos.tablas} />
+          <MenuItem text="Enviar Email" path="/enviar-email" permiso={permisos.email} />
         </List>
       </Drawer>
     </>
