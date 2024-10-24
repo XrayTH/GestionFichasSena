@@ -4,6 +4,8 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux'; 
 import { selectUserPermisos } from '../features/userSlice'; 
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instructores, jornadas, fechaInicio, fechaFin, onCrearAsignacion, onEliminarAsignacion }) => {
   const navigate = useNavigate(); 
@@ -96,7 +98,11 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
       state: { instructorActual } 
     });
   };
-  
+
+  const handleCancelar = () => {
+    setShowForm(false);
+  };
+
   return (
     <div className={classes.container}>
       <div className={classes.checkboxContainer}>
@@ -156,10 +162,11 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
                       )}
                     </td>
                   );
-                })}
+                })} 
               </tr>
             )
           ))}
+
         </tbody>
       </table>
 
@@ -168,32 +175,35 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
           <div className={classes.modal}>
             <h3>Asignar Ficha</h3>
             <label>
-              Ficha:
-              <select value={selectedFicha} onChange={(e) => setSelectedFicha(e.target.value)}>
-                {fichas.map(ficha => (
-                  <option key={ficha.codigo} value={ficha.codigo}>
-                    {ficha.codigo}
-                  </option>
-                ))}
-              </select>
-            </label>
+              Ficha:<br/>
+              <Autocomplete
+                options={fichas}
+                getOptionLabel={(option) => option.codigo}
+                value={fichas.find(ficha => ficha.codigo === selectedFicha) || null}
+                onChange={(event, newValue) => {
+                  setSelectedFicha(newValue ? newValue.codigo : '');
+                }}
+                renderInput={(params) => <TextField {...params} label="Selecciona una ficha" variant="outlined" />}
+              />
+            </label><br/>
             <label>
-              Fecha de Inicio:
+              Fecha de Inicio: <br/>
               <input 
                 type="date" 
                 value={fechaAsignacionInicio} 
                 onChange={(e) => setFechaAsignacionInicio(e.target.value)} 
               />
-            </label>
+            </label><br/>
             <label>
-              Fecha de Fin:
+              Fecha de Fin: <br/>
               <input 
                 type="date" 
                 value={fechaAsignacionFin} 
                 onChange={(e) => setFechaAsignacionFin(e.target.value)} 
               />
-            </label>
-            <button onClick={handleCrear}>Asignar</button>
+            </label><br/>
+            <Button onClick={handleCrear}>Asignar</Button>
+            <Button onClick={handleCancelar} color="secondary">Cancelar</Button>
           </div>
         </div>
       )}
@@ -243,6 +253,7 @@ const useStyles = makeStyles({
     alignItems: 'center',
   },
   modal: {
+    justifyContent: 'center',
     backgroundColor: '#fff',
     padding: '20px',
     borderRadius: '8px',
