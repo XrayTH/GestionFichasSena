@@ -17,6 +17,7 @@ import ConFicha from './components/ConsultaPorFicha';
 import ConIns from './components/ConsultaPorInstructor';
 import AccessDenied from './pages/AccessDenied';
 import Conectando from './pages/Conectando';
+import AuthError from './pages/AuthError';
 
 const App = () => {
   return (
@@ -41,10 +42,14 @@ const AppContent = () => {
 
   useEffect(() => {
     checkConnection();
-  }, [location, isConnected]);
+  }, [location]);
 
   if (isConnected === false) {
     return <Conectando />;
+  }
+
+  if (isConnected === null) {
+    return <div>Cargando...</div>;
   }
 
   return (
@@ -54,76 +59,67 @@ const AppContent = () => {
           <Login />
         </RedirectIfAuthenticated>
       } />
-
       <Route path="/" element={
         <ProtectedRoute>
           <Home />
         </ProtectedRoute>
       } />
-
       <Route path="/gestion-usuarios" element={
         <ProtectedRoute requiredPermissions={['gestionarUsuarios']}>
           <GesUsu />
         </ProtectedRoute>
       } />
-
       <Route path="/programar" element={
         <ProtectedRoute requiredPermissions={['verProgramacion']}>
           <Programar />
         </ProtectedRoute>
       } />
-
       <Route path="/programar-instructor" element={
         <ProtectedRoute requiredPermissions={['verProgramacion']}>
           <ProIns />
         </ProtectedRoute>
       } />
-
       <Route path="/gestion-fichas" element={
         <ProtectedRoute requiredPermissions={['tablas']}>
           <GesFicha />
         </ProtectedRoute>
       } />
-
       <Route path="/gestion-coordinadores" element={
         <ProtectedRoute requiredPermissions={['tablas']}>
           <GesCoo />
         </ProtectedRoute>
       } />
-
       <Route path="/gestion-instructores" element={
         <ProtectedRoute requiredPermissions={['tablas']}>
           <GesIns />
         </ProtectedRoute>
       } />
-
       <Route path="/enviar-email" element={
         <ProtectedRoute requiredPermissions={['email']}>
           <Email />
         </ProtectedRoute>
       } />
-
       <Route path="/gestion-programas" element={
         <ProtectedRoute requiredPermissions={['tablas']}>
           <GesPro />
         </ProtectedRoute>
       } />
-
       <Route path="/consultar-ficha" element={
         <ProtectedRoute requiredPermissions={['verProgramacion']}>
           <ConFicha />
         </ProtectedRoute>
       } />
-
       <Route path="/consultar-instructor" element={
         <ProtectedRoute requiredPermissions={['verProgramacion']}>
           <ConIns />
         </ProtectedRoute>
       } />
       <Route path="/Denegado" element={<AccessDenied />} />
+      <Route path="/error" element={<AuthError />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
+
 
 export default App;

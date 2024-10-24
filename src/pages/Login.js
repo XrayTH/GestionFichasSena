@@ -30,9 +30,10 @@ const Login = () => {
         verProgramacion: userData.usuario.verProgramacion, 
         editProgramacion: userData.usuario.editProgramacion, 
         email: userData.usuario.email, 
-        gestionarUsuarios: userData.usuario.gestionarUsuarios 
+        gestionarUsuarios: userData.usuario.gestionarUsuarios,
+        token: userData.token 
       }));
-      console.log(userData.usuario.gestionarUsuarios)
+      
       navigate("/home");
     } catch (err) {
       setError(err.message); 

@@ -55,3 +55,14 @@ export const deleteUsuarioById = async (id) => {
     throw new Error(error.response?.data.message || 'Error al eliminar el usuario');
   }
 };
+
+export const verificarTokenYPermisos = async (token, permisos) => {
+  try {
+    const response = await api.post('/usuarios/verificar-permisos', { token, permisos });
+    return response.data;
+  } catch (error) {
+    const mensajeError = error.response?.data?.message || 'Error al verificar token y permisos';
+    throw new Error(mensajeError);
+  }
+};
+

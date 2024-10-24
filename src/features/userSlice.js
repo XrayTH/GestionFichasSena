@@ -14,6 +14,7 @@ const initialState = {
     },
   },
   isAuthenticated: false, 
+  token: null, 
 };
 
 const userSlice = createSlice({
@@ -21,7 +22,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, action) {
-      const { id, usuario, rol, tablas, verProgramacion, editProgramacion, email, gestionarUsuarios } = action.payload;
+      const { id, usuario, rol, tablas, verProgramacion, editProgramacion, email, gestionarUsuarios, token } = action.payload;
 
       state.usuario = {
         id: id,
@@ -36,7 +37,8 @@ const userSlice = createSlice({
         },
       };
 
-      state.isAuthenticated = true; 
+      state.isAuthenticated = true;
+      state.token = token; 
     },
     logout(state) {
       state.usuario = {
@@ -51,7 +53,8 @@ const userSlice = createSlice({
           gestionarUsuarios: false,
         },
       };
-      state.isAuthenticated = false; 
+      state.isAuthenticated = false;
+      state.token = null; 
     },
     resetUser(state) {
       state.usuario = {
@@ -67,6 +70,7 @@ const userSlice = createSlice({
         },
       };
       state.isAuthenticated = false;
+      state.token = null; 
     },
   },
 });
@@ -80,5 +84,7 @@ export const selectUserRol = (state) => state.user.usuario.rol;
 export const selectUserPermisos = (state) => state.user.usuario.permisos;
 
 export const selectIsAuthenticated = (state) => state.user.isAuthenticated;
+
+export const selectToken = (state) => state.user.token; 
 
 export default userSlice.reducer;
