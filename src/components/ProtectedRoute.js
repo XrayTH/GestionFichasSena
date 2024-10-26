@@ -3,6 +3,7 @@ import { useLocation, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectIsAuthenticated, selectToken, selectUserPermisos, logout } from '../features/userSlice'; 
 import { verificarTokenYPermisos } from '../service/userService'; 
+import Cargando from './Cargando';
 
 export const ProtectedRoute = ({ children, requiredPermissions }) => {
   const location = useLocation();
@@ -20,7 +21,7 @@ export const ProtectedRoute = ({ children, requiredPermissions }) => {
           dispatch(logout());
         }
         setValidando(false);
-        setError('No token');
+        //setError('No token');
         return;
       }
 
@@ -57,7 +58,7 @@ export const ProtectedRoute = ({ children, requiredPermissions }) => {
   }, [token, permisos, isAuthenticated, dispatch, location]);
 
   if (validando) {
-    return <div>Cargando...</div>;
+    return <Cargando/>;
   }
 
   if (error) {

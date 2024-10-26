@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const fichaSenaService = axios.create({
     baseURL: process.env.REACT_APP_BACKEND,
-    timeout: 1000,
+    timeout: 5000,
   });
 
   export { fichaSenaService }

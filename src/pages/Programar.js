@@ -143,8 +143,6 @@ const Programar = () => {
         }
     };
     
-    
-
     return (
         <>
             <Sidebar />
@@ -223,6 +221,7 @@ const Programar = () => {
                     {loading ? ( 
                         <div className={classes.loaderContainer}>
                             <CircularProgress className={classes.loader}/>
+                            <br/>
                             Cargando...
                         </div>
                     ) : (

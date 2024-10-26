@@ -18,6 +18,7 @@ import ConIns from './components/ConsultaPorInstructor';
 import AccessDenied from './pages/AccessDenied';
 import Conectando from './pages/Conectando';
 import AuthError from './pages/AuthError';
+import Cargando from './components/Cargando';
 
 const App = () => {
   return (
@@ -49,7 +50,7 @@ const AppContent = () => {
   }
 
   if (isConnected === null) {
-    return <div>Cargando...</div>;
+    return <Cargando/>;
   }
 
   return (
