@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Snackbar, Alert } from '@mui/material';
+import { Snackbar, Alert, CircularProgress } from '@mui/material';
 import ProgramaInstructor from './../components/ProgramaInstructor';
 import { getFichas } from '../service/fichaService';
 import { getJornadas } from '../service/jornadaService';
@@ -21,9 +21,11 @@ const ProgramarPorInstructor = () => {
   const [fechaInicio, setFechaInicio] = useState('');
   const [fechaFin, setFechaFin] = useState('');
   const [mensaje, setMensaje] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const fetchedFichas = await getFichas();
         setFichas(fetchedFichas);
@@ -39,6 +41,8 @@ const ProgramarPorInstructor = () => {
       } catch (error) {
         console.error('Error al cargar los datos:', error);
         setMensaje({ text: error.message, severity: 'error' });
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -94,7 +98,7 @@ const ProgramarPorInstructor = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className={classes.inputSearch}
       />
-            
+      
       <Jornadas className={classes.jornadas} />
 
       <div className={classes.dateInputsContainer}>
@@ -114,20 +118,26 @@ const ProgramarPorInstructor = () => {
         />
       </div>
 
-      {filteredInstructores.map((instructor) => (
-        <ProgramaInstructor
-          key={instructor.documento}
-          documentoInstructor={instructor.documento}
-          fichas={fichas}
-          asignaciones={asignaciones}
-          instructores={instructores}
-          jornadas={jornadas}
-          fechaInicio={fechaInicio}
-          fechaFin={fechaFin}
-          onCrearAsignacion={handleCrearAsignacion}
-          onEliminarAsignacion={handleEliminarAsignacion}
-        />
-      ))}
+      {loading ? (
+        <div className={classes.loaderContainer}>
+          <CircularProgress className={classes.loader} />
+        </div>
+      ) : (
+        filteredInstructores.map((instructor) => (
+          <ProgramaInstructor
+            key={instructor.documento}
+            documentoInstructor={instructor.documento}
+            fichas={fichas}
+            asignaciones={asignaciones}
+            instructores={instructores}
+            jornadas={jornadas}
+            fechaInicio={fechaInicio}
+            fechaFin={fechaFin}
+            onCrearAsignacion={handleCrearAsignacion}
+            onEliminarAsignacion={handleEliminarAsignacion}
+          />
+        ))
+      )}
     </div>
   );
 };
@@ -154,7 +164,15 @@ const useStyles = makeStyles({
   dateLabel: {
     margin: '0 10px',
   },
+  loaderContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
+  loader: {
+    color: "#5eb219"
+  }
 });
-
 
 export default ProgramarPorInstructor;

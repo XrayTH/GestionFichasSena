@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Coordinador from '../components/Coordinador';
 import NewCoordinador from '../components/NewCoordinador';
-import { TextField, Button, Snackbar, Alert } from '@mui/material';
+import { TextField, Button, Snackbar, Alert, CircularProgress } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { getCoordinadores, createCoordinador, updateCoordinadorByDocumento, deleteCoordinadorByDocumento } from '../service/coordinadorService';
 import Sidebar from '../components/Sidebar';
@@ -13,15 +13,19 @@ const GestionCoordinadores = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewCoordinadorForm, setShowNewCoordinadorForm] = useState(false);
   const [mensaje, setMensaje] = useState(null); 
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCoordinadores = async () => {
+      setLoading(true);
       try {
         const data = await getCoordinadores(); 
         setCoordinadores(data); 
       } catch (error) {
         console.error('Error al obtener los coordinadores:', error);
         setMensaje({ text: error.message, severity: 'error' });
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -33,7 +37,6 @@ const GestionCoordinadores = () => {
   const handleSaveNewCoordinador = async (newCoordinador) => {
     try {
       const createdCoordinador = await createCoordinador(newCoordinador);
-  
       setCoordinadores((prevCoordinadores) => [...prevCoordinadores, createdCoordinador]);
       setShowNewCoordinadorForm(false);
       setMensaje({ text: 'Coordinador creado con éxito', severity: 'success' });
@@ -49,7 +52,6 @@ const GestionCoordinadores = () => {
       setCoordinadores((prevCoordinadores) =>
         prevCoordinadores.filter((coordinador) => coordinador.documento !== documento)
       );
-  
       setMensaje({ text: 'Coordinador borrado con éxito', severity: 'success' });
     } catch (error) {
       console.error('Error al borrar el coordinador en la base de datos:', error);
@@ -61,10 +63,7 @@ const GestionCoordinadores = () => {
 
   const handleUpdateCoordinador = async (updatedCoordinador) => {
     try {
-      // Actualizamos en la base de datos con el método correcto
       await updateCoordinadorByDocumento(updatedCoordinador.documento, updatedCoordinador);
-
-      // Si la actualización en la base de datos es exitosa, actualizamos en el estado local
       setCoordinadores((prevCoordinadores) =>
         prevCoordinadores.map((coordinador) =>
           coordinador.documento === updatedCoordinador.documento ? updatedCoordinador : coordinador
@@ -93,7 +92,6 @@ const GestionCoordinadores = () => {
     });
   }, [coordinadores, searchTerm]);
   
-
   return (
     <>
       <Sidebar />
@@ -125,20 +123,26 @@ const GestionCoordinadores = () => {
           />
         )}
 
-        <div className={classes.coordinadorList}>
-          {filteredCoordinadores.length > 0 ? (
-            filteredCoordinadores.map((coordinador) => (
-              <Coordinador
-                key={coordinador.documento}
-                coordinador={coordinador}
-                onUpdate={handleUpdateCoordinador}
-                onDelete={handleDeleteCoordinador}
-              />
-            ))
-          ) : (
-            <p>No se encontraron coordinadores</p>
-          )}
-        </div>
+        {loading ? (
+          <div className={classes.loaderContainer}>
+            <CircularProgress className={classes.loader} />
+          </div>
+        ) : (
+          <div className={classes.coordinadorList}>
+            {filteredCoordinadores.length > 0 ? (
+              filteredCoordinadores.map((coordinador) => (
+                <Coordinador
+                  key={coordinador.documento}
+                  coordinador={coordinador}
+                  onUpdate={handleUpdateCoordinador}
+                  onDelete={handleDeleteCoordinador}
+                />
+              ))
+            ) : (
+              <p>No se encontraron coordinadores</p>
+            )}
+          </div>
+        )}
       </div>
     </>
   );
@@ -168,7 +172,16 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridGap: '10px',
-    margin: '10px'
+    margin: '10px',
+  },
+  loaderContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
+  loader: {
+    color: "#5eb219",
   },
 }));
 

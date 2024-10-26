@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Button, TextField, MenuItem, Select, FormControl, Snackbar, Alert } from '@mui/material';
+import { Button, TextField, MenuItem, Select, FormControl, Snackbar, Alert, CircularProgress } from '@mui/material';
 import UserComponent from '../components/UserComponent';
 import NewUserForm from '../components/NewUserForm';
 import { makeStyles } from '@mui/styles';
@@ -14,20 +14,24 @@ const GestionUsuarios = () => {
   const [mostrarFormularioNuevoUsuario, setMostrarFormularioNuevoUsuario] = useState(false);
   const [textoBusqueda, setTextoBusqueda] = useState('');
   const [rolSeleccionado, setRolSeleccionado] = useState('');
-  const [mensaje, setMensaje] = useState(null); 
+  const [mensaje, setMensaje] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const cargarUsuarios = async () => {
+      setLoading(true);
       try {
         const usuariosDesdeApi = await getUsuarios();
         const usuariosConContraseñasDesencriptadas = usuariosDesdeApi.map(usuario => ({
           ...usuario,
-          contraseña: decryptPassword(usuario.contraseña), 
+          contraseña: decryptPassword(usuario.contraseña),
         }));
         setUsuarios(usuariosConContraseñasDesencriptadas);
       } catch (error) {
         console.error("Error al cargar usuarios:", error.message);
         setMensaje({ text: error.message, severity: 'error' });
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -35,14 +39,14 @@ const GestionUsuarios = () => {
   }, []);
 
   const manejarNuevoUsuarioClick = () => setMostrarFormularioNuevoUsuario(true);
-  
+
   const manejarGuardarNuevoUsuario = async (nuevoUsuario) => {
     try {
       const usuarioConContraseñaEncriptada = {
         ...nuevoUsuario,
-        contraseña: encryptPassword(nuevoUsuario.contraseña), 
+        contraseña: encryptPassword(nuevoUsuario.contraseña),
       };
-      
+
       await createUsuario(usuarioConContraseñaEncriptada);
       const nuevoId = usuarios.length > 0 ? Math.max(...usuarios.map(usuario => usuario.id)) + 1 : 1;
       const usuarioConId = { ...usuarioConContraseñaEncriptada, id: nuevoId };
@@ -55,18 +59,17 @@ const GestionUsuarios = () => {
     }
     window.location.reload();
   };
-  
 
   const manejarEliminarUsuario = async (usuarioId) => {
     const confirmarEliminacion = window.confirm("¿Estás seguro de que deseas eliminar este usuario?");
-  
+
     if (!confirmarEliminacion) {
-      return; 
+      return;
     }
-  
+
     try {
       await deleteUsuarioById(usuarioId);
-      setUsuarios((usuariosPrevios) => 
+      setUsuarios((usuariosPrevios) =>
         usuariosPrevios.filter(usuario => usuario.id !== usuarioId)
       );
       setMensaje({ text: 'Usuario eliminado con éxito', severity: 'success' });
@@ -75,17 +78,16 @@ const GestionUsuarios = () => {
       setMensaje({ text: error.message, severity: 'error' });
     }
   };
-  
-  
+
   const manejarCancelarNuevoUsuario = () => setMostrarFormularioNuevoUsuario(false);
 
   const manejarActualizarUsuario = async (usuarioActualizado) => {
     try {
       const usuarioConContraseñaEncriptada = {
         ...usuarioActualizado,
-        contraseña: encryptPassword(usuarioActualizado.contraseña), 
+        contraseña: encryptPassword(usuarioActualizado.contraseña),
       };
-  
+
       await updateUsuarioById(usuarioConContraseñaEncriptada.id, usuarioConContraseñaEncriptada);
       setUsuarios((usuariosPrevios) =>
         usuariosPrevios.map(usuario => (usuario.id === usuarioActualizado.id ? usuarioConContraseñaEncriptada : usuario))
@@ -105,74 +107,79 @@ const GestionUsuarios = () => {
 
   const usuariosFiltrados = useMemo(() => {
     return usuarios.filter((usuario) => {
-      const nombreUsuario = usuario.usuario?.toLowerCase() || ""; 
+      const nombreUsuario = usuario.usuario?.toLowerCase() || "";
       const coincideBusqueda = nombreUsuario.includes(textoBusqueda.toLowerCase());
       const coincideRol = rolSeleccionado ? usuario.rol === rolSeleccionado : true;
       return coincideBusqueda && coincideRol;
     });
   }, [usuarios, textoBusqueda, rolSeleccionado]);
-  
 
   return (
     <>
-    <Sidebar/>
-    <div className={classes.container}>
-      {mensaje && (
-        <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
-          <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
-            {mensaje.text}
-          </Alert>
-        </Snackbar>
-      )}
+      <Sidebar />
+      <div className={classes.container}>
+        {mensaje && (
+          <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
+            <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
+              {mensaje.text}
+            </Alert>
+          </Snackbar>
+        )}
 
-      <div className={classes.filters}>
-        <div className={classes.filterLeft}>
-          <TextField
-            fullWidth
-            placeholder="Filtrar por usuario"
-            value={textoBusqueda}
-            onChange={(e) => setTextoBusqueda(e.target.value)}
-            InputProps={{
-              className: classes.inputField,
-            }}
-          />
+        <div className={classes.filters}>
+          <div className={classes.filterLeft}>
+            <TextField
+              fullWidth
+              placeholder="Filtrar por usuario"
+              value={textoBusqueda}
+              onChange={(e) => setTextoBusqueda(e.target.value)}
+              InputProps={{
+                className: classes.inputField,
+              }}
+            />
+          </div>
+          <div className={classes.filterRight}>
+            <FormControl fullWidth>
+              <Select
+                value={rolSeleccionado}
+                onChange={(e) => setRolSeleccionado(e.target.value)}
+                displayEmpty
+                className={classes.selectField}
+              >
+                <MenuItem value=""><em>Todos los roles</em></MenuItem>
+                {roles.map((rol) => (
+                  <MenuItem key={rol} value={rol}>{rol}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+          <div className={classes.newUserButton}>
+            <Button variant="contained" onClick={manejarNuevoUsuarioClick} className={classes.newUserButtonStyle}>
+              Nuevo Usuario
+            </Button>
+          </div>
         </div>
-        <div className={classes.filterRight}>
-          <FormControl fullWidth>
-            <Select 
-              value={rolSeleccionado} 
-              onChange={(e) => setRolSeleccionado(e.target.value)} 
-              displayEmpty
-              className={classes.selectField}
-            >
-              <MenuItem value=""><em>Todos los roles</em></MenuItem>
-              {roles.map((rol) => (
-                <MenuItem key={rol} value={rol}>{rol}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </div>
-        <div className={classes.newUserButton}>
-          <Button variant="contained" onClick={manejarNuevoUsuarioClick} className={classes.newUserButtonStyle}>
-            Nuevo Usuario
-          </Button>
-        </div>
-      </div>
 
-      {mostrarFormularioNuevoUsuario && <NewUserForm onSave={manejarGuardarNuevoUsuario} onCancel={manejarCancelarNuevoUsuario} />}
+        {mostrarFormularioNuevoUsuario && <NewUserForm onSave={manejarGuardarNuevoUsuario} onCancel={manejarCancelarNuevoUsuario} />}
 
-      <div className={classes.userList}>
-        {usuariosFiltrados.length > 0 ? (
-          usuariosFiltrados.map((usuario) => (
-            <div key={usuario.id} className={classes.userComponent}>
-              <UserComponent user={usuario} onUpdate={manejarActualizarUsuario} onDelete={manejarEliminarUsuario}/>
-            </div>
-          ))
+        {loading ? (
+          <div className={classes.loaderContainer}>
+            <CircularProgress className={classes.loader} />
+          </div>
         ) : (
-          <p>No se encontraron usuarios</p>
+          <div className={classes.userList}>
+            {usuariosFiltrados.length > 0 ? (
+              usuariosFiltrados.map((usuario) => (
+                <div key={usuario.id} className={classes.userComponent}>
+                  <UserComponent user={usuario} onUpdate={manejarActualizarUsuario} onDelete={manejarEliminarUsuario} />
+                </div>
+              ))
+            ) : (
+              <p>No se encontraron usuarios</p>
+            )}
+          </div>
         )}
       </div>
-    </div>
     </>
   );
 };
@@ -183,7 +190,7 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     margin: 'auto',
     padding: '20px',
-    backgroundColor: '#f4f4f4', 
+    backgroundColor: '#f4f4f4',
   },
   filters: {
     display: 'flex',
@@ -223,29 +230,35 @@ const useStyles = makeStyles(() => ({
     },
   },
   newUserButtonStyle: {
-    backgroundColor: '#5eb219', 
+    backgroundColor: '#5eb219',
     '&:hover': {
-      backgroundColor: '#4cae14', 
+      backgroundColor: '#4cae14',
     },
   },
   inputField: {
-    backgroundColor: '#ffffff', 
+    backgroundColor: '#ffffff',
   },
   selectField: {
-    backgroundColor: '#ffffff', 
+    backgroundColor: '#ffffff',
   },
   userList: {
     marginTop: '20px',
   },
   userComponent: {
     marginBottom: '15px',
-    border: `1px solid #144cae`, 
+    border: `1px solid #144cae`,
     borderRadius: '5px',
     padding: '10px',
-    backgroundColor: '#ffffff', 
+    backgroundColor: '#ffffff',
   },
-  errorText: {
-    color: '#ae144c', 
+  loaderContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
+  loader: {
+    color: "#5eb219",
   },
 }));
 

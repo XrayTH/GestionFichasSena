@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@mui/styles"; 
 import { useNavigate } from "react-router-dom"; 
+import CircularProgress from '@mui/material/CircularProgress';
 import logo from "../assets/logo-sena-verde-complementario-svg-2022.svg";
 import { useDispatch } from 'react-redux'; 
 import { setUser } from '../features/userSlice'; 
@@ -14,12 +15,14 @@ const Login = () => {
   const [usuario, setUsuario] = useState(''); 
   const [contraseña, setContraseña] = useState(''); 
   const [error, setError] = useState(''); 
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLoginClick = async () => {
     setError(''); 
+    setIsLoading(true);
+
     try {
       const encryptedPassword = encryptPassword(contraseña);
-      
       const userData = await verificarUsuario({ usuario, contraseña: encryptedPassword });
       
       dispatch(setUser({
@@ -38,6 +41,8 @@ const Login = () => {
     } catch (err) {
       setError(err.message); 
       console.error("Error de login:", err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -64,8 +69,13 @@ const Login = () => {
           type="button"
           className={classes.button}
           onClick={handleLoginClick}
+          disabled={isLoading}
         >
-          Iniciar Sesión
+          {isLoading ? (
+            <CircularProgress size={24} style={{ color: "#fff" }} />
+          ) : (
+            "Iniciar Sesión"
+          )}
         </button>
       </form>
     </div>
@@ -115,8 +125,14 @@ const useStyles = makeStyles(() => ({
     borderRadius: "4px",
     cursor: "pointer",
     fontSize: "16px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     '&:hover': {
       backgroundColor: "#4cae14",
+    },
+    '&:disabled': {
+      backgroundColor: "#8bc34a",
     },
   },
   error: {

@@ -221,8 +221,6 @@ const Programar = () => {
                     {loading ? ( 
                         <div className={classes.loaderContainer}>
                             <CircularProgress className={classes.loader}/>
-                            <br/>
-                            Cargando...
                         </div>
                     ) : (
                         filteredFichas.map((ficha) => (
@@ -295,6 +293,9 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         height: '100%',
     },
+    loader: {
+        color: "#5eb219"
+    }
 }));
 
 export default Programar;

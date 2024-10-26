@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Button, TextField, Snackbar, Alert } from '@mui/material';
+import { Button, TextField, Snackbar, Alert, CircularProgress } from '@mui/material';
 import FichaBasica from '../components/FichaBasica';
 import NewFichaBasica from '../components/NewFichaBasica';
 import { makeStyles } from '@mui/styles';
@@ -19,24 +19,32 @@ const GestionFichas = () => {
   const [coordinadores, setCoordinadores] = useState([]);
   const [instructores, setInstructores] = useState([]);
   const [programas, setProgramas] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewFichaForm, setShowNewFichaForm] = useState(false);
   const [mensaje, setMensaje] = useState(null); 
 
   useEffect(() => {
     const fetchData = async () => {
-      const fichasData = await getFichas();
-      setFichas(fichasData);
+      setLoading(true);
+      try {
+        const fichasData = await getFichas();
+        setFichas(fichasData);
 
-      const coordinadoresData = await getCoordinadores();
-      setCoordinadores(coordinadoresData);
+        const coordinadoresData = await getCoordinadores();
+        setCoordinadores(coordinadoresData);
 
-      const instructoresData = await getInstructores();
-      setInstructores(instructoresData);
+        const instructoresData = await getInstructores();
+        setInstructores(instructoresData);
 
-      const programasData = await obtenerProgramas();
-      setProgramas(programasData);
+        const programasData = await obtenerProgramas();
+        setProgramas(programasData);
+      } catch (error) {
+        console.error('Error al obtener los datos:', error);
+        setMensaje({ text: error.message, severity: 'error' });
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchData();
@@ -103,64 +111,70 @@ const GestionFichas = () => {
 
   return (
     <>
-    <Sidebar/>
-    <div className={classes.container}>
-      <DireccionBuscador/>
-      {mensaje && (
-        <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
-          <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
-            {mensaje.text}
-          </Alert>
-        </Snackbar>
-      )}
+      <Sidebar/>
+      <div className={classes.container}>
+        <DireccionBuscador/>
+        {mensaje && (
+          <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
+            <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
+              {mensaje.text}
+            </Alert>
+          </Snackbar>
+        )}
 
-      <div className={classes.filters}>
-        <TextField
-          variant="outlined"
-          placeholder="Buscar por Código de Ficha, Coordinador, Programa o Ambiente"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className={classes.searchField}
-        />
+        <div className={classes.filters}>
+          <TextField
+            variant="outlined"
+            placeholder="Buscar por Código de Ficha, Coordinador, Programa o Ambiente"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={classes.searchField}
+          />
 
-        <div className={classes.newFichaButton}>
-          <Button variant="contained" onClick={handleNewFichaClick} className={classes.newFichaButtonStyle}>
-            Nueva Ficha
-          </Button>
+          <div className={classes.newFichaButton}>
+            <Button variant="contained" onClick={handleNewFichaClick} className={classes.newFichaButtonStyle}>
+              Nueva Ficha
+            </Button>
+          </div>
         </div>
-      </div>
 
-      {showNewFichaForm && (
-        <NewFichaBasica 
-          onSave={handleSaveNewFicha} 
-          onCancel={handleCancelNewFicha} 
-          coordinadores={coordinadores}
-          gestores={instructores}
-          programas={programas}
-          municipios={municipios}
-        />
-      )}
+        {showNewFichaForm && (
+          <NewFichaBasica 
+            onSave={handleSaveNewFicha} 
+            onCancel={handleCancelNewFicha} 
+            coordinadores={coordinadores}
+            gestores={instructores}
+            programas={programas}
+            municipios={municipios}
+          />
+        )}
 
-      <div className={classes.fichaList}>
-        {filteredFichas.length > 0 ? (
-          filteredFichas.map((ficha) => (
-            <div key={ficha.codigo} className={classes.fichaComponent}> 
-              <FichaBasica 
-                ficha={ficha}
-                onUpdate={handleUpdateFicha}
-                onDelete={handleDeleteFicha}
-                coordinadores={coordinadores}
-                gestores={instructores}
-                programas={programas}
-                municipios={municipios}
-              />
-            </div>
-          ))
+        {loading ? (
+          <div className={classes.loaderContainer}>
+            <CircularProgress className={classes.loader} />
+          </div>
         ) : (
-          <p>No se encontraron fichas</p>
+          <div className={classes.fichaList}>
+            {filteredFichas.length > 0 ? (
+              filteredFichas.map((ficha) => (
+                <div key={ficha.codigo} className={classes.fichaComponent}> 
+                  <FichaBasica 
+                    ficha={ficha}
+                    onUpdate={handleUpdateFicha}
+                    onDelete={handleDeleteFicha}
+                    coordinadores={coordinadores}
+                    gestores={instructores}
+                    programas={programas}
+                    municipios={municipios}
+                  />
+                </div>
+              ))
+            ) : (
+              <p>No se encontraron fichas</p>
+            )}
+          </div>
         )}
       </div>
-    </div>
     </>
   );
 };
@@ -202,6 +216,15 @@ const useStyles = makeStyles(() => ({
     borderRadius: '5px',
     padding: '10px',
     backgroundColor: '#ffffff',
+  },
+  loaderContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
+  loader: {
+    color: "#5eb219",
   },
 }));
 

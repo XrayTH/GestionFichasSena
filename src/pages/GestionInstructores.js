@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Instructor from '../components/Instructor';
 import NewInstructor from '../components/NewInstructor';
-import { TextField, Button, Snackbar, Alert } from '@mui/material';
+import { TextField, Button, Snackbar, Alert, CircularProgress } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { getInstructores, createInstructor, updateInstructorByDocumento, deleteInstructorByDocumento } from '../service/intructorService';
 import Sidebar from '../components/Sidebar';
@@ -12,16 +12,20 @@ const GestionInstructores = () => {
   const [instructores, setInstructores] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewInstructorForm, setShowNewInstructorForm] = useState(false);
-  const [mensaje, setMensaje] = useState(null); 
+  const [mensaje, setMensaje] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchInstructores = async () => {
+      setLoading(true);
       try {
         const data = await getInstructores(); 
         setInstructores(data); 
       } catch (error) {
         console.error('Error al obtener los instructores:', error);
         setMensaje({ text: error.message, severity: 'error' });
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -33,7 +37,6 @@ const GestionInstructores = () => {
   const handleSaveNewInstructor = async (newInstructor) => {
     try {
       const createdInstructor = await createInstructor(newInstructor);
-  
       setInstructores((prevInstructores) => [...prevInstructores, createdInstructor]);
       setShowNewInstructorForm(false);
       setMensaje({ text: 'Instructor creado con éxito', severity: 'success' });
@@ -47,10 +50,7 @@ const GestionInstructores = () => {
 
   const handleUpdateInstructor = async (updatedInstructor) => {
     try {
-      // Actualizamos en la base de datos con el método correcto
       await updateInstructorByDocumento(updatedInstructor.documento, updatedInstructor);
-
-      // Si la actualización en la base de datos es exitosa, actualizamos en el estado local
       setInstructores((prevInstructores) =>
         prevInstructores.map((instructor) =>
           instructor.documento === updatedInstructor.documento ? updatedInstructor : instructor
@@ -91,8 +91,7 @@ const GestionInstructores = () => {
       );
     });
   }, [instructores, searchTerm]);
-  
-  
+
   return (
     <>
       <Sidebar />
@@ -124,20 +123,26 @@ const GestionInstructores = () => {
           />
         )}
 
-        <div className={classes.instructorList}>
-          {filteredInstructores.length > 0 ? (
-            filteredInstructores.map((instructor) => (
-              <Instructor
-                key={instructor.documento}
-                instructor={instructor}
-                onUpdate={handleUpdateInstructor}
-                onDelete={handleDeleteInstructor}
-              />
-            ))
-          ) : (
-            <p>No se encontraron instructores</p>
-          )}
-        </div>
+        {loading ? (
+          <div className={classes.loaderContainer}>
+            <CircularProgress className={classes.loader} />
+          </div>
+        ) : (
+          <div className={classes.instructorList}>
+            {filteredInstructores.length > 0 ? (
+              filteredInstructores.map((instructor) => (
+                <Instructor
+                  key={instructor.documento}
+                  instructor={instructor}
+                  onUpdate={handleUpdateInstructor}
+                  onDelete={handleDeleteInstructor}
+                />
+              ))
+            ) : (
+              <p>No se encontraron instructores</p>
+            )}
+          </div>
+        )}
       </div>
     </>
   );
@@ -168,6 +173,15 @@ const useStyles = makeStyles(() => ({
     gridTemplateColumns: '1fr',
     gridGap: '10px',
     margin: '10px'
+  },
+  loaderContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
+  loader: {
+    color: "#5eb219",
   },
 }));
 

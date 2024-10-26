@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Programa from '../components/Programa';
-import { TextField, Button, Snackbar, Alert } from '@mui/material';
+import { TextField, Button, Snackbar, Alert, CircularProgress } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { obtenerProgramas, crearPrograma, actualizarProgramaPorId, eliminarProgramaPorId } from '../service/programaService';
 import NewPrograma from '../components/NewPrograma';
@@ -12,14 +12,18 @@ const GestionPrograma = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewProgramaForm, setShowNewProgramaForm] = useState(false);
   const [mensaje, setMensaje] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProgramas = async () => {
+      setLoading(true);
       try {
         const data = await obtenerProgramas();
         setProgramas(data);
       } catch (error) {
         setMensaje({ text: error.message, severity: 'error' });
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -72,54 +76,59 @@ const GestionPrograma = () => {
       );
     });
   }, [programas, searchTerm]);
-  
 
   return (
     <>
-    <Sidebar/>
-    <div className={classes.container}>
-      {mensaje && (
-        <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
-          <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
-            {mensaje.text}
-          </Alert>
-        </Snackbar>
-      )}
+      <Sidebar />
+      <div className={classes.container}>
+        {mensaje && (
+          <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
+            <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
+              {mensaje.text}
+            </Alert>
+          </Snackbar>
+        )}
 
-      <TextField
-        variant="outlined"
-        placeholder="Buscar por Nombre o Nombre Corto"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className={classes.searchField}
-      />
-
-      <Button variant="contained" onClick={handleNewProgramaClick} className={classes.newProgramaButton}>
-        Nuevo Programa
-      </Button>
-
-      {showNewProgramaForm && (
-        <NewPrograma
-          onSave={handleSaveNewPrograma}
-          onCancel={() => setShowNewProgramaForm(false)}
+        <TextField
+          variant="outlined"
+          placeholder="Buscar por Nombre o Nombre Corto"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className={classes.searchField}
         />
-      )}
 
-      <div className={classes.programaList}>
-        {filteredProgramas.length > 0 ? (
-          filteredProgramas.map((programa) => (
-            <Programa
-              key={programa.id}
-              programa={programa}
-              onUpdate={handleUpdatePrograma}
-              onDelete={handleDeletePrograma}
-            />
-          ))
+        <Button variant="contained" onClick={handleNewProgramaClick} className={classes.newProgramaButton}>
+          Nuevo Programa
+        </Button>
+
+        {showNewProgramaForm && (
+          <NewPrograma
+            onSave={handleSaveNewPrograma}
+            onCancel={() => setShowNewProgramaForm(false)}
+          />
+        )}
+
+        {loading ? (
+          <div className={classes.loaderContainer}>
+            <CircularProgress className={classes.loader} />
+          </div>
         ) : (
-          <p>No se encontraron programas</p>
+          <div className={classes.programaList}>
+            {filteredProgramas.length > 0 ? (
+              filteredProgramas.map((programa) => (
+                <Programa
+                  key={programa.id}
+                  programa={programa}
+                  onUpdate={handleUpdatePrograma}
+                  onDelete={handleDeletePrograma}
+                />
+              ))
+            ) : (
+              <p>No se encontraron programas</p>
+            )}
+          </div>
         )}
       </div>
-    </div>
     </>
   );
 };
@@ -145,11 +154,20 @@ const useStyles = makeStyles(() => ({
     marginBottom: '20px',
   },
   programaList: {
-    display: 'flex',               
-    flexDirection: 'column',      
-    alignItems: 'center',          
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     margin: '10px',
-    gap: '10px',                  
+    gap: '10px',
+  },
+  loaderContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
+  loader: {
+    color: "#5eb219",
   },
 }));
 

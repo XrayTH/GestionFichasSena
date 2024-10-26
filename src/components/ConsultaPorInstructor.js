@@ -6,7 +6,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { getAsignacionesByInstructor } from '../service/asignacionService';
 import { getFichaByCodigo } from '../service/fichaService';
 import { obtenerProgramaPorNombre } from '../service/programaService';
-import { Tooltip, Paper, Typography, Box, Button } from '@mui/material';
+import { Tooltip, Paper, Typography, Box, Button, CircularProgress } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useLocation } from 'react-router-dom';
 import 'moment/locale/es';
@@ -48,6 +48,7 @@ const ConsultaPorInstructor = () => {
   const [asignaciones, setAsignaciones] = useState([]);
   const [jornadaColors, setJornadaColors] = useState({});
   const [pdf, setPdf] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const permisos = useSelector(selectUserPermisos);  
 
@@ -96,23 +97,23 @@ const ConsultaPorInstructor = () => {
         setJornadaColors(colorsMap);
       } catch (error) {
         console.error('Error al cargar las asignaciones', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchAsignaciones();
   }, [instructor]);
 
-  const eventStyleGetter = (event) => {
-    return {
-      style: {
-        backgroundColor: event.color,
-        color: '#ffffff',
-        padding: '5px',
-        borderRadius: '4px',
-        cursor: 'pointer',
-      },
-    };
-  };
+  const eventStyleGetter = (event) => ({
+    style: {
+      backgroundColor: event.color,
+      color: '#ffffff',
+      padding: '5px',
+      borderRadius: '4px',
+      cursor: 'pointer',
+    },
+  });
 
   const EventComponent = ({ event }) => (
     <Tooltip
@@ -138,7 +139,6 @@ const ConsultaPorInstructor = () => {
 
   const handleCaptureToPDF = () => {
     const element = document.getElementById('calendarContainer');
-
     const opt = {
         margin: 0.5,
         filename: 'calendarioInstructor.pdf',
@@ -146,14 +146,11 @@ const ConsultaPorInstructor = () => {
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
     };
-
     html2pdf().from(element).set(opt).toPdf().get('pdf').then(function (pdf) {
         setPdf(pdf);
-
         const blob = pdf.output('blob');
         const url = URL.createObjectURL(blob);
         window.open(url);
-
         navigate('/enviar-email', {
             state: { pdf: blob }
         });
@@ -166,71 +163,75 @@ const ConsultaPorInstructor = () => {
 
   return (
     <>
-    <Sidebar />
-    <div className={classes.calendarContainer} id="calendarContainer">
-      <Box className={classes.flexContainer}>
+      <Sidebar />
+      <div className={classes.calendarContainer} id="calendarContainer">
+        <Box className={classes.flexContainer}>
 
-        <Box className={classes.infoContainer}>
-        <Button onClick={handleRegresar}>Volver</Button>
-          <Typography variant="body2">Instructor: {instructor.nombre}</Typography>
-          <Typography variant="body2">Email: {instructor.email}</Typography>
-          <Typography variant="body2">Teléfono: {instructor.telefono}</Typography>
-          <Typography variant="body2">Área Temática: {instructor.areaTematica}</Typography>
-        </Box>
+          <Box className={classes.infoContainer}>
+            <Button onClick={handleRegresar}>Volver</Button>
+            <Typography variant="body2">Instructor: {instructor.nombre}</Typography>
+            <Typography variant="body2">Email: {instructor.email}</Typography>
+            <Typography variant="body2">Teléfono: {instructor.telefono}</Typography>
+            <Typography variant="body2">Área Temática: {instructor.areaTematica}</Typography>
+          </Box>
 
-        <Box className={classes.legendContainer}>
-          <Box className={classes.legendItems}>
-            {Object.entries(jornadaColors).map(([jornada, color]) => (
-              <Box key={jornada} className={classes.legendItem}>
-                <Box style={{ backgroundColor: color, width: '10px', height: '20px', borderRadius: '4px', marginRight: '5px' }}></Box>
-                <Typography variant="body2" className={classes.legendText}>{jornada}</Typography>
-              </Box>
-            ))}
+          <Box className={classes.legendContainer}>
+            <Box className={classes.legendItems}>
+              {Object.entries(jornadaColors).map(([jornada, color]) => (
+                <Box key={jornada} className={classes.legendItem}>
+                  <Box style={{ backgroundColor: color, width: '10px', height: '20px', borderRadius: '4px', marginRight: '5px' }}></Box>
+                  <Typography variant="body2" className={classes.legendText}>{jornada}</Typography>
+                </Box>
+              ))}
+            </Box>
           </Box>
         </Box>
-      </Box>
 
-      <Calendar
-        localizer={localizer}
-        events={asignaciones}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 500 }}
-        eventPropGetter={eventStyleGetter}
-        components={{
-          event: EventComponent,
-        }}
-        views={['month']}
-        popup
-        messages={{
-          allDay: 'Todo el día',
-          previous: 'Atrás',
-          next: 'Siguiente',
-          today: 'Hoy',
-          month: 'Mes',
-          week: 'Semana',
-          day: 'Día',
-          agenda: 'Agenda',
-          date: 'Fecha',
-          time: 'Hora',
-          event: 'Evento',
-          noEventsInRange: 'No hay eventos en este rango.',
-          showMore: (total) => `+ Ver más (${total})`,
-        }}
-      />
-    </div>
+        {isLoading ? (
+          <Box display="flex" flexDirection="column" alignItems="center" mt={3}>
+            <CircularProgress color="primary" className={classes.load}/>
+            <Typography variant="body2" mt={2}>Cargando horarios, esto puede tardar un poco...</Typography>
+          </Box>
+        ) : (
+          <Calendar
+            localizer={localizer}
+            events={asignaciones}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: 500 }}
+            eventPropGetter={eventStyleGetter}
+            components={{ event: EventComponent }}
+            views={['month']}
+            popup
+            messages={{
+              allDay: 'Todo el día',
+              previous: 'Atrás',
+              next: 'Siguiente',
+              today: 'Hoy',
+              month: 'Mes',
+              week: 'Semana',
+              day: 'Día',
+              agenda: 'Agenda',
+              date: 'Fecha',
+              time: 'Hora',
+              event: 'Evento',
+              noEventsInRange: 'No hay eventos en este rango.',
+              showMore: (total) => `+ Ver más (${total})`,
+            }}
+          />
+        )}
+      </div>
 
-    {/* Solo renderizar el botón si el usuario tiene permiso para enviar correo */}
-    {permisos.email && (
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleCaptureToPDF}
-        style={{ marginTop: '20px' }}
-      >
-        Enviar por correo
-      </Button>
-    )}
+      {(permisos.email && !isLoading) && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleCaptureToPDF}
+          style={{ marginTop: '20px' }}
+        >
+          Enviar por correo
+        </Button>
+      )}
     </>
   );
 };
@@ -274,6 +275,9 @@ const useStyles = makeStyles(() => ({
   calendarContainer: {
     height: '100vh',
     overflowY: 'auto',
+  },
+  load: {
+    color: "#5eb219"
   },
 }));
 

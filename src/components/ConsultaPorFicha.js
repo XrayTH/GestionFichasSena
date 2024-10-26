@@ -4,7 +4,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { getAsignacionesByFicha } from '../service/asignacionService';
-import { Tooltip, Paper, Typography, Box, Button } from '@mui/material';
+import { Tooltip, Paper, Typography, Box, Button, CircularProgress } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useLocation } from 'react-router-dom';
 import 'moment/locale/es';
@@ -45,6 +45,7 @@ const ConsultaPorFicha = () => {
   const [asignaciones, setAsignaciones] = useState([]);
   const [jornadaColors, setJornadaColors] = useState({});
   const [pdf, setPdf] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); 
 
   const permisosUsuario = useSelector((state) => state.user.usuario.permisos);
 
@@ -86,6 +87,8 @@ const ConsultaPorFicha = () => {
         setJornadaColors(colorsMap);
       } catch (error) {
         console.error('Error al cargar las asignaciones', error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchAsignaciones();
@@ -176,36 +179,43 @@ const ConsultaPorFicha = () => {
         </Box>
       </Box>
 
-      <Calendar
-        localizer={localizer}
-        events={asignaciones}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 500 }}
-        eventPropGetter={eventStyleGetter}
-        components={{
-          event: EventComponent,
-        }}
-        views={['month']}
-        popup
-        messages={{
-          allDay: 'Todo el día',
-          previous: 'Atrás',
-          next: 'Siguiente',
-          today: 'Hoy',
-          month: 'Mes',
-          week: 'Semana',
-          day: 'Día',
-          agenda: 'Agenda',
-          date: 'Fecha',
-          time: 'Hora',
-          event: 'Evento',
-          noEventsInRange: 'No hay eventos en este rango.',
-          showMore: (total) => `+ Ver más (${total})`,
-        }}
-      />
+      {isLoading ? (
+        <Box display="flex" flexDirection="column" alignItems="center" mt={3}>
+          <CircularProgress color="primary" className={classes.load}/>
+          <Typography variant="body2" mt={2}>Cargando horarios, esto puede tardar un poco...</Typography>
+        </Box>
+      ) : (
+        <Calendar
+          localizer={localizer}
+          events={asignaciones}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: 500 }}
+          eventPropGetter={eventStyleGetter}
+          components={{
+            event: EventComponent,
+          }}
+          views={['month']}
+          popup
+          messages={{
+            allDay: 'Todo el día',
+            previous: 'Atrás',
+            next: 'Siguiente',
+            today: 'Hoy',
+            month: 'Mes',
+            week: 'Semana',
+            day: 'Día',
+            agenda: 'Agenda',
+            date: 'Fecha',
+            time: 'Hora',
+            event: 'Evento',
+            noEventsInRange: 'No hay eventos en este rango.',
+            showMore: (total) => `+ Ver más (${total})`,
+          }}
+        />
+      )}
 
-      {permisosUsuario.email && ( 
+      {(permisosUsuario.email && !isLoading) && (
         <Button
           variant="contained"
           color="primary"
@@ -259,6 +269,9 @@ const useStyles = makeStyles(() => ({
   calendarContainer: {
     height: '100vh',
     overflowY: 'auto',
+  },
+  load: {
+    color: "#5eb219"
   },
 }));
 
