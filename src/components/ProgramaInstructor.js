@@ -106,7 +106,7 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
   return (
     <div className={classes.container}>
       <div className={classes.checkboxContainer}>
-        <Button onClick={abrirConsulta}>
+        <Button className={classes.calendarButton} onClick={abrirConsulta}>
           Ver en Calendario
         </Button>
         {jornadas.map((jornada) => (
@@ -121,54 +121,56 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
         ))}
       </div>
 
-      <table className={classes.table}>
-        <thead>
-          <tr>
-            <th>Instructor: {instructorActual?.nombre || ""}</th>
-            <th>Jornada</th>
-            <th>Lunes</th>
-            <th>Martes</th>
-            <th>Miércoles</th>
-            <th>Jueves</th>
-            <th>Viernes</th>
-            <th>Sabado</th>
-          </tr>
-        </thead>
-        <tbody>
-          {jornadas.map((jornada) => (
-            jornadaVisibility[jornada.nombre] && (
-              <tr key={jornada.id}>
-                <td>{instructorActual ? instructorActual.nombre : 'Instructor no encontrado'}</td>
-                <td>{jornada.nombre}</td>
-                {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'].map((dia) => {
-                  const asignacion = asignacionesInstructor.find(
-                    (a) => a.jornada === jornada.nombre && a.dia === dia
-                  );
+      <div className={classes.tableContainer}>
+        <table className={classes.table}>
+          <thead>
+            <tr>
+              <th>Instructor: {instructorActual?.nombre || ""}</th>
+              <th>Jornada</th>
+              <th>Lunes</th>
+              <th>Martes</th>
+              <th>Miércoles</th>
+              <th>Jueves</th>
+              <th>Viernes</th>
+              <th>Sabado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {jornadas.map((jornada) => (
+              jornadaVisibility[jornada.nombre] && (
+                <tr key={jornada.id}>
+                  <td>{instructorActual ? instructorActual.nombre : 'Instructor no encontrado'}</td>
+                  <td>{jornada.nombre}</td>
+                  {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'].map((dia) => {
+                    const asignacion = asignacionesInstructor.find(
+                      (a) => a.jornada === jornada.nombre && a.dia === dia
+                    );
 
-                  return (
-                    <td 
-                      key={dia} 
-                      onClick={() => asignacion ? handleEliminar(asignacion.id) : handleAbrirFormulario(dia, jornada.nombre)}
-                    >
-                      {asignacion ? (
-                        <div className={classes.asignacion}>
-                          <p><strong>{asignacion.fin}</strong></p>
-                          <p>{asignacion.ficha}</p>
-                          <p>{fichas.find(f => f.codigo === asignacion.ficha)?.programa}</p>
-                          <p>{fichas.find(f => f.codigo === asignacion.ficha)?.municipio}</p>
-                        </div>
-                      ) : (
-                        <p className={classes.noAsignado}>No asignado</p>
-                      )}
-                    </td>
-                  );
-                })} 
-              </tr>
-            )
-          ))}
+                    return (
+                      <td 
+                        key={dia} 
+                        onClick={() => asignacion ? handleEliminar(asignacion.id) : handleAbrirFormulario(dia, jornada.nombre)}
+                      >
+                        {asignacion ? (
+                          <div className={classes.asignacion}>
+                            <p><strong>{asignacion.fin}</strong></p>
+                            <p>{asignacion.ficha}</p>
+                            <p>{fichas.find(f => f.codigo === asignacion.ficha)?.programa}</p>
+                            <p>{fichas.find(f => f.codigo === asignacion.ficha)?.municipio}</p>
+                          </div>
+                        ) : (
+                          <p className={classes.noAsignado}>No asignado</p>
+                        )}
+                      </td>
+                    );
+                  })} 
+                </tr>
+              )
+            ))}
 
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
 
       {showForm && (
         <div className={classes.modalOverlay}>
@@ -219,9 +221,37 @@ const useStyles = makeStyles({
   },
   checkboxContainer: {
     display: 'flex',
+    alignItems: 'center',
+    marginBottom: '10px', // added margin for better spacing
+  },
+  calendarButton: {
+    backgroundColor: '#5eb219', // background color
+    color: '#fff', // text color
+    borderRadius: '4px', // rounded corners
+    padding: '8px 16px', // padding
+    marginRight: '10px', // space between button and checkboxes
+    '&:hover': {
+      backgroundColor: '#4a9e17', // darker green on hover
+    },
+  },
+  tableContainer: {
+    overflowX: 'auto', 
+    '&::-webkit-scrollbar': {
+      width: '10px', 
+    },
+    '&::-webkit-scrollbar-track': {
+      background: '#83e335', 
+    },
+    '&::-webkit-scrollbar-thumb': {
+      background: '#5eb219', 
+      borderRadius: '5px',
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+      background: '#195eb2', 
+    },
   },
   table: {
-    width: '100%',
+    width: '98%', 
     borderCollapse: 'collapse',
     '& th, & td': {
       padding: '10px',
