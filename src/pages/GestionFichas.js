@@ -181,11 +181,13 @@ const GestionFichas = () => {
 
 const useStyles = makeStyles(() => ({
   container: {
-    maxWidth: '1300px',
+    display: 'flex',                    
+    flexDirection: 'column',             
+    alignItems: 'center',                
+    justifyContent: 'center',            
+    backgroundColor: '#f5f5f5',
+    borderRadius: '8px',
     width: '100%',
-    margin: 'auto',
-    padding: '20px',
-    backgroundColor: '#f4f4f4',
   },
   filters: {
     display: 'flex',

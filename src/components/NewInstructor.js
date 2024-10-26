@@ -101,12 +101,12 @@ const useStyles = makeStyles(() => ({
     gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
     gridGap: '10px',
     backgroundColor: '#f5f5f5',
-    padding: '20px',
     borderRadius: '8px',
-    border: '2px solid black',
+    border: '2px solid #4cae14',
     maxWidth: '800px',
-    width: '100%',
-    margin: '0 auto',
+    width: '90%',
+    marginTop: '20px',
+    marginBottom: '20px',
     '@media (max-width: 768px)': {
       gridTemplateColumns: '1fr',
     },
@@ -114,8 +114,9 @@ const useStyles = makeStyles(() => ({
   fieldContainer: {
     display: 'flex',
     flexDirection: 'column',
-    width: '100%',
+    width: '80%',
     alignItems: 'center',
+    margin: 'auto',
   },
   label: {
     fontWeight: 'bold',

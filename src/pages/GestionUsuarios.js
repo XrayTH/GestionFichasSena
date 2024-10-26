@@ -186,11 +186,13 @@ const GestionUsuarios = () => {
 
 const useStyles = makeStyles(() => ({
   container: {
-    maxWidth: '1200px',
+    display: 'flex',                    
+    flexDirection: 'column',             
+    alignItems: 'center',                
+    justifyContent: 'center',            
+    backgroundColor: '#f5f5f5',
+    borderRadius: '8px',
     width: '100%',
-    margin: 'auto',
-    padding: '1%',
-    backgroundColor: '#f4f4f4',
   },
   filters: {
     display: 'flex',
@@ -247,10 +249,9 @@ const useStyles = makeStyles(() => ({
   userComponent: {
     alignContent: 'center',
     marginBottom: '15px',
-    padding: '10px',
+    padding: '20px',
     backgroundColor: '#ffffff',
     width: '100%',              
-    maxWidth: '600px',           
     boxSizing: 'border-box',  
   },
   loaderContainer: {

@@ -232,7 +232,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#f5f5f5',
     padding: '20px',
     borderRadius: '8px',
-    border: '2px solid black',
+    border: '2px solid #4cae14',
   },
   fieldRow: {
     display: 'grid',

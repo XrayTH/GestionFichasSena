@@ -66,10 +66,10 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#f5f5f5',
     padding: '20px',
     borderRadius: '8px',
-    border: '2px solid black',
+    border: '2px solid #4cae14',
     maxWidth: '300px',
     width: '100%',
-    margin: '0 auto',
+    marginTop: '20px',
     '@media (max-width: 768px)': {
       gridTemplateColumns: '1fr',
     },

@@ -150,11 +150,13 @@ const GestionCoordinadores = () => {
 
 const useStyles = makeStyles(() => ({
   container: {
-    padding: '20px',
+    display: 'flex',                    
+    flexDirection: 'column',             
+    alignItems: 'center',                
+    justifyContent: 'center',            
     backgroundColor: '#f5f5f5',
     borderRadius: '8px',
     width: '100%',
-    margin: '0 auto',
   },
   searchField: {
     width: '85%',
@@ -169,13 +171,14 @@ const useStyles = makeStyles(() => ({
     marginBottom: '20px',
   },
   coordinadorList: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gridGap: '10px',
-    //margin: '10px',
-    width: '100%',              
-    maxWidth: '600px',           
-    boxSizing: 'border-box',  
+    display: 'flex',                      
+    flexDirection: 'column',              
+    alignItems: 'center',      
+    alignContent: 'center',              
+    width: '90%',                        
+    maxWidth: '600px',                    
+    boxSizing: 'border-box',
+    marginTop: '20px',
   },
   loaderContainer: {
     display: 'flex',
@@ -187,5 +190,6 @@ const useStyles = makeStyles(() => ({
     color: "#5eb219",
   },
 }));
+
 
 export default GestionCoordinadores;

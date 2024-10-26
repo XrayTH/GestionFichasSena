@@ -135,11 +135,13 @@ const GestionPrograma = () => {
 
 const useStyles = makeStyles(() => ({
   container: {
-    padding: '20px',
+    display: 'flex',                    
+    flexDirection: 'column',           
+    alignItems: 'center',           
+    justifyContent: 'center',     
     backgroundColor: '#f5f5f5',
     borderRadius: '8px',
     width: '100%',
-    margin: '0 auto',
   },
   searchField: {
     width: '85%',
@@ -159,6 +161,7 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     margin: '10px',
     gap: '10px',
+    width: '100%'
   },
   loaderContainer: {
     display: 'flex',

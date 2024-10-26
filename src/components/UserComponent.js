@@ -166,14 +166,16 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
 const useStyles = makeStyles(() => ({
   container: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignContent: 'center',
+    justifyContent: 'center',
     gap: '20px',
     backgroundColor: '#f5f5f5',
     padding: '10px',
     borderRadius: '8px',
     border: '2px solid #5eb219',
-    width: '100%',              
-    maxWidth: '600px',           
+    width: '100%',                
     boxSizing: 'border-box',     
   },
   textFields: {
