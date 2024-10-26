@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { selectUserPermisos } from '../features/userSlice'; 
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import PhoneDialer from './PhoneDialer';
 
 const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instructores, jornadas, fechaInicio, fechaFin, onCrearAsignacion, onEliminarAsignacion }) => {
   const navigate = useNavigate(); 
@@ -119,6 +120,7 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
             {jornada.nombre}
           </label>
         ))}
+        <PhoneDialer/>
       </div>
 
       <div className={classes.tableContainer}>
@@ -218,20 +220,21 @@ const useStyles = makeStyles({
     padding: '20px',
     backgroundColor: '#f3f7f0',
     color: '#333',
+    marginLeft: '5px',
   },
   checkboxContainer: {
     display: 'flex',
     alignItems: 'center',
-    marginBottom: '10px', // added margin for better spacing
+    marginBottom: '5px', 
   },
   calendarButton: {
-    backgroundColor: '#5eb219', // background color
-    color: '#fff', // text color
-    borderRadius: '4px', // rounded corners
-    padding: '8px 16px', // padding
-    marginRight: '10px', // space between button and checkboxes
+    backgroundColor: '#5eb219', 
+    color: '#fff', 
+    borderRadius: '4px', 
+    padding: '8px 16px', 
+    marginRight: '10px', 
     '&:hover': {
-      backgroundColor: '#4a9e17', // darker green on hover
+      backgroundColor: '#4a9e17', 
     },
   },
   tableContainer: {
@@ -251,7 +254,7 @@ const useStyles = makeStyles({
     },
   },
   table: {
-    width: '98%', 
+    width: '90%', 
     borderCollapse: 'collapse',
     '& th, & td': {
       padding: '10px',

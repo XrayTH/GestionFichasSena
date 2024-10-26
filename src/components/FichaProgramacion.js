@@ -166,9 +166,9 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
             <Grid2 container spacing={2}>
                 <Grid2 item xs={3}>
                     <Typography variant="p" className={classes.fichaCodigo}>
-                        {ficha.codigo}
+                        {ficha.codigo} 
                     </Typography>
-                    <Button onClick={abrirConsulta}>
+                    <Button className={classes.calendarButton} onClick={abrirConsulta}>
                         Ver en Calendario
                     </Button>
                     <Grid2 container spacing={1}>
@@ -242,7 +242,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
                                                 title={
                                                     (asignacionesPorInstructor[getInstructorForDay(jornada.nombre, day)] 
                                                         ? `Asignaciones: ${asignacionesPorInstructor[getInstructorForDay(jornada.nombre, day)]}`
-                                                        : '') +
+                                                        : 'Cargando...') +
                                                     (getInstructorForDay(jornada.nombre, day) && 
                                                     filteredAsignaciones.find(asig => asig.instructor === getInstructorForDay(jornada.nombre, day))?.fin 
                                                         ? ` | Fin: ${new Date(filteredAsignaciones.find(asig => asig.instructor === getInstructorForDay(jornada.nombre, day))?.fin).toLocaleDateString()}`
@@ -399,6 +399,15 @@ const useStyles = makeStyles(() => ({
     fichaCodigo: {
         textAlign: 'center',
         color: '#5eb219',
+    },
+    calendarButton: {
+      backgroundColor: '#5eb219', 
+      color: '#fff', 
+      borderRadius: '4px', 
+      margin: '10px', 
+      '&:hover': {
+        backgroundColor: '#4a9e17', 
+      },
     },
 }));
 
