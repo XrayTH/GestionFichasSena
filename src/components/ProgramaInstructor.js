@@ -15,8 +15,8 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
   const [selectedDia, setSelectedDia] = useState('');
   const [selectedJornada, setSelectedJornada] = useState('');
   const [jornadaVisibility, setJornadaVisibility] = useState({});
-  const [fechaAsignacionInicio, setFechaAsignacionInicio] = useState(''); 
-  const [fechaAsignacionFin, setFechaAsignacionFin] = useState(''); 
+  const [fechaAsignacionInicio, setFechaAsignacionInicio] = useState(fechaInicio); 
+  const [fechaAsignacionFin, setFechaAsignacionFin] = useState(fechaFin); 
   const classes = useStyles();
 
   const permisos = useSelector(selectUserPermisos);
@@ -61,8 +61,8 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
     setSelectedDia(dia);
     setSelectedJornada(jornada);
     setShowForm(true);
-    setFechaAsignacionInicio(''); 
-    setFechaAsignacionFin(''); 
+    setFechaAsignacionInicio(fechaInicio); 
+    setFechaAsignacionFin(fechaFin); 
   };
 
   const handleCrear = () => {
@@ -237,9 +237,11 @@ const useStyles = makeStyles({
     backgroundColor: '#d3f5bc',
     padding: '10px',
     borderRadius: '4px',
+    cursor: 'url("https://downloads.totallyfreecursors.com/thumbnails/trashcan.gif"), auto',
   },
   noAsignado: {
     color: '#999',
+    cursor: 'pointer',
   },
   modalOverlay: {
     position: 'fixed',
