@@ -181,7 +181,7 @@ const GestionFichas = () => {
 
 const useStyles = makeStyles(() => ({
   container: {
-    maxWidth: '1400px',
+    maxWidth: '1300px',
     width: '100%',
     margin: 'auto',
     padding: '20px',

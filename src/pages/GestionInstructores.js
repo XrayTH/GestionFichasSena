@@ -169,10 +169,11 @@ const useStyles = makeStyles(() => ({
     marginBottom: '20px',
   },
   instructorList: {
+    width: '100%',
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridGap: '10px',
-    margin: '10px'
+    margin: 'auto'
   },
   loaderContainer: {
     display: 'flex',

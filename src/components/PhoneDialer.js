@@ -31,7 +31,7 @@ const PhoneDialer = ({ phoneNumber }) => {
         padding: 0.5, 
       }}
     >
-      <PhoneIcon fontSize="small" />
+      <PhoneIcon fontSize="small" color='green'/>
     </IconButton>
   );
 };

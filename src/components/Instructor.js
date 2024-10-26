@@ -121,8 +121,8 @@ const useStyles = makeStyles(() => ({
     padding: '20px',
     borderRadius: '8px',
     border: '2px solid #5eb219',
-    maxWidth: '800px',
-    width: '100%',
+    maxWidth: '700px',
+    width: '90%',
     margin: '0 auto',
     '@media (max-width: 768px)': {
       gridTemplateColumns: '1fr',

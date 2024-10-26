@@ -91,7 +91,9 @@ const DireccionBuscador = () => {
 const styles = {
   container: {
     display: 'flex',
-    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
     marginBottom: '1rem',
   },
   select: {
@@ -100,6 +102,7 @@ const styles = {
     borderRadius: '4px',
     border: '1px solid #ccc',
     flex: '1',
+    minWidth: '150px',
   },
   input: {
     marginRight: '0.5rem',
@@ -107,6 +110,7 @@ const styles = {
     borderRadius: '4px',
     border: '1px solid #ccc',
     flex: '2',
+    minWidth: '200px',
   },
   lockedInput: {
     marginLeft: '0.5rem',
@@ -114,6 +118,7 @@ const styles = {
     borderRadius: '4px',
     border: '1px solid #ccc',
     flex: '2',
+    minWidth: '200px',
     backgroundColor: '#f0f0f0',
   },
   button: {
@@ -124,6 +129,7 @@ const styles = {
     padding: '0.5rem 1rem',
     cursor: 'pointer',
     marginRight: '0.5rem',
+    minWidth: '150px',
   },
   error: {
     color: 'red',
