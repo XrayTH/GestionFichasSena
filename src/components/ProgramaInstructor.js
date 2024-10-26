@@ -120,7 +120,7 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
             {jornada.nombre}
           </label>
         ))}
-        <PhoneDialer phoneNumber={instructorActual.telefono}/>
+        <PhoneDialer phoneNumber={instructorActual?.telefono || ""}/>
       </div>
 
       <div className={classes.tableContainer}>
