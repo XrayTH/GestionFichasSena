@@ -15,6 +15,13 @@ const PhoneDialer = ({ phoneNumber }) => {
   }, []);
 
   const handlePhoneClick = () => {
+    const phoneNumberPattern = /^[0-9]+$/; 
+
+    if (!phoneNumberPattern.test(phoneNumber) || phoneNumber.trim() === '') {
+      alert('Este instructor no posee un numero de telefono valido registrado.');
+      return;
+    }
+
     const formattedNumber = `+57${phoneNumber}`;
     window.location.href = `tel:${formattedNumber}`;
   };
