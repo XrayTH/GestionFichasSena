@@ -19,6 +19,7 @@ import AccessDenied from './pages/AccessDenied';
 import Conectando from './pages/Conectando';
 import AuthError from './pages/AuthError';
 import Cargando from './components/Cargando';
+import SessionExpired from './components/SessionExpired';
 
 const App = () => {
   return (
@@ -115,6 +116,7 @@ const AppContent = () => {
           <ConIns />
         </ProtectedRoute>
       } />
+      <Route path="/Expired" element={<SessionExpired />} />
       <Route path="/Denegado" element={<AccessDenied />} />
       <Route path="/error" element={<AuthError />} />
       <Route path="*" element={<NotFound />} />

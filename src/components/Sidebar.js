@@ -4,7 +4,7 @@ import { Drawer, AppBar, Toolbar, List, ListItem, ListItemText, IconButton, Typo
 import MenuIcon from '@mui/icons-material/Menu';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'; 
 import { makeStyles } from '@mui/styles';
-import { useDispatch, useSelector } from 'react-redux'; 
+import { useSelector } from 'react-redux'; 
 import { selectUserPermisos } from '../features/userSlice'; 
 import logo from '../assets/logo-sena-blanco.svg';
 

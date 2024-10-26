@@ -62,7 +62,11 @@ export const ProtectedRoute = ({ children, requiredPermissions }) => {
   }
 
   if (error) {
-    return <Navigate to="/error" />;
+    if(error === "Token expirado"){
+      return <Navigate to="/Expired" />;
+    }else{
+      return <Navigate to="/error" />;
+    }
   }
 
   if (!isAuthenticated) {
