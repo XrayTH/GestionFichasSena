@@ -14,17 +14,16 @@ const Login = () => {
   const dispatch = useDispatch(); 
   const [usuario, setUsuario] = useState(''); 
   const [contraseña, setContraseña] = useState(''); 
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(''); 
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLoginClick = async () => {
     setError(''); 
     setIsLoading(true);
-
     try {
       const encryptedPassword = encryptPassword(contraseña);
       const userData = await verificarUsuario({ usuario, contraseña: encryptedPassword });
-      
       dispatch(setUser({
         id: userData.usuario.id, 
         usuario: userData.usuario.usuario, 
@@ -36,7 +35,6 @@ const Login = () => {
         gestionarUsuarios: userData.usuario.gestionarUsuarios,
         token: userData.token 
       }));
-      
       navigate("/home");
     } catch (err) {
       setError(err.message); 
@@ -57,13 +55,22 @@ const Login = () => {
           value={usuario} 
           onChange={(e) => setUsuario(e.target.value)} 
         />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          className={classes.input}
-          value={contraseña} 
-          onChange={(e) => setContraseña(e.target.value)} 
-        />
+        <div className={classes.passwordContainer}>
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Contraseña"
+            className={classes.inputPassword}
+            value={contraseña} 
+            onChange={(e) => setContraseña(e.target.value)} 
+          />
+          <button
+            type="button"
+            className={classes.toggleButton}
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? "ocultar" : "ver"}
+          </button>
+        </div>
         {error && <p className={classes.error}>{error}</p>} 
         <button 
           type="button"
@@ -116,6 +123,32 @@ const useStyles = makeStyles(() => ({
     '&:focus': {
       borderColor: "#5eb219",
     },
+  },
+  passwordContainer: {
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+  },
+  inputPassword: {
+    width: "100%",
+    padding: "12px 40px 12px 12px",
+    border: "1px solid #ccc",
+    borderRadius: "4px",
+    outline: "none",
+    fontSize: "16px",
+    '&:focus': {
+      borderColor: "#5eb219",
+    },
+  },
+  toggleButton: {
+    position: "absolute",
+    right: "10px",
+    background: "none",
+    border: "none",
+    fontSize: "18px",
+    cursor: "pointer",
+    color: "#5eb219",
+    padding: "0",
   },
   button: {
     backgroundColor: "#5eb219",

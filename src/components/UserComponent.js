@@ -169,9 +169,12 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     gap: '20px',
     backgroundColor: '#f5f5f5',
-    padding: '20px',
+    padding: '10px',
     borderRadius: '8px',
     border: '2px solid #5eb219',
+    width: '100%',              
+    maxWidth: '600px',           
+    boxSizing: 'border-box',     
   },
   textFields: {
     display: 'grid',

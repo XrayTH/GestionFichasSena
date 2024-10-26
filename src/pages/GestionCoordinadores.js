@@ -172,7 +172,10 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridGap: '10px',
-    margin: '10px',
+    //margin: '10px',
+    width: '100%',              
+    maxWidth: '600px',           
+    boxSizing: 'border-box',  
   },
   loaderContainer: {
     display: 'flex',

@@ -189,7 +189,7 @@ const useStyles = makeStyles(() => ({
     maxWidth: '1200px',
     width: '100%',
     margin: 'auto',
-    padding: '20px',
+    padding: '1%',
     backgroundColor: '#f4f4f4',
   },
   filters: {
@@ -245,11 +245,13 @@ const useStyles = makeStyles(() => ({
     marginTop: '20px',
   },
   userComponent: {
+    alignContent: 'center',
     marginBottom: '15px',
-    border: `1px solid #144cae`,
-    borderRadius: '5px',
     padding: '10px',
     backgroundColor: '#ffffff',
+    width: '100%',              
+    maxWidth: '600px',           
+    boxSizing: 'border-box',  
   },
   loaderContainer: {
     display: 'flex',
