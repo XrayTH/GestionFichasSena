@@ -98,6 +98,7 @@ const useStyles = makeStyles(() => ({
     '@media (max-width: 768px)': {
       gridTemplateColumns: '1fr',
     },
+    padding: '5px',
   },
   fieldContainer: {
     display: 'flex',

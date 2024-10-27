@@ -51,11 +51,10 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
           <div className={classes.labelWithButton}>
             <label className={classes.label}>Contraseña</label>
             <Button
-              onMouseDown={() => setShowPassword(true)}
-              onMouseUp={() => setShowPassword(false)}
+              onClick={() => setShowPassword(!showPassword)}
               className={classes.button}
             >
-              👁️
+              {showPassword ? 'Ocultar' : 'Ver'}
             </Button>
           </div>
           <TextField
