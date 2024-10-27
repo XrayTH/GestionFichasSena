@@ -37,21 +37,25 @@ export const ProtectedRoute = ({ children, requiredPermissions }) => {
           setValidando(false);
         }
       } catch (error) {
-        if (error.response && error.response.status === 401) {
-          setError(error.response.data.message); 
-        } else if (error.response && error.response.status === 403) {
-          setError('Acceso denegado'); 
-        } else if (error.response && error.response.status === 404) {
+        if (error.status === 401) {
+          if(error.mensajeError === "Token expirado"){
+            setError('Token expirado'); 
+          }else{
+            setError('Token inválido o expirado'); 
+          }
+        } else if (error.status === 403) {
+          setError('Acceso denegado: no tiene los permisos requeridos');
+        } else if (error.status === 404) {
           setError('Usuario no encontrado');
         } else {
-          setError('Error del servidor');
+          setError(error.mensajeError || 'Error del servidor');
         }
-        
         if (isAuthenticated) {
           dispatch(logout());
         }
         setValidando(false);
       }
+      
     };
 
     verificarAcceso();

@@ -61,8 +61,11 @@ export const verificarTokenYPermisos = async (token, permisos) => {
     const response = await api.post('/usuarios/verificar-permisos', { token, permisos });
     return response.data;
   } catch (error) {
+    const status = error.response?.status;
     const mensajeError = error.response?.data?.message || 'Error al verificar token y permisos';
-    throw new Error(mensajeError);
+    // eslint-disable-next-line no-throw-literal
+    throw { status, mensajeError };
   }
 };
+
 
