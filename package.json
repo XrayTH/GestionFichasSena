@@ -2,6 +2,10 @@
   "name": "gestionfichas-sena",
   "version": "0.1.0",
   "private": true,
+  "author": "Juan Pablo Valverde Martínez",
+  "contributors": [
+    "Este software es propiedad del Servicio Nacional de Aprendizaje (SENA)"
+  ],
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
