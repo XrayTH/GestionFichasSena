@@ -210,6 +210,7 @@ const useStyles = makeStyles(() => ({
     },
   },
   fichaList: {
+    width: '90%',
     marginTop: '20px',
   },
   fichaComponent: {

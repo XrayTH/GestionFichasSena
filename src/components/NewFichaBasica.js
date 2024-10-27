@@ -47,8 +47,7 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
 
   return (
     <div className={classes.container}>
-
-      <div className={classes.fieldRow}>
+      <div className={classes.grid}>
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Código</label>
           <TextField
@@ -80,7 +79,7 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
                 {...params}
                 name="coordinador"
                 variant="outlined"
-                style={{ minWidth: '150px', maxWidth: '100%' }}
+                fullWidth
               />
             )}
             freeSolo
@@ -108,7 +107,7 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
                 {...params}
                 name="programa"
                 variant="outlined"
-                style={{ minWidth: '150px', maxWidth: '100%' }}
+                fullWidth
               />
             )}
             freeSolo
@@ -136,16 +135,14 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
                 {...params}
                 name="gestor"
                 variant="outlined"
-                style={{ minWidth: '150px', maxWidth: '100%' }}
+                fullWidth
               />
             )}
             freeSolo
             disableClearable
           />
         </div>
-      </div>
 
-      <div className={classes.fieldRow}>
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Ambiente</label>
           <TextField
@@ -180,6 +177,7 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
             InputLabelProps={{
               shrink: true,
             }}
+            fullWidth
           />
         </div>
 
@@ -195,28 +193,29 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
             InputLabelProps={{
               shrink: true,
             }}
+            fullWidth
           />
         </div>
-      </div>
 
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Requerimientos</label>
-        <TextField
-          className={classes.textField}
-          name="requerimientos"
-          value={formState.requerimientos}
-          variant="outlined"
-          multiline
-          rows={4}
-          onChange={handleChange}
-        />
+        <div className={classes.fieldContainer}>
+          <label className={classes.label}>Requerimientos</label>
+          <TextField
+            className={classes.textField}
+            name="requerimientos"
+            value={formState.requerimientos}
+            variant="outlined"
+            multiline
+            rows={4}
+            onChange={handleChange}
+          />
+        </div>
       </div>
 
       <div className={classes.buttonRow}>
         <Button className={classes.button} onClick={handleSave}>
           Guardar
         </Button>
-        <Button className={classes.button} onClick={onCancel}>
+        <Button className={classes.cancelButton} onClick={onCancel}>
           Cancelar
         </Button>
       </div>
@@ -226,30 +225,26 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
 
 const useStyles = makeStyles(() => ({
   container: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gridGap: '10px',
-    backgroundColor: '#f5f5f5',
+    display: 'flex',
+    flexDirection: 'column',
     padding: '20px',
+    backgroundColor: '#f5f5f5',
     borderRadius: '8px',
-    border: '2px solid #4cae14',
+    border: '2px solid #5eb219',
   },
-  fieldRow: {
+  grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
-    gridGap: '10px',
-    justifyItems: 'center',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+    gap: '10px',
   },
   fieldContainer: {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    alignItems: 'center',
   },
   label: {
     fontWeight: 'bold',
     color: '#5eb219',
-    alignSelf: 'center',
     marginBottom: '5px',
   },
   textField: {
@@ -257,10 +252,8 @@ const useStyles = makeStyles(() => ({
   },
   buttonRow: {
     display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: '10px',
-    gridColumn: '1 / -1',
+    justifyContent: 'space-between',
+    marginTop: '20px',
   },
   button: {
     backgroundColor: '#5eb219',
@@ -269,6 +262,13 @@ const useStyles = makeStyles(() => ({
       backgroundColor: '#4cae14',
     },
     marginRight: '10px',
+  },
+  cancelButton: {
+    backgroundColor: '#d32f2f',
+    color: '#fff',
+    '&:hover': {
+      backgroundColor: '#c62828',
+    },
   },
 }));
 

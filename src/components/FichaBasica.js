@@ -29,9 +29,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
 
   return (
     <div className={classes.container}>
-
-      <div className={classes.row}>
-
+      <div className={classes.grid}>
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Código</label>
           <TextField
@@ -42,7 +40,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
             InputProps={{
               readOnly: true,
             }}
-            style={{ maxWidth: '50%' }} 
+            fullWidth
           />
         </div>
 
@@ -74,10 +72,10 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
                   ...params.InputProps,
                   readOnly: !isEditable,
                 }}
-                style={{ minWidth: '150px', maxWidth: '100%' }} 
+                fullWidth
               />
             )}
-            freeSolo={!isEditable}  
+            freeSolo={!isEditable}
             disableClearable
           />
         </div>
@@ -110,7 +108,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
                   ...params.InputProps,
                   readOnly: !isEditable,
                 }}
-                style={{ minWidth: '150px', maxWidth: '100%' }}
+                fullWidth
               />
             )}
             freeSolo={!isEditable}
@@ -146,16 +144,13 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
                   ...params.InputProps,
                   readOnly: !isEditable,
                 }}
-                style={{ minWidth: '350px', maxWidth: '100%' }}
+                fullWidth
               />
             )}
             freeSolo={!isEditable}
             disableClearable
           />
         </div>
-      </div>
-
-      <div className={classes.row}>
 
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Ambiente</label>
@@ -168,6 +163,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
               readOnly: !isEditable,
             }}
             onChange={handleChange}
+            fullWidth
           />
         </div>
 
@@ -199,7 +195,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
                   ...params.InputProps,
                   readOnly: !isEditable,
                 }}
-                style={{ minWidth: '150px', maxWidth: '100%' }}
+                fullWidth
               />
             )}
             freeSolo={!isEditable}
@@ -218,6 +214,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
               readOnly: !isEditable,
             }}
             onChange={handleChange}
+            fullWidth
           />
         </div>
 
@@ -236,6 +233,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
             InputLabelProps={{
               shrink: true,
             }}
+            fullWidth
           />
         </div>
 
@@ -254,11 +252,9 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
             InputLabelProps={{
               shrink: true,
             }}
+            fullWidth
           />
         </div>
-      </div>
-
-      <div className={classes.row}>
 
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Requerimientos</label>
@@ -273,6 +269,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
               readOnly: !isEditable,
             }}
             onChange={handleChange}
+            fullWidth
           />
         </div>
       </div>
@@ -289,26 +286,24 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
 
 const useStyles = makeStyles(() => ({
   container: {
-    display: 'grid',
-    gridGap: '10px',
-    backgroundColor: '#f5f5f5',
-    padding: '20px',
-    borderRadius: '8px',
-    border: '2px solid 5eb219',
-  },
-  row: {
     display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
+    padding: '10px',
+    backgroundColor: '#f5f5f5',
+    borderRadius: '8px',
+    border: '2px solid #5eb219',
+  },
+  grid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+    gridGap: '10px',
     width: '100%',
   },
   fieldContainer: {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    alignItems: 'center',
-    flex: '1 1 150px',
-    margin: '5px',
+    alignItems: 'stretch',
   },
   label: {
     marginBottom: '5px',
