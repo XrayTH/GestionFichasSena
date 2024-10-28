@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import { FormControl, InputLabel, Select, MenuItem, Grid2, Typography, TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
 import { useSelector } from 'react-redux'; 
 import { selectUserPermisos } from '../features/userSlice'; 
-import { getNumeroAsignaciones } from '../service/asignacionService'
 import { useNavigate } from 'react-router-dom';
 
 const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInstructorChange, startDateFilter, endDateFilter }) => {
@@ -17,7 +17,6 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
     const [startDate, setStartDate] = useState(startDateFilter || '');
     const [endDate, setEndDate] = useState(endDateFilter || '');
     const [jornadasVisibles, setJornadasVisibles] = useState({}); 
-    const [asignacionesPorInstructor, setAsignacionesPorInstructor] = useState({}); 
     const [reloadKey, setReloadKey] = useState(0); 
 
     const permisosUsuario = useSelector(selectUserPermisos);
@@ -54,29 +53,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
         });
     
         setSelectedInstructors(initialSelectedInstructors);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filteredAsignaciones, jornadas]);
-    
-
-    const fetchAsignacionesForInstructor = async (instructor) => {
-        try {
-            const fechaInicio = startDateFilter;
-            const fechaFin = endDateFilter;
-            const result = await getNumeroAsignaciones(instructor, fechaInicio, fechaFin);
-            setAsignacionesPorInstructor(prev => ({
-                ...prev,
-                [instructor]: result.numeroAsignaciones
-            }));
-        } catch (error) {
-            console.error('Error al obtener asignaciones del instructor:', error);
-        }
-    };
-
-    const handleInstructorHover = async (instructor) => {
-        if(instructor || instructor !== ""){
-            await fetchAsignacionesForInstructor(instructor);
-        }
-    };
 
     const getInstructorForDay = (jornadaNombre, day) => {
         const asignacion = filteredAsignaciones.find((asig) =>
@@ -97,7 +74,6 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
             visibilidadInicial[jornada.nombre] = jornadaTieneInstructor(jornada.nombre);
         });
         setJornadasVisibles(visibilidadInicial);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filteredAsignaciones, jornadas]);
 
     const handleInstructorChangeChild = (jornadaNombre, day, event, asignacion) => {
@@ -106,7 +82,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
         const inicio = asignacion ? asignacion.inicio : '';
         const fin = asignacion ? asignacion.fin : '';
     
-        setPrevSelectedInstructors({ ...selectedInstructors }); // Guardar el estado actual
+        setPrevSelectedInstructors({ ...selectedInstructors }); 
 
         setSelectedInstructors((prev) => ({
             ...prev,
@@ -125,6 +101,23 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
         setOpenModal(true); 
     };
     
+    const obtenerNumeroAsignacionesPorInstructor = (nombreInstructor) => {
+        const startDate = startDateFilter ? new Date(startDateFilter) : null;
+        const endDate = endDateFilter ? new Date(endDateFilter) : null;
+    
+        return asignaciones.filter((asignacion) => {
+            const asignacionInicio = new Date(asignacion.inicio);
+            const asignacionFin = new Date(asignacion.fin);
+    
+            const intersects =
+                (!startDate || asignacionFin >= startDate) &&
+                (!endDate || asignacionInicio <= endDate);
+    
+            return asignacion.instructor === nombreInstructor && intersects;
+        }).length;
+    };
+      
+
     const handleConfirm = () => {
         if (newInstructor.instructor === "" || newInstructor.instructor === undefined) {
             onInstructorChange({
@@ -148,7 +141,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
     };
     
     const handleCancel = () => {
-        setSelectedInstructors(prevSelectedInstructors); // Revertir al estado anterior
+        setSelectedInstructors(prevSelectedInstructors); 
         setOpenModal(false);
     };
 
@@ -244,8 +237,8 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
                                             <InputLabel id={`select-${jornada.nombre}-${day}`} className={classes.label}>{day}</InputLabel>
                                             <Tooltip
                                                 title={
-                                                    (asignacionesPorInstructor[getInstructorForDay(jornada.nombre, day)] 
-                                                        ? `Asignaciones: ${asignacionesPorInstructor[getInstructorForDay(jornada.nombre, day)]} | `
+                                                    (obtenerNumeroAsignacionesPorInstructor(getInstructorForDay(jornada.nombre, day)) 
+                                                        ? `Asignaciones: ${obtenerNumeroAsignacionesPorInstructor(getInstructorForDay(jornada.nombre, day)) } | `
                                                         : '') +
                                                     (getInstructorForDay(jornada.nombre, day) && 
                                                     filteredAsignaciones.find(asig => asig.instructor === getInstructorForDay(jornada.nombre, day))?.fin 
@@ -267,7 +260,6 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
                                                     }}
                                                     value={selectedInstructors[`${jornada.nombre}-${day}`] || ""}
                                                     className={classes.select}
-                                                    onMouseEnter={() => handleInstructorHover(getInstructorForDay(jornada.nombre, day))}
                                                     disabled={!tienePermisoEdicion}
                                                 >
 
