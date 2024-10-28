@@ -145,8 +145,8 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
     };
     
     const handleCancel = () => {
-        setReloadKey(prevKey => prevKey + 1);
         setOpenModal(false);
+        setReloadKey(prevKey => prevKey + 1);
     };
 
     const handleCheckboxChange = (jornadaNombre, event) => {

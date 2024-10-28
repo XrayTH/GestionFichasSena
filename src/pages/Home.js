@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { useNavigate } from 'react-router-dom';
 import { logout, selectUserPermisos } from '../features/userSlice'; 
-import { Typography } from '@mui/material';
+import { Typography, useMediaQuery } from '@mui/material';
 
 const Home = () => {
   const classes = useStyles();
@@ -11,6 +11,7 @@ const Home = () => {
   const navigate = useNavigate();
   
   const permisos = useSelector(selectUserPermisos);
+  const isSmallScreen = useMediaQuery('(max-width:600px)')
 
   const handleGestionUsuarios = () => {
     navigate('/gestion-usuarios');
@@ -51,7 +52,7 @@ const Home = () => {
   return (
     <div className={classes.container}>
       <Typography variant="h4" component="h1" className={classes.title}>
-        SISTEMA DE GESTIÓN DE FICHAS - SENA
+      {isSmallScreen ? 'SFG - SENA' : 'SISTEMA DE GESTIÓN DE FICHAS - SENA'}
       </Typography>
       <br />
       
@@ -112,6 +113,9 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#f5f5f5',
     padding: '0 20px',
   },
+  title: {
+    textAlign: "center",
+  },
   button: {
     backgroundColor: '#5eb219',
     color: '#fff',
@@ -141,7 +145,13 @@ const useStyles = makeStyles(() => ({
       backgroundColor: '#5eb219',
       color: '#fff',
     },
-  },
+    '@media (max-width: 600px)': { 
+      position: 'static', 
+      bottom: 'auto',     
+      right: 'auto'      
+    }
+}
+
 }));
 
 export default Home;
