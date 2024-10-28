@@ -155,10 +155,11 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
                       >
                         {asignacion ? (
                           <div className={classes.asignacion}>
-                            <p><strong>{asignacion.fin}</strong></p>
+                            <p><strong>{asignacion.inicio}</strong></p>
                             <p>{asignacion.ficha}</p>
                             <p>{fichas.find(f => f.codigo === asignacion.ficha)?.programa}</p>
                             <p>{fichas.find(f => f.codigo === asignacion.ficha)?.municipio}</p>
+                            <p><strong>{asignacion.fin}</strong></p>
                           </div>
                         ) : (
                           <p className={classes.noAsignado}>No asignado</p>

@@ -64,16 +64,16 @@ const Home = () => {
       {permisos.tablas && (
         <>
           <button className={classes.button} onClick={handleProgramas}>
-            Ver Programas
+            Gestión Programas
           </button>
           <button className={classes.button} onClick={handleInstructores}>
-            Ver Instructores
+            Gestión Instructores
           </button>
           <button className={classes.button} onClick={handleCoordinadores}>
-            Ver Coordinadores
+            Gestión Coordinadores
           </button>
           <button className={classes.button} onClick={handleFichas}>
-            Ver Fichas
+            Gestión Fichas
           </button>
         </>
       )}
