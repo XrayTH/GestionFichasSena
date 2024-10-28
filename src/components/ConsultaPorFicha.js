@@ -48,6 +48,7 @@ const ConsultaPorFicha = () => {
   const [isLoading, setIsLoading] = useState(true); 
 
   const permisosUsuario = useSelector((state) => state.user.usuario.permisos);
+  const dynamicHeight = asignaciones.length * 3 + 100
 
   useEffect(() => {
     const fetchAsignaciones = async () => {
@@ -129,26 +130,37 @@ const ConsultaPorFicha = () => {
   const handleCaptureToPDF = () => {
     const element = document.getElementById('calendarContainer');
 
+    const originalHeight = element.style.height;
+    element.style.height = 'auto'; 
+
     const opt = {
-        margin: 0.5,
-        filename: 'calendarioFicha.pdf',
+        margin: 0.1,
+        filename: `calendarioFicha${ficha.codigo}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
     };
 
-    html2pdf().from(element).set(opt).toPdf().get('pdf').then(function (pdf) {
-        setPdf(pdf);
+    html2pdf()
+        .from(element)
+        .set(opt)
+        .toPdf()
+        .get('pdf')
+        .then(function (pdf) {
+            setPdf(pdf);
 
-        const blob = pdf.output('blob');
-        const url = URL.createObjectURL(blob);
-        window.open(url);
+            const blob = pdf.output('blob');
+            const url = URL.createObjectURL(blob);
+            window.open(url);
 
-        navigate('/enviar-email', {
-            state: { pdf: blob }
+            navigate('/enviar-email', {
+                state: { pdf: blob }
+            });
+        })
+        .finally(() => {
+            element.style.height = originalHeight; 
         });
-    });
-  };
+};
 
   return (
     <>      
@@ -190,7 +202,7 @@ const ConsultaPorFicha = () => {
           events={asignaciones}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: 500 }}
+          style={{ height: dynamicHeight > 500 ? dynamicHeight : 500 }}
           eventPropGetter={eventStyleGetter}
           components={{
             event: EventComponent,

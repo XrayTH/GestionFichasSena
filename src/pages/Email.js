@@ -26,7 +26,7 @@ const Email = () => {
 
   useEffect(() => {
     if (location.state?.pdf) {
-      const pdfFile = new File([location.state.pdf], 'calendarioFicha.pdf', { type: 'application/pdf' });
+      const pdfFile = new File([location.state.pdf], 'calendarioPDF.pdf', { type: 'application/pdf' });
 
       setFiles((prevFiles) => {
         const fileAlreadyExists = prevFiles.some(file => file.name === pdfFile.name);

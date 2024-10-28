@@ -51,6 +51,7 @@ const ConsultaPorInstructor = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const permisos = useSelector(selectUserPermisos);  
+  const dynamicHeight = asignaciones.length * 3 + 100
 
   useEffect(() => {
     const fetchAsignaciones = async () => {
@@ -139,22 +140,37 @@ const ConsultaPorInstructor = () => {
 
   const handleCaptureToPDF = () => {
     const element = document.getElementById('calendarContainer');
+
+    const originalHeight = element.style.height;
+    element.style.height = 'auto'; 
+
     const opt = {
-        margin: 0.5,
-        filename: 'calendarioInstructor.pdf',
+        margin: 0.1,
+        filename: `calendarioInstructor${instructor.nombre}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
     };
-    html2pdf().from(element).set(opt).toPdf().get('pdf').then(function (pdf) {
-        setPdf(pdf);
-        const blob = pdf.output('blob');
-        const url = URL.createObjectURL(blob);
-        window.open(url);
-        navigate('/enviar-email', {
-            state: { pdf: blob }
+
+    html2pdf()
+        .from(element)
+        .set(opt)
+        .toPdf()
+        .get('pdf')
+        .then(function (pdf) {
+            setPdf(pdf);
+
+            const blob = pdf.output('blob');
+            const url = URL.createObjectURL(blob);
+            window.open(url);
+
+            navigate('/enviar-email', {
+                state: { pdf: blob }
+            });
+        })
+        .finally(() => {
+            element.style.height = originalHeight; 
         });
-    });
   };
 
   if (!instructor) {
@@ -198,7 +214,7 @@ const ConsultaPorInstructor = () => {
             events={asignaciones}
             startAccessor="start"
             endAccessor="end"
-            style={{ height: 500 }}
+            style={{ height: dynamicHeight > 500 ? dynamicHeight : 500 }}
             eventPropGetter={eventStyleGetter}
             components={{ event: EventComponent }}
             views={['month']}
