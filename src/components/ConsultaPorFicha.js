@@ -48,7 +48,7 @@ const ConsultaPorFicha = () => {
   const [isLoading, setIsLoading] = useState(true); 
 
   const permisosUsuario = useSelector((state) => state.user.usuario.permisos);
-  const dynamicHeight = asignaciones.length * 3 + 100
+  const dynamicHeight = asignaciones.length * 4 + 100
 
   useEffect(() => {
     const fetchAsignaciones = async () => {
