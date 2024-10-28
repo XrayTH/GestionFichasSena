@@ -11,6 +11,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
     const navigate = useNavigate(); 
     const [filteredAsignaciones, setFilteredAsignaciones] = useState([]);
     const [selectedInstructors, setSelectedInstructors] = useState({});
+    const [prevSelectedInstructors, setPrevSelectedInstructors] = useState({});
     const [openModal, setOpenModal] = useState(false);
     const [newInstructor, setNewInstructor] = useState({});
     const [startDate, setStartDate] = useState(startDateFilter || '');
@@ -105,6 +106,8 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
         const inicio = asignacion ? asignacion.inicio : '';
         const fin = asignacion ? asignacion.fin : '';
     
+        setPrevSelectedInstructors({ ...selectedInstructors }); // Guardar el estado actual
+
         setSelectedInstructors((prev) => ({
             ...prev,
             [`${jornadaNombre}-${day}`]: selectedInstructor,
@@ -145,8 +148,8 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
     };
     
     const handleCancel = () => {
+        setSelectedInstructors(prevSelectedInstructors); // Revertir al estado anterior
         setOpenModal(false);
-        setReloadKey(prevKey => prevKey + 1);
     };
 
     const handleCheckboxChange = (jornadaNombre, event) => {
