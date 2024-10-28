@@ -60,6 +60,17 @@ const Home = () => {
           Gestionar Usuarios
         </button>
       )}
+
+      {(permisos.verProgramacion || permisos.editProgramacion) && (
+        <>
+          <button className={classes.button} onClick={handleProFicha}>
+            Programacion Por Ficha
+          </button>
+          <button className={classes.button} onClick={handleProIns}>
+            Programacion Por Instructor
+          </button>
+        </>
+      )}
       
       {permisos.tablas && (
         <>
@@ -74,17 +85,6 @@ const Home = () => {
           </button>
           <button className={classes.button} onClick={handleFichas}>
             Gestión Fichas
-          </button>
-        </>
-      )}
-
-      {(permisos.verProgramacion || permisos.editProgramacion) && (
-        <>
-          <button className={classes.button} onClick={handleProFicha}>
-            Programacion Por Ficha
-          </button>
-          <button className={classes.button} onClick={handleProIns}>
-            Programacion Por Instructor
           </button>
         </>
       )}

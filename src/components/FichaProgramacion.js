@@ -13,8 +13,8 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
     const [selectedInstructors, setSelectedInstructors] = useState({});
     const [openModal, setOpenModal] = useState(false);
     const [newInstructor, setNewInstructor] = useState({});
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [startDate, setStartDate] = useState(startDateFilter || '');
+    const [endDate, setEndDate] = useState(endDateFilter || '');
     const [jornadasVisibles, setJornadasVisibles] = useState({}); 
     const [asignacionesPorInstructor, setAsignacionesPorInstructor] = useState({}); 
     const [reloadKey, setReloadKey] = useState(0); 
@@ -145,6 +145,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
     };
     
     const handleCancel = () => {
+        setReloadKey(prevKey => prevKey + 1);
         setOpenModal(false);
     };
 
@@ -241,11 +242,11 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
                                             <Tooltip
                                                 title={
                                                     (asignacionesPorInstructor[getInstructorForDay(jornada.nombre, day)] 
-                                                        ? `Asignaciones: ${asignacionesPorInstructor[getInstructorForDay(jornada.nombre, day)]}`
-                                                        : 'Cargando...') +
+                                                        ? `Asignaciones: ${asignacionesPorInstructor[getInstructorForDay(jornada.nombre, day)]} | `
+                                                        : '') +
                                                     (getInstructorForDay(jornada.nombre, day) && 
                                                     filteredAsignaciones.find(asig => asig.instructor === getInstructorForDay(jornada.nombre, day))?.fin 
-                                                        ? ` | Fin: ${new Date(filteredAsignaciones.find(asig => asig.instructor === getInstructorForDay(jornada.nombre, day))?.fin).toLocaleDateString()}`
+                                                        ? `Fin: ${new Date(filteredAsignaciones.find(asig => asig.instructor === getInstructorForDay(jornada.nombre, day))?.fin).toLocaleDateString()}`
                                                         : ''
                                                     )
                                                 }
