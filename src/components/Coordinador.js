@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
  
-const Coordinador = ({ coordinador, onUpdate, onDelete}) => {
+const Coordinador = ({ coordinador, onUpdate, onDelete }) => {
   const classes = useStyles();
 
   const [isEditable, setIsEditable] = useState(false);
@@ -33,7 +33,9 @@ const Coordinador = ({ coordinador, onUpdate, onDelete}) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Documento</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="documento"
           value={formState.documento || ''}
           variant="outlined"
@@ -47,7 +49,9 @@ const Coordinador = ({ coordinador, onUpdate, onDelete}) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Nombre</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="nombre"
           value={formState.nombre || ''}
           variant="outlined"
@@ -61,7 +65,9 @@ const Coordinador = ({ coordinador, onUpdate, onDelete}) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Email</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="email"
           value={formState.email || ''}
           variant="outlined"
@@ -75,7 +81,9 @@ const Coordinador = ({ coordinador, onUpdate, onDelete}) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Teléfono</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="telefono"
           value={formState.telefono || ''}
           variant="outlined"
@@ -87,10 +95,31 @@ const Coordinador = ({ coordinador, onUpdate, onDelete}) => {
       </div>
 
       <div className={classes.buttonRow}>
-        <Button className={classes.button} onClick={handleEditClick}>
+        <Button
+          sx={{
+            backgroundColor: '#5eb219',
+            color: '#fff',
+            '&:hover': {
+              backgroundColor: '#4cae14',
+            },
+            marginRight: '10px', 
+          }}
+          onClick={handleEditClick}
+        >
           {isEditable ? 'Guardar' : 'Editar'}
         </Button>
-        <Button className={classes.deleteButton} onClick={handleDeleteClick}>Borrar</Button>
+        <Button
+          sx={{
+            backgroundColor: '#b2195e',
+            color: '#fff',
+            '&:hover': {
+              backgroundColor: '#d81b60',
+            },
+          }}
+          onClick={handleDeleteClick}
+        >
+          Borrar
+        </Button>
       </div>
     </div>
   );
@@ -124,30 +153,12 @@ const useStyles = makeStyles(() => ({
     alignSelf: 'center',
     marginBottom: '5px',
   },
-  textField: {
-    width: '100%',
-  },
   buttonRow: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: '10px',
     gridColumn: '1 / -1', 
-  },
-  button: {
-    backgroundColor: '#5eb219',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-    marginRight: '10px', 
-  },
-  deleteButton: {
-    backgroundColor: '#b2195e',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#d81b60',
-    },
   },
 }));
 

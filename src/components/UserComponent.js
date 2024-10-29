@@ -177,6 +177,7 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
           sx={{
             backgroundColor: '#5eb219',
             color: '#fff',
+            marginTop: '10px',
             '&:hover': {
               backgroundColor: '#4cae14',
             },

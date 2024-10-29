@@ -2,13 +2,10 @@ import React, { useState, useMemo, useEffect } from 'react';
 import Coordinador from '../components/Coordinador';
 import NewCoordinador from '../components/NewCoordinador';
 import { TextField, Button, Snackbar, Alert, CircularProgress } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { getCoordinadores, createCoordinador, updateCoordinadorByDocumento, deleteCoordinadorByDocumento } from '../service/coordinadorService';
 import Sidebar from '../components/Sidebar';
 
 const GestionCoordinadores = () => {
-  const classes = useStyles();
-
   const [coordinadores, setCoordinadores] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewCoordinadorForm, setShowNewCoordinadorForm] = useState(false);
@@ -95,7 +92,7 @@ const GestionCoordinadores = () => {
   return (
     <>
       <Sidebar />
-      <div className={classes.container}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f5f5f5', borderRadius: '8px', width: '100%' }}>
         {mensaje && (
           <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
             <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
@@ -109,10 +106,14 @@ const GestionCoordinadores = () => {
           placeholder="Buscar por Documento o Nombre"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className={classes.searchField}
+          sx={{ width: '85%', marginBottom: '20px' }}
         />
 
-        <Button variant="contained" onClick={handleNewCoordinadorClick} className={classes.newCoordinadorButton}>
+        <Button 
+          variant="contained" 
+          onClick={handleNewCoordinadorClick} 
+          sx={{ backgroundColor: '#5eb219', color: '#fff', '&:hover': { backgroundColor: '#4cae14' }, marginBottom: '20px' }}
+        >
           Nuevo Coordinador
         </Button>
 
@@ -124,11 +125,11 @@ const GestionCoordinadores = () => {
         )}
 
         {loading ? (
-          <div className={classes.loaderContainer}>
-            <CircularProgress className={classes.loader} />
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+            <CircularProgress sx={{ color: "#5eb219" }} />
           </div>
         ) : (
-          <div className={classes.coordinadorList}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', alignContent: 'center', width: '90%', maxWidth: '600px', boxSizing: 'border-box', marginTop: '20px' }}>
             {filteredCoordinadores.length > 0 ? (
               filteredCoordinadores.map((coordinador) => (
                 <Coordinador
@@ -147,49 +148,5 @@ const GestionCoordinadores = () => {
     </>
   );
 };
-
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'flex',                    
-    flexDirection: 'column',             
-    alignItems: 'center',                
-    justifyContent: 'center',            
-    backgroundColor: '#f5f5f5',
-    borderRadius: '8px',
-    width: '100%',
-  },
-  searchField: {
-    width: '85%',
-    marginBottom: '20px',
-  },
-  newCoordinadorButton: {
-    backgroundColor: '#5eb219',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-    marginBottom: '20px',
-  },
-  coordinadorList: {
-    display: 'flex',                      
-    flexDirection: 'column',              
-    alignItems: 'center',      
-    alignContent: 'center',              
-    width: '90%',                        
-    maxWidth: '600px',                    
-    boxSizing: 'border-box',
-    marginTop: '20px',
-  },
-  loaderContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-  },
-  loader: {
-    color: "#5eb219",
-  },
-}));
-
 
 export default GestionCoordinadores;

@@ -71,7 +71,7 @@ const NewUserForm = ({ onSave, onCancel }) => {
       <div className={classes.fieldContainer}>
         <Button
           sx={{
-            backgroundColor: '#2914ae',
+            backgroundColor: '#5eb219',
             color: '#fff',
             marginTop: '10px',
             '&:hover': {
