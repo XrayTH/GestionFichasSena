@@ -165,7 +165,17 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
                     <Typography variant="p" className={classes.fichaCodigo}>
                         {ficha.codigo} 
                     </Typography>
-                    <Button className={classes.calendarButton} onClick={abrirConsulta}>
+                    <Button sx={{
+                        backgroundColor: '#5eb219', 
+                        color: '#fff', 
+                        borderRadius: '4px', 
+                        margin: '10px', 
+                        '&:hover': {
+                            backgroundColor: '#4a9e17', 
+                        },
+                        }} 
+                        onClick={abrirConsulta}
+                    >
                         Ver en Calendario
                     </Button>
                     <Grid2 container spacing={1}>
@@ -395,15 +405,6 @@ const useStyles = makeStyles(() => ({
     fichaCodigo: {
         textAlign: 'center',
         color: '#5eb219',
-    },
-    calendarButton: {
-      backgroundColor: '#5eb219', 
-      color: '#fff', 
-      borderRadius: '4px', 
-      margin: '10px', 
-      '&:hover': {
-        backgroundColor: '#4a9e17', 
-      },
     },
 }));
 

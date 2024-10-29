@@ -168,7 +168,16 @@ const ConsultaPorFicha = () => {
     <div className={classes.calendarContainer} id="calendarContainer">
       <Box className={classes.flexContainer}>
         <Box className={classes.infoContainer}>
-          <Button onClick={handleRegresar}>Volver</Button>
+          <Button onClick={handleRegresar}
+            sx={{
+              backgroundColor: '#5eb219',
+              color: '#ffffff',
+              '&:hover': {
+                backgroundColor: '#4caf18', 
+              },
+              marginTop: '20px',
+            }}
+          >Volver</Button>
           <Typography variant="body2">Ficha: {ficha.codigo}</Typography>
           <Typography variant="body2">Coordinador: {ficha.coordinador}</Typography>
           <Typography variant="body2">Programa: {ficha.programa}</Typography>
@@ -193,7 +202,9 @@ const ConsultaPorFicha = () => {
 
       {isLoading ? (
         <Box display="flex" flexDirection="column" alignItems="center" mt={3}>
-          <CircularProgress color="primary" className={classes.load}/>
+          <CircularProgress color="primary" sx={{
+            color: "#5eb219"
+          }}/>
           <Typography variant="body2" mt={2}>Cargando horarios, esto puede tardar un poco...</Typography>
         </Box>
       ) : (
@@ -232,7 +243,14 @@ const ConsultaPorFicha = () => {
           variant="contained"
           color="primary"
           onClick={handleCaptureToPDF}
-          style={{ marginTop: '20px' }}
+          sx={{
+            backgroundColor: '#5eb219',
+            color: '#ffffff',
+            '&:hover': {
+              backgroundColor: '#4caf18', 
+            },
+            marginTop: '20px',
+          }}
         >
           Enviar por correo
         </Button>
@@ -281,9 +299,6 @@ const useStyles = makeStyles(() => ({
   calendarContainer: {
     height: '100vh',
     overflowY: 'auto',
-  },
-  load: {
-    color: "#5eb219"
   },
 }));
 
