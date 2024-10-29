@@ -11,7 +11,7 @@ function Conectando() {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate('/');
-    }, 5000); 
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, [navigate]);
@@ -20,7 +20,7 @@ function Conectando() {
     <div className={classes.container}>
       <img src={logo} alt="Logo Sena" className={classes.logo} />
       <h1 className={classes.message}>Conectando...</h1>
-      <CircularProgress className={classes.spinner} />
+      <CircularProgress sx={{ mt: 2, color: 'white' }} />
       <p>Esperando respuesta del servidor</p>
     </div>
   );
@@ -28,9 +28,9 @@ function Conectando() {
 
 const useStyles = makeStyles({
   container: {
-    backgroundColor: '#5eb219', 
-    color: '#fff', 
-    height: '100vh', 
+    backgroundColor: '#5eb219',
+    color: '#fff',
+    height: '100vh',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -38,17 +38,13 @@ const useStyles = makeStyles({
     textAlign: 'center',
   },
   logo: {
-    width: '150px', 
+    width: '150px',
     marginBottom: '20px',
   },
   message: {
     fontSize: '24px',
     fontWeight: 'bold',
   },
-  spinner: {
-    marginTop: '20px',
-    color: "white"
-  }
 });
 
 export default Conectando;

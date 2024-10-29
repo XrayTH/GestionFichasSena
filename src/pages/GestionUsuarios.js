@@ -2,14 +2,11 @@ import { useState, useMemo, useEffect } from 'react';
 import { Button, TextField, MenuItem, Select, FormControl, Snackbar, Alert, CircularProgress } from '@mui/material';
 import UserComponent from '../components/UserComponent';
 import NewUserForm from '../components/NewUserForm';
-import { makeStyles } from '@mui/styles';
 import { getUsuarios, createUsuario, updateUsuarioById, deleteUsuarioById } from '../service/userService';
 import Sidebar from '../components/Sidebar';
 import { encryptPassword, decryptPassword } from '../utils/encryption';
 
 const GestionUsuarios = () => {
-  const classes = useStyles();
-
   const [usuarios, setUsuarios] = useState([]);
   const [mostrarFormularioNuevoUsuario, setMostrarFormularioNuevoUsuario] = useState(false);
   const [textoBusqueda, setTextoBusqueda] = useState('');
@@ -117,7 +114,20 @@ const GestionUsuarios = () => {
   return (
     <>
       <Sidebar />
-      <div className={classes.container}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#f5f5f5',
+          borderRadius: '8px',
+          padding: '20px',
+          width: '90%',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          margin: 'auto auto',
+        }}
+      >
         {mensaje && (
           <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
             <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
@@ -126,25 +136,45 @@ const GestionUsuarios = () => {
           </Snackbar>
         )}
 
-        <div className={classes.filters}>
-          <div className={classes.filterLeft}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '20px',
+            width: '100%',
+            flexWrap: 'wrap',  
+          }}
+        >
+          <div style={{ flex: '1', marginRight: '20px', marginBottom: '10px' }}>
             <TextField
               fullWidth
               placeholder="Filtrar por usuario"
               value={textoBusqueda}
               onChange={(e) => setTextoBusqueda(e.target.value)}
               InputProps={{
-                className: classes.inputField,
+                style: {
+                  backgroundColor: '#ffffff',
+                  borderRadius: '4px',
+                  padding: '10px',
+                  width: '100%',
+                  minWidth: '300px'
+                },
               }}
             />
           </div>
-          <div className={classes.filterRight}>
+          <div style={{ flex: '1', marginRight: '20px', marginBottom: '10px' }}>
             <FormControl fullWidth>
               <Select
                 value={rolSeleccionado}
                 onChange={(e) => setRolSeleccionado(e.target.value)}
                 displayEmpty
-                className={classes.selectField}
+                style={{
+                  backgroundColor: '#ffffff',
+                  borderRadius: '4px',
+                  padding: '10px',
+                }}
               >
                 <MenuItem value=""><em>Todos los roles</em></MenuItem>
                 {roles.map((rol) => (
@@ -153,8 +183,19 @@ const GestionUsuarios = () => {
               </Select>
             </FormControl>
           </div>
-          <div className={classes.newUserButton}>
-            <Button variant="contained" onClick={manejarNuevoUsuarioClick} className={classes.newUserButtonStyle}>
+          <div style={{ flex: 'none', textAlign: 'right', marginBottom: '10px' }}>
+            <Button
+              variant="contained"
+              onClick={manejarNuevoUsuarioClick}
+              style={{
+                backgroundColor: '#5eb219',
+                '&:hover': {
+                  backgroundColor: '#4cae14',
+                },
+                borderRadius: '4px',
+                padding: '10px 20px',
+              }}
+            >
               Nuevo Usuario
             </Button>
           </div>
@@ -163,14 +204,34 @@ const GestionUsuarios = () => {
         {mostrarFormularioNuevoUsuario && <NewUserForm onSave={manejarGuardarNuevoUsuario} onCancel={manejarCancelarNuevoUsuario} />}
 
         {loading ? (
-          <div className={classes.loaderContainer}>
-            <CircularProgress className={classes.loader} />
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100%',
+            }}
+          >
+            <CircularProgress style={{ color: "#5eb219" }} />
           </div>
         ) : (
-          <div className={classes.userList}>
+          <div style={{ marginTop: '20px', width: '100%' }}>
             {usuariosFiltrados.length > 0 ? (
               usuariosFiltrados.map((usuario) => (
-                <div key={usuario.id} className={classes.userComponent}>
+                <div key={usuario.id} style={{
+                  marginBottom: '15px',
+                  padding: '20px',
+                  backgroundColor: '#ffffff',
+                  borderRadius: '8px',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                  maxWidth: '60%',
+                  minWidth: '300px',
+                  transition: 'transform 0.2s',
+                  margin: 'auto auto',
+                  '&:hover': {
+                    transform: 'scale(1.02)',
+                  },
+                }}>
                   <UserComponent user={usuario} onUpdate={manejarActualizarUsuario} onDelete={manejarEliminarUsuario} />
                 </div>
               ))
@@ -183,86 +244,5 @@ const GestionUsuarios = () => {
     </>
   );
 };
-
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'flex',                    
-    flexDirection: 'column',             
-    alignItems: 'center',                
-    justifyContent: 'center',            
-    backgroundColor: '#f5f5f5',
-    borderRadius: '8px',
-    width: '100%',
-  },
-  filters: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '20px',
-    '@media (max-width: 600px)': {
-      flexDirection: 'column',
-      alignItems: 'stretch',
-      marginLeft: '20px',
-      marginRight: '20px',
-    },
-  },
-  filterLeft: {
-    flex: '1',
-    marginRight: '20px',
-    '@media (max-width: 600px)': {
-      marginRight: '0',
-      marginBottom: '10px',
-    },
-  },
-  filterRight: {
-    flex: '1',
-    marginRight: '20px',
-    '@media (max-width: 600px)': {
-      marginRight: '0',
-      marginBottom: '10px',
-    },
-  },
-  newUserButton: {
-    flex: 'none',
-    textAlign: 'right',
-    '@media (max-width: 600px)': {
-      width: '100%',
-      textAlign: 'left',
-    },
-  },
-  newUserButtonStyle: {
-    backgroundColor: '#5eb219',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-  },
-  inputField: {
-    backgroundColor: '#ffffff',
-  },
-  selectField: {
-    backgroundColor: '#ffffff',
-  },
-  userList: {
-    marginTop: '20px',
-  },
-  userComponent: {
-    alignContent: 'center',
-    marginBottom: '15px',
-    padding: '20px',
-    backgroundColor: '#ffffff',
-    width: '100%',              
-    boxSizing: 'border-box',  
-  },
-  loaderContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-  },
-  loader: {
-    color: "#5eb219",
-  },
-}));
 
 export default GestionUsuarios;

@@ -11,7 +11,7 @@ const Home = () => {
   const navigate = useNavigate();
   
   const permisos = useSelector(selectUserPermisos);
-  const isSmallScreen = useMediaQuery('(max-width:600px)')
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
 
   const handleGestionUsuarios = () => {
     navigate('/gestion-usuarios');
@@ -51,8 +51,12 @@ const Home = () => {
 
   return (
     <div className={classes.container}>
-      <Typography variant="h4" component="h1" className={classes.title}>
-      {isSmallScreen ? 'SFG - SENA' : 'SISTEMA DE GESTIÓN DE FICHAS - SENA'}
+      <Typography
+        variant="h4"
+        component="h1"
+        sx={{ textAlign: "center" }}
+      >
+        {isSmallScreen ? 'SFG - SENA' : 'SISTEMA DE GESTIÓN DE FICHAS - SENA'}
       </Typography>
       <br />
       
@@ -113,9 +117,6 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#f5f5f5',
     padding: '0 20px',
   },
-  title: {
-    textAlign: "center",
-  },
   button: {
     backgroundColor: '#5eb219',
     color: '#fff',
@@ -150,8 +151,7 @@ const useStyles = makeStyles(() => ({
       bottom: 'auto',     
       right: 'auto'      
     }
-}
-
+  },
 }));
 
 export default Home;

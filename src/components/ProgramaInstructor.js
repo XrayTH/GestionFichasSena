@@ -107,7 +107,19 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
   return (
     <div className={classes.container}>
       <div className={classes.checkboxContainer}>
-        <Button className={classes.calendarButton} onClick={abrirConsulta}>
+        <Button
+          sx={{
+            backgroundColor: '#5eb219', 
+            color: '#fff', 
+            borderRadius: '4px', 
+            padding: '8px 16px', 
+            marginRight: '10px', 
+            '&:hover': {
+              backgroundColor: '#4a9e17', 
+            },
+          }}
+          onClick={abrirConsulta}
+        >
           Ver en Calendario
         </Button>
         {jornadas.map((jornada) => (
@@ -170,7 +182,6 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
                 </tr>
               )
             ))}
-
           </tbody>
         </table>
       </div>
@@ -188,7 +199,16 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
                 onChange={(event, newValue) => {
                   setSelectedFicha(newValue ? newValue.codigo : '');
                 }}
-                renderInput={(params) => <TextField {...params} label="Selecciona una ficha" variant="outlined" />}
+                renderInput={(params) => (
+                  <TextField 
+                    {...params} 
+                    label="Selecciona una ficha" 
+                    variant="outlined" 
+                    sx={{
+                      marginBottom: '16px',
+                    }}
+                  />
+                )}
               />
             </label><br/>
             <label>
@@ -207,7 +227,14 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
                 onChange={(e) => setFechaAsignacionFin(e.target.value)} 
               />
             </label><br/>
-            <Button onClick={handleCrear}>Asignar</Button>
+            <Button 
+              onClick={handleCrear}
+              sx={{
+                marginRight: '10px',
+              }}
+            >
+              Asignar
+            </Button>
             <Button onClick={handleCancelar} color="secondary">Cancelar</Button>
           </div>
         </div>
@@ -227,16 +254,6 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     marginBottom: '5px', 
-  },
-  calendarButton: {
-    backgroundColor: '#5eb219', 
-    color: '#fff', 
-    borderRadius: '4px', 
-    padding: '8px 16px', 
-    marginRight: '10px', 
-    '&:hover': {
-      backgroundColor: '#4a9e17', 
-    },
   },
   tableContainer: {
     overflowX: 'auto', 

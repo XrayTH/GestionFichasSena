@@ -84,8 +84,13 @@ const ProgramarPorInstructor = () => {
     <div>
       <Sidebar />
       {mensaje && (
-        <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
-          <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
+        <Snackbar
+          open={Boolean(mensaje)}
+          autoHideDuration={6000}
+          onClose={() => setMensaje(null)}
+          sx={{ '& .MuiAlert-root': { width: '100%' } }}
+        >
+          <Alert onClose={() => setMensaje(null)} severity={mensaje.severity} sx={{ width: '100%' }}>
             {mensaje.text}
           </Alert>
         </Snackbar>
@@ -120,7 +125,7 @@ const ProgramarPorInstructor = () => {
 
       {loading ? (
         <div className={classes.loaderContainer}>
-          <CircularProgress className={classes.loader} />
+          <CircularProgress sx={{ color: "#5eb219" }} />
         </div>
       ) : (
         filteredInstructores.map((instructor) => (
@@ -170,9 +175,6 @@ const useStyles = makeStyles({
     alignItems: 'center',
     height: '100%',
   },
-  loader: {
-    color: "#5eb219"
-  }
 });
 
 export default ProgramarPorInstructor;

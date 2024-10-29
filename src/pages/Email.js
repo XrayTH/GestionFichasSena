@@ -185,7 +185,24 @@ const Email = () => {
       <div className={classes.container}>
         <div className={classes.formContainer}>
           <div className={classes.leftSection}>
-            <Button onClick={handleRegresar} className={classes.returnButton}>Volver</Button>
+          <Button 
+              onClick={handleRegresar} 
+              sx={{
+                backgroundColor: '#f44336',
+                color: '#fff',
+                padding: '10px 20px',
+                borderRadius: '4px',
+                marginTop: '10px',
+                '&:hover': {
+                  backgroundColor: '#d32f2f',
+                },
+                fontSize: '16px',
+                fontWeight: 'bold',
+                textTransform: 'none',
+              }}
+            >
+              Volver
+            </Button>            
             <br />
             <label className={classes.label}>Asunto:</label>
             <br />
@@ -245,7 +262,22 @@ const Email = () => {
                   </li>
                 )}
               />
-              <Button className={classes.addButton} onClick={handleAddRecipient}>+</Button>
+              <Button sx={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                backgroundColor: '#5eb219',
+                color: '#fff',
+                fontSize: '24px',
+                minWidth: 'unset',
+                marginRight: '10px',
+                '&:hover': {
+                  backgroundColor: '#4cae14',
+                },
+                }} 
+                onClick={handleAddRecipient}>
+                +
+               </Button>
             </div>
 
             <div className={classes.recipientsList}>
@@ -270,7 +302,14 @@ const Email = () => {
               <Button
                 variant="contained"
                 color="primary"
-                className={classes.sendButton}
+                sx={{
+                  backgroundColor: '#7614ae',
+                  '&:hover': {
+                    backgroundColor: '#4cae14',
+                  },
+                  color: '#fff',
+                  padding: '10px',
+                }}
                 onClick={handleSendEmail}
               >
                 Enviar Este Correo
@@ -279,7 +318,14 @@ const Email = () => {
               <Button
                 variant="contained"
                 color="primary"
-                className={classes.sendButton}
+                sx={{
+                  backgroundColor: '#7614ae',
+                  '&:hover': {
+                    backgroundColor: '#4cae14',
+                  },
+                  color: '#fff',
+                  padding: '10px',
+                }}                
                 onClick={handleSendMasiveEmail}
                 disabled={loading}
               >
@@ -289,7 +335,9 @@ const Email = () => {
 
             {loading && (
               <div className={classes.loadingSpinner}>
-                <CircularProgress className={classes.spinner} />
+                <CircularProgress sx={{
+                  color: "#5eb219",
+                }} />
               </div>
             )}
           </div>
@@ -395,19 +443,6 @@ const useStyles = makeStyles(() => ({
     border: '1px solid #5eb219',
     padding: '10px',
   },
-  addButton: {
-    width: '40px',
-    height: '40px',
-    borderRadius: '50%',
-    backgroundColor: '#5eb219',
-    color: '#fff',
-    fontSize: '24px',
-    minWidth: 'unset',
-    marginRight: '10px',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-  },
   dropdownWrapper: {
     display: 'flex',
     alignItems: 'center',
@@ -417,14 +452,6 @@ const useStyles = makeStyles(() => ({
     flexGrow: 1,
     borderColor: '#5eb219',
     marginRight: '10px',
-  },
-  sendButton: {
-    backgroundColor: '#7614ae',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-    color: '#fff',
-    padding: '10px',
   },
   imageListContainer: {
     display: 'flex',
@@ -482,22 +509,6 @@ const useStyles = makeStyles(() => ({
   inputFileWrapper: {
     marginBottom: '20px',
   },
-  returnButton: {
-    backgroundColor: '#f44336',  
-    color: '#fff',  
-    padding: '10px 20px',
-    borderRadius: '4px',
-    marginTop: '10px', 
-    '&:hover': {
-      backgroundColor: '#d32f2f',  
-    },
-    fontSize: '16px',
-    fontWeight: 'bold',
-    textTransform: 'none',
-  },
-  spinner: {
-    color: "green",
-  }
 }));
 
 export default Email;

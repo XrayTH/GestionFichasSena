@@ -147,7 +147,7 @@ const Programar = () => {
         <>
             <Sidebar />
             <div className={classes.container}>
-                <Grid container spacing={2} className={classes.filtrosContainer}>
+                <Grid container spacing={2} sx={{ mb: 2 }}>
                     <Grid item xs={12} sm={6} md={4}>
                         <TextField
                             label="Buscar por codigo"
@@ -155,7 +155,7 @@ const Programar = () => {
                             fullWidth
                             onChange={handleIdFilterChange}
                             value={idFilter}
-                            className={classes.textField}
+                            sx={{ mb: 1, backgroundColor: '#ffffff' }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
@@ -165,7 +165,7 @@ const Programar = () => {
                             fullWidth
                             onChange={handleCoordinadorFilterChange}
                             value={coordinadorFilter}
-                            className={classes.textField}
+                            sx={{ mb: 1, backgroundColor: '#ffffff' }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
@@ -175,7 +175,7 @@ const Programar = () => {
                             fullWidth
                             onChange={handleProgramaFilterChange}
                             value={programaFilter}
-                            className={classes.textField}
+                            sx={{ mb: 1, backgroundColor: '#ffffff' }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
@@ -185,7 +185,7 @@ const Programar = () => {
                             fullWidth
                             onChange={handleGestorFilterChange}
                             value={gestorFilter}
-                            className={classes.textField}
+                            sx={{ mb: 1, backgroundColor: '#ffffff' }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
@@ -197,7 +197,7 @@ const Programar = () => {
                             fullWidth
                             InputLabelProps={{ shrink: true }}
                             variant="outlined"
-                            className={classes.textField}
+                            sx={{ mb: 1, backgroundColor: '#ffffff' }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
@@ -209,7 +209,7 @@ const Programar = () => {
                             fullWidth
                             InputLabelProps={{ shrink: true }}
                             variant="outlined"
-                            className={classes.textField}
+                            sx={{ mb: 1, backgroundColor: '#ffffff' }}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -220,7 +220,7 @@ const Programar = () => {
                 <div className={classes.fichasContainer}>
                     {loading ? ( 
                         <div className={classes.loaderContainer}>
-                            <CircularProgress className={classes.loader}/>
+                            <CircularProgress sx={{ color: "#5eb219" }}/>
                         </div>
                     ) : (
                         filteredFichas.map((ficha) => (
@@ -266,10 +266,6 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
         margin: '10px 20px',
     },
-    textField: {
-        margin: '8px 0',
-        backgroundColor: '#ffffff',
-    },
     fichasContainer: {
         marginTop: '20px',
     },
@@ -293,9 +289,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         height: '100%',
     },
-    loader: {
-        color: "#5eb219"
-    }
 }));
 
 export default Programar;

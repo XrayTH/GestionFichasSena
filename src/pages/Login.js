@@ -79,7 +79,7 @@ const Login = () => {
           disabled={isLoading}
         >
           {isLoading ? (
-            <CircularProgress size={24} style={{ color: "#fff" }} />
+            <CircularProgress size={24} sx={{ color: "#fff" }} />
           ) : (
             "Iniciar Sesión"
           )}

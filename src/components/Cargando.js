@@ -10,7 +10,7 @@ function Cargando() {
     <div className={classes.container}>
       <img src={logo} alt="Logo Sena" className={classes.logo} />
       <h1 className={classes.message}>Cargando...</h1>
-      <CircularProgress className={classes.spinner} />
+      <CircularProgress sx={{ mt: '20px', color: "#5eb219" }} />
       <p>Por favor espera un momento</p>
     </div>
   );
@@ -18,8 +18,6 @@ function Cargando() {
 
 const useStyles = makeStyles({
   container: {
-    //backgroundColor: '#5eb219', 
-    //color: '#fff', 
     height: '100vh', 
     display: 'flex',
     flexDirection: 'column',
@@ -34,10 +32,6 @@ const useStyles = makeStyles({
   message: {
     fontSize: '24px',
     fontWeight: 'bold',
-  },
-  spinner: {
-    marginTop: '20px',
-    color: "#5eb219"
   }
 });
 
