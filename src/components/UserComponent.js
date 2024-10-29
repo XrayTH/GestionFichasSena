@@ -36,7 +36,9 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Usuario</label>
           <TextField
-            className={classes.textField}
+            sx={{
+              width: '100%',
+            }}
             name="usuario"
             value={formState.usuario}
             variant="outlined"
@@ -52,13 +54,21 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
             <label className={classes.label}>Contraseña</label>
             <Button
               onClick={() => setShowPassword(!showPassword)}
-              className={classes.button}
+              sx={{
+                backgroundColor: '#5eb219',
+                color: '#fff',
+                '&:hover': {
+                  backgroundColor: '#4cae14',
+                },
+              }}
             >
               {showPassword ? 'Ocultar' : 'Ver'}
             </Button>
           </div>
           <TextField
-            className={classes.textField}
+            sx={{
+              width: '100%',
+            }}
             name="contraseña"
             type={showPassword ? 'text' : 'password'}
             value={formState.contraseña}
@@ -73,7 +83,9 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Rol</label>
           <TextField
-            className={classes.textField}
+            sx={{
+              width: '100%',
+            }}
             name="rol"
             value={formState.rol}
             variant="outlined"
@@ -89,7 +101,9 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
         <div className={classes.switchContainer}>
           <label className={classes.label}>Gestión Tablas</label>
           <Switch
-            className={classes.switch}
+            sx={{
+              alignSelf: 'center',
+            }}
             checked={formState.tablas}
             disabled={!isEditable}
             onChange={() =>
@@ -101,7 +115,9 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
         <div className={classes.switchContainer}>
           <label className={classes.label}>Ver Programación</label>
           <Switch
-            className={classes.switch}
+            sx={{
+              alignSelf: 'center',
+            }}
             checked={formState.verProgramacion}
             disabled={!isEditable}
             onChange={() =>
@@ -113,7 +129,9 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
         <div className={classes.switchContainer}>
           <label className={classes.label}>Editar Programación</label>
           <Switch
-            className={classes.switch}
+            sx={{
+              alignSelf: 'center',
+            }}
             checked={formState.editProgramacion}
             disabled={!isEditable}
             onChange={() =>
@@ -125,7 +143,9 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
         <div className={classes.switchContainer}>
           <label className={classes.label}>Enviar Emails</label>
           <Switch
-            className={classes.switch}
+            sx={{
+              alignSelf: 'center',
+            }}
             checked={formState.email}
             disabled={!isEditable}
             onChange={() =>
@@ -137,7 +157,9 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
         <div className={classes.switchContainer}>
           <label className={classes.label}>Gestión Usuarios</label>
           <Switch
-            className={classes.switch}
+            sx={{
+              alignSelf: 'center',
+            }}
             checked={formState.gestionarUsuarios}
             disabled={!isEditable}
             onChange={() =>
@@ -151,10 +173,29 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
       </div>
 
       <div className={classes.buttons}>
-        <Button className={classes.button} onClick={handleEditClick}>
+        <Button
+          sx={{
+            backgroundColor: '#5eb219',
+            color: '#fff',
+            '&:hover': {
+              backgroundColor: '#4cae14',
+            },
+          }}
+          onClick={handleEditClick}
+        >
           {isEditable ? 'Guardar' : 'Editar'}
         </Button>
-        <Button className={classes.deleteButton} onClick={() => onDelete(user.id)}>
+        <Button
+          sx={{
+            backgroundColor: '#ae1499',
+            color: '#fff',
+            marginTop: '10px',
+            '&:hover': {
+              backgroundColor: '#d81b60',
+            },
+          }}
+          onClick={() => onDelete(user.id)}
+        >
           Borrar
         </Button>
       </div>
@@ -214,27 +255,6 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-  },
-  textField: {
-    width: '100%',
-  },
-  switch: {
-    alignSelf: 'center',
-  },
-  button: {
-    backgroundColor: '#5eb219',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-  },
-  deleteButton: {
-    backgroundColor: '#ae1499',
-    color: '#fff',
-    marginTop: '10px',
-    '&:hover': {
-      backgroundColor: '#d81b60',
-    },
   },
 }));
 

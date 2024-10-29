@@ -31,7 +31,9 @@ const NewUserForm = ({ onSave, onCancel }) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Usuario</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="usuario"
           value={formState.usuario}
           variant="outlined"
@@ -42,7 +44,9 @@ const NewUserForm = ({ onSave, onCancel }) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Contraseña</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="contraseña"
           type="password"
           value={formState.contraseña}
@@ -54,7 +58,9 @@ const NewUserForm = ({ onSave, onCancel }) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Rol</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="rol"
           value={formState.rol}
           variant="outlined"
@@ -63,10 +69,30 @@ const NewUserForm = ({ onSave, onCancel }) => {
       </div>
 
       <div className={classes.fieldContainer}>
-        <Button className={classes.button} onClick={handleSave}>
+        <Button
+          sx={{
+            backgroundColor: '#2914ae',
+            color: '#fff',
+            marginTop: '10px',
+            '&:hover': {
+              backgroundColor: '#4cae14',
+            },
+          }}
+          onClick={handleSave}
+        >
           Guardar
         </Button>
-        <Button className={classes.cancelButton} onClick={onCancel}>
+        <Button
+          sx={{
+            backgroundColor: '#ae1499',
+            color: '#fff',
+            marginTop: '10px',
+            '&:hover': {
+              backgroundColor: '#d81b60',
+            },
+          }}
+          onClick={onCancel}
+        >
           Cancelar
         </Button>
       </div>
@@ -83,6 +109,7 @@ const useStyles = makeStyles(() => ({
     padding: '20px',
     borderRadius: '8px',
     border: '2px solid #4cae14',
+    maxWidth: "70%"
   },
   fieldContainer: {
     display: 'flex',
@@ -96,26 +123,6 @@ const useStyles = makeStyles(() => ({
     alignSelf: 'center',
     marginBottom: '5px',
   },
-  textField: {
-    width: '100%',
-  },
-  button: {
-    backgroundColor: '#2914ae',
-    color: '#fff',
-    marginTop: '10px',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-  },
-  cancelButton: {
-    backgroundColor: '#ae1499',
-    color: '#fff',
-    marginTop: '10px',
-    '&:hover': {
-      backgroundColor: '#d81b60',
-    },
-  },
 }));
 
 export default NewUserForm;
-
