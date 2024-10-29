@@ -57,28 +57,30 @@ const ConsultaPorInstructor = () => {
     const fetchAsignaciones = async () => {
       try {
         const response = await getAsignacionesByInstructor(instructor.nombre);
-        const formattedAsignaciones = [];
         const colorsMap = {};
-
-        for (const asignacion of response) {
+        const formattedAsignaciones = [];
+  
+        const fichas = await Promise.all(response.map(asignacion => getFichaByCodigo(asignacion.ficha)));
+        const programas = await Promise.all(fichas.map(ficha => obtenerProgramaPorNombre(ficha.programa)));
+  
+        response.forEach((asignacion, index) => {
           const start = moment(asignacion.inicio);
           const end = moment(asignacion.fin);
           const dayOfWeek = daysMap[asignacion.dia];
-
+  
           if (!colorsMap[asignacion.jornada]) {
             const colorIndex = Object.keys(colorsMap).length % colorScale.length;
             colorsMap[asignacion.jornada] = colorScale[colorIndex];
           }
-
+  
           let currentDate = moment(start);
           while (currentDate.isSameOrBefore(end)) {
             if (currentDate.day() === dayOfWeek) {
-
-              const fichaData = await getFichaByCodigo(asignacion.ficha);
-              const programaData = await obtenerProgramaPorNombre(fichaData.programa);
-
+              const fichaData = fichas[index];
+              const programaData = programas[index];
+  
               formattedAsignaciones.push({
-                title: asignacion.ficha+"/"+programaData.nombreCorto+"/"+fichaData.municipio,
+                title: `${asignacion.ficha}/${programaData.nombreCorto}/${fichaData.municipio}`,
                 subtitle: fichaData.programa,
                 ficha: asignacion.ficha,
                 municipio: fichaData.municipio,
@@ -92,8 +94,8 @@ const ConsultaPorInstructor = () => {
             }
             currentDate.add(1, 'days');
           }
-        }
-
+        });
+  
         setAsignaciones(formattedAsignaciones);
         setJornadaColors(colorsMap);
       } catch (error) {
@@ -102,9 +104,9 @@ const ConsultaPorInstructor = () => {
         setIsLoading(false);
       }
     };
-
+  
     fetchAsignaciones();
-  }, [instructor]);
+  }, [instructor]);  
 
   const eventStyleGetter = (event) => ({
     style: {
