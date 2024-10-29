@@ -1,13 +1,11 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Programa from '../components/Programa';
 import { TextField, Button, Snackbar, Alert, CircularProgress } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { obtenerProgramas, crearPrograma, actualizarProgramaPorId, eliminarProgramaPorId } from '../service/programaService';
 import NewPrograma from '../components/NewPrograma';
 import Sidebar from '../components/Sidebar';
 
 const GestionPrograma = () => {
-  const classes = useStyles();
   const [programas, setProgramas] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewProgramaForm, setShowNewProgramaForm] = useState(false);
@@ -80,7 +78,16 @@ const GestionPrograma = () => {
   return (
     <>
       <Sidebar />
-      <div className={classes.container}>
+      <div
+        sx={{
+          display: 'flex',                    
+          flexDirection: 'column',           
+          alignItems: 'center',           
+          justifyContent: 'center',     
+          backgroundColor: '#f5f5f5',
+          width: '100%',
+        }}
+      >
         {mensaje && (
           <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
             <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
@@ -94,10 +101,24 @@ const GestionPrograma = () => {
           placeholder="Buscar por Nombre o Nombre Corto"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className={classes.searchField}
+          sx={{
+            width: '85%', 
+            margin: '10px auto',
+          }}
         />
 
-        <Button variant="contained" onClick={handleNewProgramaClick} className={classes.newProgramaButton}>
+        <Button
+          variant="contained"
+          onClick={handleNewProgramaClick}
+          sx={{
+            backgroundColor: '#5eb219',
+            color: '#fff',
+            '&:hover': {
+              backgroundColor: '#4cae14',
+            },
+            margin: '20px 10px',
+          }}
+        >
           Nuevo Programa
         </Button>
 
@@ -108,70 +129,42 @@ const GestionPrograma = () => {
           />
         )}
 
-        {loading ? (
-          <div className={classes.loaderContainer}>
-            <CircularProgress className={classes.loader} />
-          </div>
-        ) : (
-          <div className={classes.programaList}>
-            {filteredProgramas.length > 0 ? (
-              filteredProgramas.map((programa) => (
-                <Programa
-                  key={programa.id}
-                  programa={programa}
-                  onUpdate={handleUpdatePrograma}
-                  onDelete={handleDeletePrograma}
-                />
-              ))
-            ) : (
-              <p>No se encontraron programas</p>
-            )}
-          </div>
-        )}
+        <div 
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '20px 20px',
+            width: '100%',
+          }}
+        >
+          {loading ? (
+              <CircularProgress
+                sx={{
+                  color: "#5eb219",
+                }}
+              />
+          ) : (
+            <>
+              {filteredProgramas.length > 0 ? (
+                filteredProgramas.map((programa) => (
+                  <Programa
+                    key={programa.id}
+                    programa={programa}
+                    onUpdate={handleUpdatePrograma}
+                    onDelete={handleDeletePrograma}
+                  />
+                ))
+              ) : (
+                <p>No se encontraron programas</p>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </>
   );
 };
-
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'flex',                    
-    flexDirection: 'column',           
-    alignItems: 'center',           
-    justifyContent: 'center',     
-    backgroundColor: '#f5f5f5',
-    borderRadius: '8px',
-    width: '100%',
-  },
-  searchField: {
-    width: '85%',
-    marginBottom: '20px',
-  },
-  newProgramaButton: {
-    backgroundColor: '#5eb219',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-    marginBottom: '20px',
-  },
-  programaList: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    margin: '10px',
-    gap: '10px',
-    width: '100%'
-  },
-  loaderContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-  },
-  loader: {
-    color: "#5eb219",
-  },
-}));
 
 export default GestionPrograma;
