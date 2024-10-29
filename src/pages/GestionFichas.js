@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from 'react';
 import { Button, TextField, Snackbar, Alert, CircularProgress } from '@mui/material';
 import FichaBasica from '../components/FichaBasica';
 import NewFichaBasica from '../components/NewFichaBasica';
-import { makeStyles } from '@mui/styles';
 import { getFichas, createFicha, updateFichaByCodigo, deleteFichaByCodigo } from '../service/fichaService';
 import { getInstructores } from '../service/intructorService';
 import { getCoordinadores } from '../service/coordinadorService';
@@ -12,8 +11,6 @@ import Sidebar from '../components/Sidebar';
 import DireccionBuscador from '../components/DireccionBuscador';
 
 const GestionFichas = () => {
-  const classes = useStyles();
-
   const [fichas, setFichas] = useState([]);
   const [municipios] = useState(Municipios.municipios);
   const [coordinadores, setCoordinadores] = useState([]);
@@ -112,7 +109,17 @@ const GestionFichas = () => {
   return (
     <>
       <Sidebar/>
-      <div className={classes.container}>
+      <div style={{
+        display: 'flex',                    
+        flexDirection: 'column',             
+        alignItems: 'center',                
+        justifyContent: 'center',            
+        backgroundColor: '#f5f5f5',
+        borderRadius: '8px',
+        width: '100%',
+        margin: 'auto auto',
+      }}>
+        <br/>
         <DireccionBuscador/>
         {mensaje && (
           <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
@@ -122,17 +129,36 @@ const GestionFichas = () => {
           </Snackbar>
         )}
 
-        <div className={classes.filters}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '20px',
+          width: '90%'
+        }}>
           <TextField
             variant="outlined"
             placeholder="Buscar por Código de Ficha, Coordinador, Programa o Ambiente"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className={classes.searchField}
+            sx={{
+              flexGrow: 1,
+              marginRight: '20px',
+            }}
           />
 
-          <div className={classes.newFichaButton}>
-            <Button variant="contained" onClick={handleNewFichaClick} className={classes.newFichaButtonStyle}>
+          <div style={{ textAlign: 'right' }}>
+            <Button 
+              variant="contained" 
+              onClick={handleNewFichaClick} 
+              sx={{
+                backgroundColor: '#5eb219',
+                '&:hover': {
+                  backgroundColor: '#4cae14',
+                },
+              }}
+            >
               Nueva Ficha
             </Button>
           </div>
@@ -150,14 +176,27 @@ const GestionFichas = () => {
         )}
 
         {loading ? (
-          <div className={classes.loaderContainer}>
-            <CircularProgress className={classes.loader} />
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+          }}>
+            <CircularProgress sx={{ color: "#5eb219" }} />
           </div>
         ) : (
-          <div className={classes.fichaList}>
+          <div style={{
+            width: '90%',
+            marginTop: '20px',
+          }}>
             {filteredFichas.length > 0 ? (
               filteredFichas.map((ficha) => (
-                <div key={ficha.codigo} className={classes.fichaComponent}> 
+                <div key={ficha.codigo} style={{
+                  marginBottom: '15px',
+                  borderRadius: '5px',
+                  padding: '10px',
+                  backgroundColor: '#ffffff',
+                }}> 
                   <FichaBasica 
                     ficha={ficha}
                     onUpdate={handleUpdateFicha}
@@ -178,57 +217,5 @@ const GestionFichas = () => {
     </>
   );
 };
-
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'flex',                    
-    flexDirection: 'column',             
-    alignItems: 'center',                
-    justifyContent: 'center',            
-    backgroundColor: '#f5f5f5',
-    borderRadius: '8px',
-    width: '100%',
-  },
-  filters: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '20px',
-  },
-  searchField: {
-    flexGrow: 1,
-    marginRight: '20px',
-  },
-  newFichaButton: {
-    textAlign: 'right',
-  },
-  newFichaButtonStyle: {
-    backgroundColor: '#5eb219',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-  },
-  fichaList: {
-    width: '90%',
-    marginTop: '20px',
-  },
-  fichaComponent: {
-    marginBottom: '15px',
-    border: `1px solid #5eb219`,
-    borderRadius: '5px',
-    padding: '10px',
-    backgroundColor: '#ffffff',
-  },
-  loaderContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-  },
-  loader: {
-    color: "#5eb219",
-  },
-}));
 
 export default GestionFichas;

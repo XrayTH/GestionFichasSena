@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Button, Autocomplete } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 
 const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], gestores = [], municipios = [] }) => {
-  const classes = useStyles();
   const [formState, setFormState] = useState({
     codigo: '',
     coordinador: '',
@@ -46,12 +44,29 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
   };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.grid}>
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Código</label>
+    <div 
+      style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        padding: '10px', 
+        backgroundColor: '#f5f5f5', 
+        borderRadius: '8px', 
+        border: '2px solid #5eb219', 
+        width: '90%',
+        margin: 'auto auto',
+      }}
+    >
+      <div 
+        style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', 
+          gap: '10px' 
+        }}
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <label style={{ fontWeight: 'bold', color: '#5eb219', marginBottom: '5px' }}>Código</label>
           <TextField
-            className={classes.textField}
+            sx={{ width: '100%' }}
             name="codigo"
             value={formState.codigo}
             variant="outlined"
@@ -59,8 +74,8 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Coordinador</label>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <label style={{ fontWeight: 'bold', color: '#5eb219', marginBottom: '5px' }}>Coordinador</label>
           <Autocomplete
             value={formState.coordinador}
             onChange={(event, newValue) => {
@@ -87,8 +102,8 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Programa</label>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <label style={{ fontWeight: 'bold', color: '#5eb219', marginBottom: '5px' }}>Programa</label>
           <Autocomplete
             value={formState.programa}
             onChange={(event, newValue) => {
@@ -115,8 +130,8 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Gestor</label>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <label style={{ fontWeight: 'bold', color: '#5eb219', marginBottom: '5px' }}>Gestor</label>
           <Autocomplete
             value={formState.gestor}
             onChange={(event, newValue) => {
@@ -143,10 +158,10 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Ambiente</label>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <label style={{ fontWeight: 'bold', color: '#5eb219', marginBottom: '5px' }}>Ambiente</label>
           <TextField
-            className={classes.textField}
+            sx={{ width: '100%' }}
             name="ambiente"
             value={formState.ambiente}
             variant="outlined"
@@ -154,10 +169,10 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Ubicación GPS</label>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <label style={{ fontWeight: 'bold', color: '#5eb219', marginBottom: '5px' }}>Ubicación GPS</label>
           <TextField
-            className={classes.textField}
+            sx={{ width: '100%' }}
             name="ubicacionGPS"
             value={formState.ubicacionGPS}
             variant="outlined"
@@ -165,10 +180,10 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Inicio</label>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <label style={{ fontWeight: 'bold', color: '#5eb219', marginBottom: '5px' }}>Inicio</label>
           <TextField
-            className={classes.textField}
+            sx={{ width: '100%' }}
             name="inicio"
             type="date"
             value={formState.inicio}
@@ -181,10 +196,10 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Fin</label>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <label style={{ fontWeight: 'bold', color: '#5eb219', marginBottom: '5px' }}>Fin</label>
           <TextField
-            className={classes.textField}
+            sx={{ width: '100%' }}
             name="fin"
             type="date"
             value={formState.fin}
@@ -197,10 +212,10 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Requerimientos</label>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <label style={{ fontWeight: 'bold', color: '#5eb219', marginBottom: '5px' }}>Requerimientos</label>
           <TextField
-            className={classes.textField}
+            sx={{ width: '100%' }}
             name="requerimientos"
             value={formState.requerimientos}
             variant="outlined"
@@ -211,65 +226,37 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
         </div>
       </div>
 
-      <div className={classes.buttonRow}>
-        <Button className={classes.button} onClick={handleSave}>
+      <div 
+        style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          marginTop: '20px' 
+        }}
+      >
+        <Button 
+          sx={{ 
+            backgroundColor: '#5eb219', 
+            color: '#fff', 
+            '&:hover': { backgroundColor: '#4cae14' }, 
+            marginRight: '10px' 
+          }} 
+          onClick={handleSave}
+        >
           Guardar
         </Button>
-        <Button className={classes.cancelButton} onClick={onCancel}>
+        <Button 
+          sx={{ 
+            backgroundColor: '#d32f2f', 
+            color: '#fff', 
+            '&:hover': { backgroundColor: '#c62828' } 
+          }} 
+          onClick={onCancel}
+        >
           Cancelar
         </Button>
       </div>
     </div>
   );
 };
-
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    padding: '20px',
-    backgroundColor: '#f5f5f5',
-    borderRadius: '8px',
-    border: '2px solid #5eb219',
-  },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-    gap: '10px',
-  },
-  fieldContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-  },
-  label: {
-    fontWeight: 'bold',
-    color: '#5eb219',
-    marginBottom: '5px',
-  },
-  textField: {
-    width: '100%',
-  },
-  buttonRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: '20px',
-  },
-  button: {
-    backgroundColor: '#5eb219',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-    marginRight: '10px',
-  },
-  cancelButton: {
-    backgroundColor: '#d32f2f',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#c62828',
-    },
-  },
-}));
 
 export default NewFichaBasica;

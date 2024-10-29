@@ -28,12 +28,12 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
   };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.grid}>
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Código</label>
+    <div className={classes.container} sx={{ display: 'flex', flexDirection: 'column', padding: '10px', backgroundColor: '#f5f5f5', borderRadius: '8px', border: '2px solid #5eb219' }}>
+      <div className={classes.grid} sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gridGap: '10px', width: '100%' }}>
+        <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
+          <label className={classes.label} sx={{ marginBottom: '5px' }}>Código</label>
           <TextField
-            className={classes.textField}
+            className={classes.textField} 
             name="codigo"
             value={formState.codigo || ''}
             variant="outlined"
@@ -44,8 +44,8 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Coordinador</label>
+        <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
+          <label className={classes.label} sx={{ marginBottom: '5px' }}>Coordinador</label>
           <Autocomplete
             value={formState.coordinador || ''}
             onChange={(event, newValue) => {
@@ -80,8 +80,8 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Gestor</label>
+        <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
+          <label className={classes.label} sx={{ marginBottom: '5px' }}>Gestor</label>
           <Autocomplete
             value={formState.gestor || ''}
             onChange={(event, newValue) => {
@@ -116,8 +116,8 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Programa</label>
+        <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
+          <label className={classes.label} sx={{ marginBottom: '5px' }}>Programa</label>
           <Autocomplete
             value={formState.programa || ''}
             onChange={(event, newValue) => {
@@ -152,10 +152,10 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Ambiente</label>
+        <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
+          <label className={classes.label} sx={{ marginBottom: '5px' }}>Ambiente</label>
           <TextField
-            className={classes.textField}
+            className={classes.textField} 
             name="ambiente"
             value={formState.ambiente || ''}
             variant="outlined"
@@ -167,8 +167,8 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Municipio</label>
+        <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
+          <label className={classes.label} sx={{ marginBottom: '5px' }}>Municipio</label>
           <Autocomplete
             value={formState.municipio || ''}
             onChange={(event, newValue) => {
@@ -203,10 +203,10 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Ubicación GPS</label>
+        <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
+          <label className={classes.label} sx={{ marginBottom: '5px' }}>Ubicación GPS</label>
           <TextField
-            className={classes.textField}
+            className={classes.textField} 
             name="ubicacionGPS"
             value={formState.ubicacionGPS || ''}
             variant="outlined"
@@ -218,10 +218,10 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Inicio</label>
+        <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
+          <label className={classes.label} sx={{ marginBottom: '5px' }}>Inicio</label>
           <TextField
-            className={classes.textField}
+            className={classes.textField} 
             name="inicio"
             type="date"
             value={formState.inicio || ''}
@@ -237,10 +237,10 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Fin</label>
+        <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
+          <label className={classes.label} sx={{ marginBottom: '5px' }}>Fin</label>
           <TextField
-            className={classes.textField}
+            className={classes.textField} 
             name="fin"
             type="date"
             value={formState.fin || ''}
@@ -256,10 +256,10 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
           />
         </div>
 
-        <div className={classes.fieldContainer}>
-          <label className={classes.label}>Requerimientos</label>
+        <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
+          <label className={classes.label} sx={{ marginBottom: '5px' }}>Requerimientos</label>
           <TextField
-            className={classes.textField}
+            className={classes.textField} 
             name="requerimientos"
             value={formState.requerimientos || ''}
             variant="outlined"
@@ -274,11 +274,11 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         </div>
       </div>
 
-      <div className={classes.buttonRow}>
-        <Button className={classes.button} onClick={handleEditClick}>
+      <div className={classes.buttonRow} sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+        <Button className={classes.button} sx={{ backgroundColor: '#5eb219', color: '#fff' }} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}
         </Button>
-        <Button className={classes.deleteButton} onClick={() => onDelete(ficha.codigo)}>Borrar</Button>
+        <Button className={classes.deleteButton} sx={{ backgroundColor: '#d32f2f', color: '#fff' }} onClick={() => onDelete(ficha.codigo)}>Borrar</Button>
       </div>
     </div>
   );
