@@ -51,7 +51,7 @@ const ConsultaPorInstructor = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const permisos = useSelector(selectUserPermisos);  
-  const dynamicHeight = asignaciones.length * 5 + 100
+  const dynamicHeight = asignaciones.length * 4 + 100
 
   useEffect(() => {
     const fetchAsignaciones = async () => {
@@ -214,7 +214,7 @@ const ConsultaPorInstructor = () => {
             events={asignaciones}
             startAccessor="start"
             endAccessor="end"
-            style={{ height: dynamicHeight > 500 ? dynamicHeight : 500 }}
+            style={{ height: dynamicHeight > 1000 ? dynamicHeight : 1000 }}
             eventPropGetter={eventStyleGetter}
             components={{ event: EventComponent }}
             views={['month']}

@@ -202,7 +202,7 @@ const ConsultaPorFicha = () => {
           events={asignaciones}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: dynamicHeight > 500 ? dynamicHeight : 500 }}
+          style={{ height: dynamicHeight > 1000 ? dynamicHeight : 1000 }}
           eventPropGetter={eventStyleGetter}
           components={{
             event: EventComponent,
