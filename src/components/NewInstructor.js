@@ -31,7 +31,9 @@ const NewInstructor = ({ onSave, onCancel }) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Documento</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="documento"
           value={formState.documento}
           variant="outlined"
@@ -42,7 +44,9 @@ const NewInstructor = ({ onSave, onCancel }) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Nombre</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="nombre"
           value={formState.nombre}
           variant="outlined"
@@ -53,7 +57,9 @@ const NewInstructor = ({ onSave, onCancel }) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Email</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="email"
           value={formState.email}
           variant="outlined"
@@ -64,7 +70,9 @@ const NewInstructor = ({ onSave, onCancel }) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Teléfono</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="telefono"
           value={formState.telefono}
           variant="outlined"
@@ -75,7 +83,9 @@ const NewInstructor = ({ onSave, onCancel }) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Área Temática</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="areaTematica"
           value={formState.areaTematica}
           variant="outlined"
@@ -84,10 +94,29 @@ const NewInstructor = ({ onSave, onCancel }) => {
       </div>
 
       <div className={classes.buttonRow}>
-        <Button className={classes.button} onClick={handleSave}>
+        <Button
+          sx={{
+            backgroundColor: '#5eb219',
+            color: '#fff',
+            '&:hover': {
+              backgroundColor: '#4cae14',
+            },
+            marginRight: '10px',
+          }}
+          onClick={handleSave}
+        >
           Guardar
         </Button>
-        <Button className={classes.cancelButton} onClick={onCancel}>
+        <Button
+          sx={{
+            backgroundColor: '#b2195e',
+            color: '#fff',
+            '&:hover': {
+              backgroundColor: '#d81b60',
+            },
+          }}
+          onClick={onCancel}
+        >
           Cancelar
         </Button>
       </div>
@@ -105,8 +134,8 @@ const useStyles = makeStyles(() => ({
     border: '2px solid #4cae14',
     maxWidth: '800px',
     width: '90%',
-    marginTop: '20px',
-    marginBottom: '20px',
+    margin: 'auto auto',
+    padding: '10px',
     '@media (max-width: 768px)': {
       gridTemplateColumns: '1fr',
     },
@@ -124,30 +153,12 @@ const useStyles = makeStyles(() => ({
     alignSelf: 'center',
     marginBottom: '5px',
   },
-  textField: {
-    width: '100%',
-  },
   buttonRow: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: '10px',
     gridColumn: '1 / -1',
-  },
-  button: {
-    backgroundColor: '#5eb219',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-    marginRight: '10px',
-  },
-  cancelButton: {
-    backgroundColor: '#b2195e',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#d81b60',
-    },
   },
 }));
 

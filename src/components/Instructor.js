@@ -3,8 +3,6 @@ import { TextField, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 const Instructor = ({ instructor, onUpdate, onDelete }) => {
-  const classes = useStyles();
-
   const [isEditable, setIsEditable] = useState(false);
   const [formState, setFormState] = useState(instructor || {});
 
@@ -30,12 +28,38 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
   };
 
   return (
-    <div className={classes.container}>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+      gridGap: '10px',
+      backgroundColor: '#f5f5f5',
+      padding: '20px',
+      borderRadius: '8px',
+      border: '2px solid #5eb219',
+      maxWidth: '700px',
+      width: '90%',
+      margin: 'auto auto',
+      '@media (max-width: 768px)': {
+        gridTemplateColumns: '1fr',
+      },
+    }}>
 
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Documento</label>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        alignItems: 'center',
+      }}>
+        <label style={{
+          fontWeight: 'bold',
+          color: '#5eb219',
+          alignSelf: 'center',
+          marginBottom: '5px',
+        }}>Documento</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="documento"
           value={formState.documento || ''}
           variant="outlined"
@@ -46,10 +70,22 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         />
       </div>
 
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Nombre</label>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        alignItems: 'center',
+      }}>
+        <label style={{
+          fontWeight: 'bold',
+          color: '#5eb219',
+          alignSelf: 'center',
+          marginBottom: '5px',
+        }}>Nombre</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="nombre"
           value={formState.nombre || ''}
           variant="outlined"
@@ -60,10 +96,22 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         />
       </div>
 
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Email</label>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        alignItems: 'center',
+      }}>
+        <label style={{
+          fontWeight: 'bold',
+          color: '#5eb219',
+          alignSelf: 'center',
+          marginBottom: '5px',
+        }}>Email</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="email"
           value={formState.email || ''}
           variant="outlined"
@@ -74,10 +122,22 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         />
       </div>
 
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Teléfono</label>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        alignItems: 'center',
+      }}>
+        <label style={{
+          fontWeight: 'bold',
+          color: '#5eb219',
+          alignSelf: 'center',
+          marginBottom: '5px',
+        }}>Teléfono</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="telefono"
           value={formState.telefono || ''}
           variant="outlined"
@@ -88,10 +148,22 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         />
       </div>
 
-      <div className={classes.fieldContainer}>
-        <label className={classes.label}>Área Temática</label>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        alignItems: 'center',
+      }}>
+        <label style={{
+          fontWeight: 'bold',
+          color: '#5eb219',
+          alignSelf: 'center',
+          marginBottom: '5px',
+        }}>Área Temática</label>
         <TextField
-          className={classes.textField}
+          sx={{
+            width: '100%',
+          }}
           name="areaTematica"
           value={formState.areaTematica || ''}
           variant="outlined"
@@ -102,69 +174,33 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         />
       </div>
 
-      <div className={classes.buttonRow}>
-        <Button className={classes.button} onClick={handleEditClick}>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: '10px',
+        gridColumn: '1 / -1',
+      }}>
+        <Button sx={{
+          backgroundColor: '#5eb219',
+          color: '#fff',
+          '&:hover': {
+            backgroundColor: '#4cae14',
+          },
+          marginRight: '10px',
+        }} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}
         </Button>
-        <Button className={classes.deleteButton} onClick={handleDeleteClick}>Borrar</Button>
+        <Button sx={{
+          backgroundColor: '#b2195e',
+          color: '#fff',
+          '&:hover': {
+            backgroundColor: '#d81b60',
+          },
+        }} onClick={handleDeleteClick}>Borrar</Button>
       </div>
     </div>
   );
 };
-
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-    gridGap: '10px',
-    backgroundColor: '#f5f5f5',
-    padding: '20px',
-    borderRadius: '8px',
-    border: '2px solid #5eb219',
-    maxWidth: '700px',
-    width: '90%',
-    margin: '0 auto',
-    '@media (max-width: 768px)': {
-      gridTemplateColumns: '1fr',
-    },
-  },
-  fieldContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    alignItems: 'center',
-  },
-  label: {
-    fontWeight: 'bold',
-    color: '#5eb219',
-    alignSelf: 'center',
-    marginBottom: '5px',
-  },
-  textField: {
-    width: '100%',
-  },
-  buttonRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: '10px',
-    gridColumn: '1 / -1',
-  },
-  button: {
-    backgroundColor: '#5eb219',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-    marginRight: '10px',
-  },
-  deleteButton: {
-    backgroundColor: '#b2195e',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#d81b60',
-    },
-  },
-}));
 
 export default Instructor;

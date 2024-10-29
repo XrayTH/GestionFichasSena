@@ -2,13 +2,10 @@ import React, { useState, useMemo, useEffect } from 'react';
 import Instructor from '../components/Instructor';
 import NewInstructor from '../components/NewInstructor';
 import { TextField, Button, Snackbar, Alert, CircularProgress } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { getInstructores, createInstructor, updateInstructorByDocumento, deleteInstructorByDocumento } from '../service/intructorService';
 import Sidebar from '../components/Sidebar';
 
 const GestionInstructores = () => {
-  const classes = useStyles();
-
   const [instructores, setInstructores] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewInstructorForm, setShowNewInstructorForm] = useState(false);
@@ -95,7 +92,15 @@ const GestionInstructores = () => {
   return (
     <>
       <Sidebar />
-      <div className={classes.container}>
+      <div style={{ 
+        display: 'flex',                    
+        flexDirection: 'column',           
+        alignItems: 'center',           
+        justifyContent: 'center',     
+        backgroundColor: '#f5f5f5',
+        borderRadius: '8px',
+        width: '100%',
+      }}>
         {mensaje && (
           <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
             <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
@@ -109,28 +114,68 @@ const GestionInstructores = () => {
           placeholder="Buscar por Documento o Nombre"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className={classes.searchField}
+          sx={{
+            width: '85%',
+            marginBottom: '20px',
+          }}
         />
 
-        <Button variant="contained" onClick={handleNewInstructorClick} className={classes.newInstructorButton}>
+        <Button 
+          variant="contained" 
+          onClick={handleNewInstructorClick} 
+          sx={{
+            backgroundColor: '#5eb219',
+            color: '#fff',
+            '&:hover': {
+              backgroundColor: '#4cae14',
+            },
+            marginBottom: '20px',
+          }}
+        >
           Nuevo Instructor
         </Button>
 
         {showNewInstructorForm && (
-          <div className={classes.instructorList}>
-          <NewInstructor 
-            onSave={handleSaveNewInstructor}
-            onCancel={handleCancelNewInstructor}
-          />
+          <div style={{
+            display: 'flex',                      
+            flexDirection: 'column',              
+            alignItems: 'center',                 
+            width: '90%',                        
+            maxWidth: '600px',     
+            gridTemplateColumns: '1fr',
+            gridGap: '10px',
+            margin: 'auto'
+          }}>
+            <NewInstructor 
+              onSave={handleSaveNewInstructor}
+              onCancel={handleCancelNewInstructor}
+            />
           </div>
         )}
 
         {loading ? (
-          <div className={classes.loaderContainer}>
-            <CircularProgress className={classes.loader} />
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+          }}>
+            <CircularProgress sx={{
+              color: "#5eb219",
+            }} />
           </div>
         ) : (
-          <div className={classes.instructorList}>
+          <div style={{
+            display: 'flex',                      
+            flexDirection: 'column',              
+            alignItems: 'center',                 
+            width: '90%',                        
+            maxWidth: '600px',     
+            gridTemplateColumns: '1fr',
+            gridGap: '10px',
+            margin: 'auto auto',
+            marginTop: '10px',
+          }}>
             {filteredInstructores.length > 0 ? (
               filteredInstructores.map((instructor) => (
                 <Instructor
@@ -149,48 +194,5 @@ const GestionInstructores = () => {
     </>
   );
 };
-
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'flex',                    
-    flexDirection: 'column',           
-    alignItems: 'center',           
-    justifyContent: 'center',     
-    backgroundColor: '#f5f5f5',
-    borderRadius: '8px',
-    width: '100%',
-  },
-  searchField: {
-    width: '85%',
-    marginBottom: '20px',
-  },
-  newInstructorButton: {
-    backgroundColor: '#5eb219',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#4cae14',
-    },
-    marginBottom: '20px',
-  },
-  instructorList: {
-    display: 'flex',                      
-    flexDirection: 'column',              
-    alignItems: 'center',                 
-    width: '90%',                        
-    maxWidth: '600px',     
-    gridTemplateColumns: '1fr',
-    gridGap: '10px',
-    margin: 'auto'
-  },
-  loaderContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-  },
-  loader: {
-    color: "#5eb219",
-  },
-}));
 
 export default GestionInstructores;
