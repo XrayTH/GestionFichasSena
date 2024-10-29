@@ -51,7 +51,7 @@ const ConsultaPorInstructor = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const permisos = useSelector(selectUserPermisos);  
-  const dynamicHeight = asignaciones.length * 4 + 100
+  const dynamicHeight = asignaciones.length * 5 + 100
 
   useEffect(() => {
     const fetchAsignaciones = async () => {
