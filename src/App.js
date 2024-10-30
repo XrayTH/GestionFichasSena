@@ -117,11 +117,16 @@ const AppContent = () => {
           <ConIns />
         </ProtectedRoute>
       } />
+      <Route path="/informe" element={
+        <ProtectedRoute requiredPermissions={['verProgramacion']}>
+          <Informes />
+        </ProtectedRoute>
+      } />
       <Route path="/Expired" element={<SessionExpired />} />
       <Route path="/Denegado" element={<AccessDenied />} />
       <Route path="/error" element={<AuthError />} />
       <Route path="*" element={<NotFound />} />
-      <Route path="/pruebas" element={<Informes />} />
+      {/*<Route path="/pruebas" element={<Informes />} />*/}
     </Routes>
   );
 };

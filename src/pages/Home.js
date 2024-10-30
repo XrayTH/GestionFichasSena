@@ -13,41 +13,16 @@ const Home = () => {
   const permisos = useSelector(selectUserPermisos);
   const isSmallScreen = useMediaQuery('(max-width:600px)');
 
-  const handleGestionUsuarios = () => {
-    navigate('/gestion-usuarios');
-  };
-
-  const handleProgramas = () => {
-    navigate('/gestion-programas');
-  };
-
-  const handleInstructores = () => {
-    navigate('/gestion-instructores');
-  };
-
-  const handleCoordinadores = () => {
-    navigate('/gestion-coordinadores');
-  };
-
-  const handleFichas = () => {
-    navigate('/gestion-fichas');
-  };
-
-  const handleProFicha = () => {
-    navigate('/programar');
-  };
-
-  const handleProIns = () => {
-    navigate('/programar-instructor');
-  };
-
-  const handleEmail = () => {
-    navigate('/enviar-email');
-  };
-
-  const handleCerrarSesion = () => {
-    dispatch(logout());
-  };
+  const handleGestionUsuarios = () => navigate('/gestion-usuarios');
+  const handleProgramas = () => navigate('/gestion-programas');
+  const handleInstructores = () => navigate('/gestion-instructores');
+  const handleInformes = () => navigate('/informe');
+  const handleCoordinadores = () => navigate('/gestion-coordinadores');
+  const handleFichas = () => navigate('/gestion-fichas');
+  const handleProFicha = () => navigate('/programar');
+  const handleProIns = () => navigate('/programar-instructor');
+  const handleEmail = () => navigate('/enviar-email');
+  const handleCerrarSesion = () => dispatch(logout());
 
   return (
     <div className={classes.container}>
@@ -59,50 +34,55 @@ const Home = () => {
         {isSmallScreen ? 'SFG - SENA' : 'SISTEMA DE GESTIÓN DE FICHAS - SENA'}
       </Typography>
       <br />
-      
-      {permisos.gestionarUsuarios && (
-        <button className={classes.button} onClick={handleGestionUsuarios}>
-          Gestionar Usuarios
+
+      <div className={classes.buttonContainer}>
+        {permisos.gestionarUsuarios && (
+          <button className={classes.button} onClick={handleGestionUsuarios}>
+            Gestionar Usuarios
+          </button>
+        )}
+
+        {(permisos.verProgramacion || permisos.editProgramacion) && (
+          <>
+            <button className={classes.button} onClick={handleProFicha}>
+              Programación Por Ficha
+            </button>
+            <button className={classes.button} onClick={handleProIns}>
+              Programación Por Instructor
+            </button>
+            <button className={classes.button} onClick={handleInformes}>
+              Crear Informes
+            </button>
+          </>
+        )}
+        
+        {permisos.tablas && (
+          <>
+            <button className={classes.button} onClick={handleProgramas}>
+              Gestión Programas
+            </button>
+            <button className={classes.button} onClick={handleInstructores}>
+              Gestión Instructores
+            </button>
+            <button className={classes.button} onClick={handleCoordinadores}>
+              Gestión Coordinadores
+            </button>
+            <button className={classes.button} onClick={handleFichas}>
+              Gestión Fichas
+            </button>
+          </>
+        )}
+
+        {permisos.email && (
+          <button className={classes.button} onClick={handleEmail}>
+            Enviar Correo
+          </button>
+        )}
+
+        <button className={classes.smallButton} onClick={handleCerrarSesion}>
+          Cerrar Sesión
         </button>
-      )}
-
-      {(permisos.verProgramacion || permisos.editProgramacion) && (
-        <>
-          <button className={classes.button} onClick={handleProFicha}>
-            Programacion Por Ficha
-          </button>
-          <button className={classes.button} onClick={handleProIns}>
-            Programacion Por Instructor
-          </button>
-        </>
-      )}
-      
-      {permisos.tablas && (
-        <>
-          <button className={classes.button} onClick={handleProgramas}>
-            Gestión Programas
-          </button>
-          <button className={classes.button} onClick={handleInstructores}>
-            Gestión Instructores
-          </button>
-          <button className={classes.button} onClick={handleCoordinadores}>
-            Gestión Coordinadores
-          </button>
-          <button className={classes.button} onClick={handleFichas}>
-            Gestión Fichas
-          </button>
-        </>
-      )}
-
-      {permisos.email && (
-        <button className={classes.button} onClick={handleEmail}>
-          Enviar Correo
-        </button>
-      )}
-
-      <button className={classes.smallButton} onClick={handleCerrarSesion}>
-        Cerrar Sesión
-      </button>
+      </div>
     </div>
   );
 };
@@ -117,6 +97,13 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#f5f5f5',
     padding: '0 20px',
   },
+  buttonContainer: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
+    gap: '16px', 
+    width: '100%', 
+    maxWidth: '800px', 
+  },
   button: {
     backgroundColor: '#5eb219',
     color: '#fff',
@@ -125,9 +112,7 @@ const useStyles = makeStyles(() => ({
     border: 'none',
     borderRadius: '8px',
     cursor: 'pointer',
-    marginBottom: '16px',
-    width: '100%',
-    maxWidth: '300px',
+    width: '100%', 
     '&:hover': {
       backgroundColor: '#4cae14',
     },

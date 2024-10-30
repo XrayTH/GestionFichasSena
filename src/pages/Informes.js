@@ -6,8 +6,10 @@ import { getAllAsignaciones } from './../service/asignacionService';
 import { getCoordinadores } from './../service/coordinadorService';
 import { obtenerAmbientes } from './../service/ambienteService';
 import { obtenerProgramas } from './../service/programaService';
+import { CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Select, MenuItem, FormControl, InputLabel, Button, Typography, List, ListItem, ListItemText, Autocomplete, TextField } from '@mui/material';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
+import Sidebar from './../components/Sidebar';
 
 const Informes = () => {
   const [filtros, setFiltros] = useState([]);
@@ -25,9 +27,11 @@ const Informes = () => {
   const [asignaciones, setAsignaciones] = useState([]);
   const [fichas, setFichas] = useState([]);
   const [asignacionesFiltradas, setAsignacionesFiltradas] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const [fichasData, jornadas, instructores, coordinadores, ambientes, programas, asignaciones] = await Promise.all([
         getFichas(),
         getJornadas(),
@@ -53,6 +57,7 @@ const Informes = () => {
       setFichas(fichasData);
 
       formatearAsignaciones(asignaciones, fichasData);
+      setLoading(false);
     };
 
     fetchData();
@@ -263,119 +268,145 @@ const Informes = () => {
     doc.save('Informe_Asignaciones.pdf');
 };
 
-  return (
-    <div>
-      <h2>Generar Informe</h2>
+return (
+  <>
+    <Sidebar/>
+    <div style={{ padding: '20px', backgroundColor: '#f0f0f0' }}>
+      <Typography variant="h4" style={{ color: '#468513', margin: '20px 0' }}>Generar Informe</Typography>
 
-      <button onClick={addFiltro}>Añadir Filtro</button>
-      <button onClick={generarExcel}>Generar Excel</button>
-      <button onClick={generarPDF}>Generar PDF</button>
+      <Button variant="contained" style={{ backgroundColor: '#2119b2', color: 'white', margin: '5px' }} onClick={addFiltro}>
+        Añadir Filtro
+      </Button>
+      <Button variant="contained" style={{ backgroundColor: '#5eb219', color: 'white', margin: '5px' }} onClick={generarExcel}>
+        Generar Excel
+      </Button>
+      <Button variant="contained" style={{ backgroundColor: '#b2195e', color: 'white', margin: '5px' }} onClick={generarPDF}>
+        Generar PDF
+      </Button>
 
       {filtros.map((filtro, index) => (
         <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <select
-            value={filtro.campo}
-            onChange={(e) => handleFiltroChange(index, 'campo', e.target.value)}
-          >
-            <option value="">Seleccione Campo</option>
-            {Object.keys(opcionesFiltro).map((key) => (
-              <option key={key} value={key}>
-                {key.charAt(0).toUpperCase() + key.slice(1)}
-              </option>
-            ))}
-          </select>
-
-          <select
-            value={filtro.valor}
-            onChange={(e) => handleFiltroChange(index, 'valor', e.target.value)}
-          >
-            <option value="">Seleccione Valor</option>
-            {filtro.campo &&
-              opcionesFiltro[filtro.campo].map((opcion, i) => (
-                <option key={i} value={opcion.nombre || opcion.codigo || opcion}>
-                  {opcion.nombre || opcion.codigo || opcion}
-                </option>
+          <FormControl fullWidth>
+            <InputLabel>Seleccione Campo</InputLabel>
+            <Select
+              value={filtro.campo}
+              onChange={(e) => handleFiltroChange(index, 'campo', e.target.value)}
+              label="Seleccione Campo"
+            >
+              <MenuItem value=""><em>Seleccione Campo</em></MenuItem>
+              {Object.keys(opcionesFiltro).map((key) => (
+                <MenuItem key={key} value={key}>
+                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                </MenuItem>
               ))}
-          </select>
+            </Select>
+          </FormControl>
 
-          <button onClick={() => removeFiltro(index)}>Eliminar</button>
+          <FormControl fullWidth>
+            <Autocomplete
+              options={filtro.campo ? opcionesFiltro[filtro.campo] : []}
+              getOptionLabel={(option) => option.nombre || option.codigo || option}
+              onChange={(event, newValue) => handleFiltroChange(index, 'valor', newValue ? (newValue.nombre || newValue.codigo) : '')}
+              renderInput={(params) => <TextField {...params} label="Seleccione Valor" />}
+              value={filtro.valor ? opcionesFiltro[filtro.campo]?.find(opcion => opcion.nombre === filtro.valor || opcion.codigo === filtro.valor) || null : null}
+            />
+          </FormControl>
+
+          <Button variant="contained" style={{ backgroundColor: '#6d19b2', color: 'white', margin: '5px' }} onClick={() => removeFiltro(index)}>
+            Eliminar
+          </Button>
         </div>
       ))}
 
-      <h2>Filtros Estadísticos</h2>
+      <Typography variant="h4" style={{ color: '#468513', margin: '20px 0' }}>Filtros Estadísticos</Typography>
 
-      <button onClick={addFiltroEstadistico}>Añadir Filtro Estadístico</button>
+      <Button variant="contained" style={{ backgroundColor: '#2119b2', color: 'white', margin: '5px' }} onClick={addFiltroEstadistico}>
+        Añadir Filtro Estadístico
+      </Button>
 
       {filtrosEstadisticos.map((filtroEstadistico, index) => (
         <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <select
-            value={filtroEstadistico.campo}
-            onChange={(e) => handleFiltroEstadisticoChange(index, 'campo', e.target.value)}
-          >
-            <option value="">Seleccione Campo</option>
-            {Object.keys(opcionesFiltro).map((key) => (
-              <option key={key} value={key}>
-                {key.charAt(0).toUpperCase() + key.slice(1)}
-              </option>
-            ))}
-          </select>
-
-          <select
-            value={filtroEstadistico.valor}
-            onChange={(e) => handleFiltroEstadisticoChange(index, 'valor', e.target.value)}
-          >
-            <option value="">Seleccione Valor</option>
-            {filtroEstadistico.campo &&
-              opcionesFiltro[filtroEstadistico.campo].map((opcion, i) => (
-                <option key={i} value={opcion.nombre || opcion.codigo || opcion}>
-                  {opcion.nombre || opcion.codigo || opcion}
-                </option>
+          <FormControl fullWidth>
+            <InputLabel>Seleccione Campo</InputLabel>
+            <Select
+              value={filtroEstadistico.campo}
+              onChange={(e) => handleFiltroEstadisticoChange(index, 'campo', e.target.value)}
+              label="Seleccione Campo"
+            >
+              <MenuItem value=""><em>Seleccione Campo</em></MenuItem>
+              {Object.keys(opcionesFiltro).map((key) => (
+                <MenuItem key={key} value={key}>
+                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                </MenuItem>
               ))}
-          </select>
+            </Select>
+          </FormControl>
 
-          <button onClick={() => removeFiltroEstadistico(index)}>Eliminar</button>
-          <span>
-            Ocurrencias: {contarOcurrencias(filtroEstadistico.campo, filtroEstadistico.valor)}
-          </span>
+          <FormControl fullWidth>
+            <Autocomplete
+              options={filtroEstadistico.campo ? opcionesFiltro[filtroEstadistico.campo] : []}
+              getOptionLabel={(option) => option.nombre || option.codigo || option}
+              onChange={(event, newValue) => handleFiltroEstadisticoChange(index, 'valor', newValue ? (newValue.nombre || newValue.codigo) : '')}
+              renderInput={(params) => <TextField {...params} label="Seleccione Valor" />}
+              value={filtroEstadistico.valor ? opcionesFiltro[filtroEstadistico.campo]?.find(opcion => opcion.nombre === filtroEstadistico.valor || opcion.codigo === filtroEstadistico.valor) || null : null}
+            />
+          </FormControl>
+
+          <Button variant="contained" style={{ backgroundColor: '#6d19b2', color: 'white', margin: '5px' }} onClick={() => removeFiltroEstadistico(index)}>
+            Eliminar
+          </Button>
         </div>
       ))}
 
-      <h3>Resumen Estadístico</h3>
-      <ul>
-        {Object.keys(generarResumenEstadistico()).length > 0 ? (
-          Object.entries(generarResumenEstadistico()).map(([key, value], index) => (
-            <li key={index}>{key}: {value}</li>
-          ))
-        ) : (
-          <li>No hay estadísticas disponibles</li>
-        )}
-      </ul>
-
-      <h3>Previsualización de Datos Filtrados</h3>
-      {asignacionesFiltradas.length > 0 ? (
-        <table border="1">
-          <thead>
-            <tr>
-              {Object.keys(asignacionesFiltradas[0]).map((header, index) => (
-                <th key={index}>{header}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {asignacionesFiltradas.map((fila, index) => (
-              <tr key={index}>
-                {Object.values(fila).map((valor, i) => (
-                  <td key={i}>{valor}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>No hay datos para mostrar</p>
-      )}
+    <Typography variant="h5" style={{ color: '#468513', margin: '20px 0' }}>Resumen Estadístico</Typography>
+        <List>
+          {Object.keys(generarResumenEstadistico()).length > 0 ? (
+            Object.entries(generarResumenEstadistico()).map(([key, value], index) => (
+              <ListItem key={index}>
+                <ListItemText primary={`${key}: ${value}`} />
+              </ListItem>
+            ))
+          ) : (
+            <ListItem>
+              <ListItemText primary="No hay estadísticas disponibles" />
+            </ListItem>
+          )}
+        </List>
+      
+      <Typography variant="h3" style={{ color: '#468513', margin: '20px 0' }}>Previsualización de Datos Filtrados</Typography>
+        {loading ? ( 
+            <CircularProgress />
+          ) : (
+            <>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      {Object.keys(asignacionesFiltradas[0]).map((header, index) => (
+                        <TableCell key={index} style={{ backgroundColor: '#5eb219', color: 'white', fontWeight: 'bold', border: '1px solid #3b6f10' }}>
+                          {header}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {asignacionesFiltradas.map((fila, index) => (
+                      <TableRow key={index}>
+                        {Object.values(fila).map((valor, i) => (
+                          <TableCell key={i} style={{ backgroundColor: 'rgba(131,227,53,0.5)', padding: '10px', border: '1px solid #5eb219' }}>
+                            {valor}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </>
+          )}
     </div>
-  );
+  </>
+);
 };
 
 export default Informes;
