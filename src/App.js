@@ -20,6 +20,7 @@ import Conectando from './pages/Conectando';
 import AuthError from './pages/AuthError';
 import Cargando from './components/Cargando';
 import SessionExpired from './components/SessionExpired';
+import Informes from './pages/Informes';
 
 const App = () => {
   return (
@@ -120,6 +121,7 @@ const AppContent = () => {
       <Route path="/Denegado" element={<AccessDenied />} />
       <Route path="/error" element={<AuthError />} />
       <Route path="*" element={<NotFound />} />
+      <Route path="/pruebas" element={<Informes />} />
     </Routes>
   );
 };
