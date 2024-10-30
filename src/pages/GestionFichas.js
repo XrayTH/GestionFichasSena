@@ -6,9 +6,11 @@ import { getFichas, createFicha, updateFichaByCodigo, deleteFichaByCodigo } from
 import { getInstructores } from '../service/intructorService';
 import { getCoordinadores } from '../service/coordinadorService';
 import { obtenerProgramas } from '../service/programaService';
+import { obtenerAmbientes } from '../service/ambienteService';
 import Municipios from '../data/municipios.json';
 import Sidebar from '../components/Sidebar';
 import DireccionBuscador from '../components/DireccionBuscador';
+import Ambientes from '../components/Ambientes';
 
 const GestionFichas = () => {
   const [fichas, setFichas] = useState([]);
@@ -16,6 +18,7 @@ const GestionFichas = () => {
   const [coordinadores, setCoordinadores] = useState([]);
   const [instructores, setInstructores] = useState([]);
   const [programas, setProgramas] = useState([]);
+  const [ambientes, setAmbientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewFichaForm, setShowNewFichaForm] = useState(false);
@@ -36,6 +39,10 @@ const GestionFichas = () => {
 
         const programasData = await obtenerProgramas();
         setProgramas(programasData);
+
+        const ambientesData = await obtenerAmbientes();
+        setAmbientes(ambientesData);
+
       } catch (error) {
         console.error('Error al obtener los datos:', error);
         setMensaje({ text: error.message, severity: 'error' });
@@ -121,6 +128,7 @@ const GestionFichas = () => {
       }}>
         <br/>
         <DireccionBuscador/>
+        <Ambientes/>
         {mensaje && (
           <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
             <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
@@ -172,6 +180,7 @@ const GestionFichas = () => {
             gestores={instructores}
             programas={programas}
             municipios={municipios}
+            ambientes={ambientes}
           />
         )}
 
@@ -205,6 +214,7 @@ const GestionFichas = () => {
                     gestores={instructores}
                     programas={programas}
                     municipios={municipios}
+                    ambientes={ambientes}
                   />
                 </div>
               ))

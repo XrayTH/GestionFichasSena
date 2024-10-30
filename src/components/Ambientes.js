@@ -2,30 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Snackbar, Alert } from '@mui/material';
 import { selectUserPermisos } from '../features/userSlice';
-import { getJornadas, createJornada, updateJornadaById, deleteJornadaById } from '../service/jornadaService';
+import { crearAmbiente, obtenerAmbientes, actualizarAmbientePorId, eliminarAmbientePorId } from '../service/ambienteService';
 import { makeStyles } from '@mui/styles';
 
-const Jornadas = () => {
+const Ambientes = () => {
   const classes = useStyles();
   const permisos = useSelector(selectUserPermisos);
-
-  const [jornadas, setJornadas] = useState([]);
-  const [selectedJornadaId, setSelectedJornadaId] = useState('');
-  const [jornadaName, setJornadaName] = useState('');
+  
+  const [ambientes, setAmbientes] = useState([]);
+  const [selectedAmbienteId, setSelectedAmbienteId] = useState('');
+  const [ambienteName, setAmbienteName] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   useEffect(() => {
-    const fetchJornadas = async () => {
+    const fetchAmbientes = async () => {
       try {
-        const data = await getJornadas();
-        setJornadas(data);
+        const data = await obtenerAmbientes();
+        setAmbientes(data);
       } catch (error) {
         console.error(error.message);
       }
     };
-    fetchJornadas();
+    fetchAmbientes();
   }, []);
 
   if (!permisos.tablas) {
@@ -39,53 +39,55 @@ const Jornadas = () => {
   };
 
   const handleCreate = async () => {
+    if (!ambienteName) return;
     try {
-      const newJornada = await createJornada({ nombre: jornadaName });
-      setJornadas([...jornadas, newJornada]);
-      setJornadaName('');
-      showSnackbar('Jornada creada exitosamente', 'success');
+      const nuevoAmbiente = ambienteName;
+      const createdAmbiente = await crearAmbiente(nuevoAmbiente);
+      setAmbientes([...ambientes, createdAmbiente]);
+      setAmbienteName('');
+      showSnackbar('Ambiente creado exitosamente', 'success');
       window.location.reload();
     } catch (error) {
       console.error(error.message);
-      showSnackbar('Error al crear la jornada', 'error');
+      showSnackbar('Error al crear el ambiente', 'error');
     }
   };
 
   const handleUpdate = async () => {
-    if (!selectedJornadaId) return;
+    if (!selectedAmbienteId) return;
     try {
-      const updatedJornada = await updateJornadaById(selectedJornadaId, { nombre: jornadaName });
-      setJornadas(jornadas.map(j => (j.id === updatedJornada.id ? updatedJornada : j)));
-      setJornadaName('');
-      setSelectedJornadaId('');
-      showSnackbar('Jornada actualizada exitosamente', 'success');
+      const updatedAmbiente = await actualizarAmbientePorId(selectedAmbienteId, ambienteName);
+      setAmbientes(ambientes.map(a => (a.id === updatedAmbiente.id ? updatedAmbiente : a)));
+      setAmbienteName('');
+      setSelectedAmbienteId('');
+      showSnackbar('Ambiente actualizado exitosamente', 'success');
       window.location.reload();
     } catch (error) {
       console.error(error.message);
-      showSnackbar('Error al actualizar la jornada', 'error');
+      showSnackbar('Error al actualizar el ambiente', 'error');
     }
   };
 
   const handleDelete = async () => {
-    if (!selectedJornadaId) return;
+    if (!selectedAmbienteId) return;
     try {
-      await deleteJornadaById(selectedJornadaId);
-      setJornadas(jornadas.filter(j => j.id !== selectedJornadaId));
-      setJornadaName('');
-      setSelectedJornadaId('');
-      showSnackbar('Jornada eliminada exitosamente', 'success');
+      await eliminarAmbientePorId(selectedAmbienteId);
+      setAmbientes(ambientes.filter(a => a.id !== selectedAmbienteId));
+      setAmbienteName('');
+      setSelectedAmbienteId('');
+      showSnackbar('Ambiente eliminado exitosamente', 'success');
       window.location.reload();
     } catch (error) {
       console.error(error.message);
-      showSnackbar('Error al eliminar la jornada', 'error');
+      showSnackbar('Error al eliminar el ambiente', 'error');
     }
   };
 
-  const handleSelectJornada = (e) => {
+  const handleSelectAmbiente = (e) => {
     const selectedId = e.target.value;
-    const selectedJornada = jornadas.find(j => j.id === selectedId);
-    setSelectedJornadaId(selectedId);
-    setJornadaName(selectedJornada ? selectedJornada.nombre : '');
+    const selectedAmbiente = ambientes.find(a => a.id === selectedId);
+    setSelectedAmbienteId(selectedId);
+    setAmbienteName(selectedAmbiente ? selectedAmbiente.nombre : '');
   };
 
   return (
@@ -93,19 +95,19 @@ const Jornadas = () => {
       <input
         type="text"
         className={classes.input}
-        placeholder="Nombre de la jornada"
-        value={jornadaName}
-        onChange={(e) => setJornadaName(e.target.value)}
+        placeholder="Nombre del ambiente"
+        value={ambienteName}
+        onChange={(e) => setAmbienteName(e.target.value)}
       />
       <select
         className={classes.dropdown}
-        value={selectedJornadaId}
-        onChange={handleSelectJornada}
+        value={selectedAmbienteId}
+        onChange={handleSelectAmbiente}
       >
-        <option value="">Seleccionar jornada</option>
-        {jornadas.map((jornada) => (
-          <option key={jornada.id} value={jornada.id}>
-            {jornada.nombre}
+        <option value="">Seleccionar ambiente</option>
+        {ambientes.map((ambiente) => (
+          <option key={ambiente.id} value={ambiente.id}>
+            {ambiente.nombre}
           </option>
         ))}
       </select>
@@ -170,4 +172,4 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default Jornadas;
+export default Ambientes;

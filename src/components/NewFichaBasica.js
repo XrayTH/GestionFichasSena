@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Button, Autocomplete } from '@mui/material';
 
-const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], gestores = [], municipios = [] }) => {
+const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], gestores = [], municipios = [], ambientes = [] }) => {
   const [formState, setFormState] = useState({
     codigo: '',
     coordinador: '',
@@ -18,6 +18,7 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
   const [coordinadorInput, setCoordinadorInput] = useState('');
   const [programaInput, setProgramaInput] = useState('');
   const [gestorInput, setGestorInput] = useState('');
+  const [ambienteInput, setAmbienteInput] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -160,12 +161,29 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
 
         <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
           <label style={{ fontWeight: 'bold', color: '#5eb219', marginBottom: '5px' }}>Ambiente</label>
-          <TextField
-            sx={{ width: '100%' }}
-            name="ambiente"
+          <Autocomplete
             value={formState.ambiente}
-            variant="outlined"
-            onChange={handleChange}
+            onChange={(event, newValue) => {
+              setFormState((prevState) => ({
+                ...prevState,
+                ambiente: newValue,
+              }));
+            }}
+            inputValue={ambienteInput}
+            onInputChange={(event, newInputValue) => {
+              setAmbienteInput(newInputValue);
+            }}
+            options={ambientes.map((ambiente) => ambiente.nombre)} // Lista de opciones de ambiente
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="ambiente"
+                variant="outlined"
+                fullWidth
+              />
+            )}
+            freeSolo
+            disableClearable
           />
         </div>
 

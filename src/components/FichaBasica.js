@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { TextField, Button, Autocomplete } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas = [], gestores = [], municipios = [] }) => {
+const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas = [], gestores = [], municipios = [], ambientes = [] }) => {
   const classes = useStyles();
-
   const [isEditable, setIsEditable] = useState(false);
   const [formState, setFormState] = useState(ficha || {});
   const [coordinadorInput, setCoordinadorInput] = useState(formState.coordinador || '');
   const [gestorInput, setGestorInput] = useState(formState.gestor || '');
   const [programaInput, setProgramaInput] = useState(formState.programa || '');
   const [municipioInput, setMunicipioInput] = useState(formState.municipio || '');
+  const [ambienteInput, setAmbienteInput] = useState(formState.ambiente || '');
 
   const handleEditClick = () => {
     if (isEditable) {
@@ -154,16 +154,37 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
 
         <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
           <label className={classes.label} sx={{ marginBottom: '5px' }}>Ambiente</label>
-          <TextField
-            className={classes.textField} 
-            name="ambiente"
+          <Autocomplete
             value={formState.ambiente || ''}
-            variant="outlined"
-            InputProps={{
-              readOnly: !isEditable,
+            onChange={(event, newValue) => {
+              if (isEditable) {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  ambiente: newValue,
+                }));
+              }
             }}
-            onChange={handleChange}
-            fullWidth
+            inputValue={ambienteInput}
+            onInputChange={(event, newInputValue) => {
+              if (isEditable) {
+                setAmbienteInput(newInputValue);
+              }
+            }}
+            options={ambientes.map((ambiente) => ambiente.nombre)} 
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="ambiente"
+                variant="outlined"
+                InputProps={{
+                  ...params.InputProps,
+                  readOnly: !isEditable,
+                }}
+                fullWidth
+              />
+            )}
+            freeSolo={!isEditable}
+            disableClearable
           />
         </div>
 
