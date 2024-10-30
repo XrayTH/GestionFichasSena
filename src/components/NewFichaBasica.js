@@ -8,6 +8,7 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
     programa: '',
     gestor: '',
     municipio: '',
+    avenida: '',
     ubicacionGPS: '',
     ambiente: '',
     inicio: '',
@@ -36,6 +37,7 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
       programa: '',
       gestor: '',
       municipio: '',
+      avenida: '',
       ubicacionGPS: '',
       ambiente: '',
       inicio: '',
@@ -173,7 +175,7 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
             onInputChange={(event, newInputValue) => {
               setAmbienteInput(newInputValue);
             }}
-            options={ambientes.map((ambiente) => ambiente.nombre)} // Lista de opciones de ambiente
+            options={ambientes.map((ambiente) => ambiente.nombre)} 
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -184,6 +186,17 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
             )}
             freeSolo
             disableClearable
+          />
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <label style={{ fontWeight: 'bold', color: '#5eb219', marginBottom: '5px' }}>Avenida</label>
+          <TextField
+            sx={{ width: '100%' }}
+            name="avenida"
+            value={formState.avenida}
+            variant="outlined"
+            onChange={handleChange}
           />
         </div>
 

@@ -225,6 +225,21 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         </div>
 
         <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
+          <label className={classes.label} sx={{ marginBottom: '5px' }}>Avenida</label>
+          <TextField
+            className={classes.textField} 
+            name="avenida"
+            value={formState.avenida || ''}
+            variant="outlined"
+            InputProps={{
+              readOnly: !isEditable,
+            }}
+            onChange={handleChange}
+            fullWidth
+          />
+        </div>
+
+        <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
           <label className={classes.label} sx={{ marginBottom: '5px' }}>Ubicación GPS</label>
           <TextField
             className={classes.textField} 
