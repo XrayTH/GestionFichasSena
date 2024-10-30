@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useMemo, useEffect } from 'react';
 import Instructor from '../components/Instructor';
 import NewInstructor from '../components/NewInstructor';
@@ -34,7 +35,7 @@ const GestionInstructores = () => {
   const handleSaveNewInstructor = async (newInstructor) => {
     try {
       const createdInstructor = await createInstructor(newInstructor);
-      setInstructores((prevInstructores) => [...prevInstructores, createdInstructor]);
+      setInstructores((prevInstructores) => [newInstructor, ...prevInstructores]);
       setShowNewInstructorForm(false);
       setMensaje({ text: 'Instructor creado con éxito', severity: 'success' });
     } catch (error) {
@@ -178,12 +179,15 @@ const GestionInstructores = () => {
           }}>
             {filteredInstructores.length > 0 ? (
               filteredInstructores.map((instructor) => (
-                <Instructor
-                  key={instructor.documento}
-                  instructor={instructor}
-                  onUpdate={handleUpdateInstructor}
-                  onDelete={handleDeleteInstructor}
-                />
+                <div key={instructor.documento} style={{
+                  marginBottom: '15px'}}> 
+                  <Instructor
+                    key={instructor.documento}
+                    instructor={instructor}
+                    onUpdate={handleUpdateInstructor}
+                    onDelete={handleDeleteInstructor}
+                  />
+                </div>
               ))
             ) : (
               <p>No se encontraron instructores</p>

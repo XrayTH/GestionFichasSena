@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect, useMemo } from 'react';
 import { Button, TextField, Snackbar, Alert, CircularProgress } from '@mui/material';
 import FichaBasica from '../components/FichaBasica';
@@ -22,7 +23,7 @@ const GestionFichas = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewFichaForm, setShowNewFichaForm] = useState(false);
-  const [mensaje, setMensaje] = useState(null); 
+  const [mensaje, setMensaje] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,12 +60,13 @@ const GestionFichas = () => {
   const handleSaveNewFicha = async (newFicha) => {
     try {
       const createdFicha = await createFicha(newFicha);
-      setFichas((prevFichas) => [...prevFichas, createdFicha]);
+      setFichas((prevFichas) => [newFicha, ...prevFichas]);
       setShowNewFichaForm(false);
-      setMensaje({ text: 'Ficha creada con éxito', severity: 'success' }); 
+      setMensaje({ text: 'Ficha creada con éxito', severity: 'success' });
+      setFichas((prevFichas) => [...prevFichas]);
     } catch (error) {
       console.error("Error al crear ficha:", error.message);
-      setMensaje({ text: error.message, severity: 'error' }); 
+      setMensaje({ text: error.message, severity: 'error' });
     }
   };
 
@@ -76,10 +78,11 @@ const GestionFichas = () => {
       setFichas((prevFichas) =>
         prevFichas.map((ficha) => (ficha.codigo === updated.codigo ? updated : ficha))
       );
-      setMensaje({ text: 'Ficha actualizada con éxito', severity: 'success' }); 
+      setMensaje({ text: 'Ficha actualizada con éxito', severity: 'success' });
+      setFichas((prevFichas) => [...prevFichas]);
     } catch (error) {
       console.error("Error al actualizar ficha:", error.message);
-      setMensaje({ text: error.message, severity: 'error' }); 
+      setMensaje({ text: error.message, severity: 'error' });
     }
   };
 
@@ -87,10 +90,11 @@ const GestionFichas = () => {
     try {
       await deleteFichaByCodigo(codigo);
       setFichas((prevFichas) => prevFichas.filter((ficha) => ficha.codigo !== codigo));
-      setMensaje({ text: 'Ficha eliminada con éxito', severity: 'success' }); 
+      setMensaje({ text: 'Ficha eliminada con éxito', severity: 'success' });
+      setFichas((prevFichas) => [...prevFichas]);
     } catch (error) {
       console.error("Error al eliminar ficha:", error.message);
-      setMensaje({ text: error.message, severity: 'error' }); 
+      setMensaje({ text: error.message, severity: 'error' });
     }
   };
 
@@ -111,16 +115,15 @@ const GestionFichas = () => {
       );
     });
   }, [fichas, searchTerm]);
-  
 
   return (
     <>
       <Sidebar/>
       <div style={{
-        display: 'flex',                    
-        flexDirection: 'column',             
-        alignItems: 'center',                
-        justifyContent: 'center',            
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#f5f5f5',
         borderRadius: '8px',
         width: '100%',

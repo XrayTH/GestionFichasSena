@@ -44,17 +44,21 @@ const GestionUsuarios = () => {
         contraseña: encryptPassword(nuevoUsuario.contraseña),
       };
 
+      const usuarioTemp = {
+        ...nuevoUsuario,
+        contraseña: nuevoUsuario.contraseña,
+      };
+
       await createUsuario(usuarioConContraseñaEncriptada);
       const nuevoId = usuarios.length > 0 ? Math.max(...usuarios.map(usuario => usuario.id)) + 1 : 1;
-      const usuarioConId = { ...usuarioConContraseñaEncriptada, id: nuevoId };
-      setUsuarios((usuariosPrevios) => [...usuariosPrevios, usuarioConId]);
+      const usuarioConId = { ...usuarioTemp, id: nuevoId };
+      setUsuarios((usuariosPrevios) => [usuarioConId, ...usuariosPrevios]);
       setMostrarFormularioNuevoUsuario(false);
       setMensaje({ text: 'Usuario creado con éxito', severity: 'success' });
     } catch (error) {
       console.error("Error al guardar el nuevo usuario:", error.message);
       setMensaje({ text: error.message, severity: 'error' });
     }
-    window.location.reload();
   };
 
   const manejarEliminarUsuario = async (usuarioId) => {

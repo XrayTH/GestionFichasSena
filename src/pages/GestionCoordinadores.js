@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useMemo, useEffect } from 'react';
 import Coordinador from '../components/Coordinador';
 import NewCoordinador from '../components/NewCoordinador';
@@ -34,9 +35,10 @@ const GestionCoordinadores = () => {
   const handleSaveNewCoordinador = async (newCoordinador) => {
     try {
       const createdCoordinador = await createCoordinador(newCoordinador);
-      setCoordinadores((prevCoordinadores) => [...prevCoordinadores, createdCoordinador]);
+      setCoordinadores((prevCoordinadores) => [newCoordinador, ...prevCoordinadores]);
       setShowNewCoordinadorForm(false);
       setMensaje({ text: 'Coordinador creado con éxito', severity: 'success' });
+      setCoordinadores((prevCoordinadores) => [...prevCoordinadores]);
     } catch (error) {
       console.error('Error al crear el coordinador en la base de datos:', error);
       setMensaje({ text: error.message, severity: 'error' });
@@ -132,12 +134,15 @@ const GestionCoordinadores = () => {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', alignContent: 'center', width: '90%', maxWidth: '600px', boxSizing: 'border-box', marginTop: '20px' }}>
             {filteredCoordinadores.length > 0 ? (
               filteredCoordinadores.map((coordinador) => (
-                <Coordinador
-                  key={coordinador.documento}
-                  coordinador={coordinador}
-                  onUpdate={handleUpdateCoordinador}
-                  onDelete={handleDeleteCoordinador}
-                />
+                <div key={coordinador.documento} style={{
+                  marginBottom: '15px'}}> 
+                  <Coordinador
+                    key={coordinador.documento}
+                    coordinador={coordinador}
+                    onUpdate={handleUpdateCoordinador}
+                    onDelete={handleDeleteCoordinador}
+                  />
+                </div>
               ))
             ) : (
               <p>No se encontraron coordinadores</p>

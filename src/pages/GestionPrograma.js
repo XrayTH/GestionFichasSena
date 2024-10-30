@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useMemo, useEffect } from 'react';
 import Programa from '../components/Programa';
 import { TextField, Button, Snackbar, Alert, CircularProgress } from '@mui/material';
@@ -33,13 +34,15 @@ const GestionPrograma = () => {
   const handleSaveNewPrograma = async (newPrograma) => {
     try {
       const createdPrograma = await crearPrograma(newPrograma);
-      setProgramas((prevProgramas) => [...prevProgramas, createdPrograma]);
+      newPrograma.id = createdPrograma.programa.id; 
+      setProgramas((prevProgramas) => [newPrograma, ...prevProgramas]);
       setShowNewProgramaForm(false);
       setMensaje({ text: 'Programa creado con éxito', severity: 'success' });
     } catch (error) {
       setMensaje({ text: error.message, severity: 'error' });
     }
   };
+  
 
   const handleDeletePrograma = async (id) => {
     try {
@@ -149,12 +152,15 @@ const GestionPrograma = () => {
             <>
               {filteredProgramas.length > 0 ? (
                 filteredProgramas.map((programa) => (
+                  <div key={programa.id} style={{
+                    marginBottom: '15px'}}> 
                   <Programa
                     key={programa.id}
                     programa={programa}
                     onUpdate={handleUpdatePrograma}
                     onDelete={handleDeletePrograma}
                   />
+                  </div>
                 ))
               ) : (
                 <p>No se encontraron programas</p>
