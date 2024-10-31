@@ -271,7 +271,7 @@ const Informes = () => {
 return (
   <>
     <Sidebar/>
-    <div style={{ padding: '20px', backgroundColor: '#f0f0f0' }}>
+    <div style={{ padding: '20px' }}>
       <Typography variant="h4" style={{ color: '#468513', margin: '20px 0' }}>Generar Informe</Typography>
 
       <Button variant="contained" style={{ backgroundColor: '#2119b2', color: 'white', margin: '5px' }} onClick={addFiltro}>
@@ -373,36 +373,44 @@ return (
           )}
         </List>
       
-      <Typography variant="h3" style={{ color: '#468513', margin: '20px 0' }}>Previsualización de Datos Filtrados</Typography>
-        {loading ? ( 
-            <CircularProgress />
+        <Typography variant="h3" style={{ color: '#468513', margin: '20px 0' }}>Previsualización de Datos Filtrados</Typography>
+          {loading ? ( 
+              <CircularProgress />
           ) : (
-            <>
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      {Object.keys(asignacionesFiltradas[0]).map((header, index) => (
-                        <TableCell key={index} style={{ backgroundColor: '#5eb219', color: 'white', fontWeight: 'bold', border: '1px solid #3b6f10' }}>
-                          {header}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {asignacionesFiltradas.map((fila, index) => (
-                      <TableRow key={index}>
-                        {Object.values(fila).map((valor, i) => (
-                          <TableCell key={i} style={{ backgroundColor: 'rgba(131,227,53,0.5)', padding: '10px', border: '1px solid #5eb219' }}>
-                            {valor}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </>
+              <>
+                  <TableContainer component={Paper}>
+                      <Table>
+                          <TableHead>
+                              {asignacionesFiltradas.length > 0 && (
+                                  <TableRow>
+                                      {Object.keys(asignacionesFiltradas[0]).map((header, index) => (
+                                          <TableCell key={index} style={{ backgroundColor: '#5eb219', color: 'white', fontWeight: 'bold', border: '1px solid #3b6f10' }}>
+                                              {header}
+                                          </TableCell>
+                                      ))}
+                                  </TableRow>
+                              )}
+                          </TableHead>
+                          <TableBody>
+                              {asignacionesFiltradas.length > 0 ? (
+                                  asignacionesFiltradas.map((fila, index) => (
+                                      <TableRow key={index}>
+                                          {Object.values(fila).map((valor, i) => (
+                                              <TableCell key={i} style={{ backgroundColor: 'rgba(131,227,53,0.5)', padding: '10px', border: '1px solid #5eb219' }}>
+                                                  {valor}
+                                              </TableCell>
+                                          ))}
+                                      </TableRow>
+                                  ))
+                              ) : (
+                                  <TableRow>
+                                      <TableCell colSpan={10} style={{ textAlign: 'center' }}>No hay datos filtrados para mostrar.</TableCell>
+                                  </TableRow>
+                              )}
+                          </TableBody>
+                      </Table>
+                  </TableContainer>
+              </>
           )}
     </div>
   </>

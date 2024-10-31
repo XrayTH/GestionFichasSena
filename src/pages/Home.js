@@ -29,11 +29,22 @@ const Home = () => {
       <Typography
         variant="h4"
         component="h1"
-        sx={{ textAlign: "center" }}
+        sx={{ textAlign: "center", color:'#5eb219', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'}}
       >
         {isSmallScreen ? 'SFG - SENA' : 'SISTEMA DE GESTIÓN DE FICHAS - SENA'}
       </Typography>
       <br />
+
+      {(!permisos.email && !permisos.tablas && !permisos.verProgramacion && !permisos.editProgramacion && !permisos.gestionarUsuarios && (
+          <div sx={{ justifyContent: 'center' }}>
+              <Typography
+              variant="h6"
+                sx={{ textAlign: "center"}}
+              >
+                No tienes ningun permiso.
+            </Typography>
+          </div>
+        ))}
 
       <div className={classes.buttonContainer}>
         {permisos.gestionarUsuarios && (

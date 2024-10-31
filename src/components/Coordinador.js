@@ -40,7 +40,7 @@ const Coordinador = ({ coordinador, onUpdate, onDelete }) => {
           value={formState.documento || ''}
           variant="outlined"
           InputProps={{
-            readOnly: !isEditable,
+            readOnly: true,
           }}
           onChange={handleChange}
         />

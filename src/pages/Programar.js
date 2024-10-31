@@ -262,8 +262,6 @@ const Programar = () => {
 const useStyles = makeStyles((theme) => ({
     container: {
         padding: '20px',
-        borderRadius: '8px',
-        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
         margin: '10px 20px',
     },
     fichasContainer: {

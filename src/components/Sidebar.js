@@ -62,7 +62,7 @@ const Sidebar = () => {
         <img
           src={logo}
           alt="Logo"
-          style={{ width: '50%', height: 'auto', padding: '50px', cursor: 'pointer' }} 
+          style={{ width: '50%', height: 'auto', padding: '50px', cursor: 'pointer', marginBottom: '-35px' }} 
           onClick={() => navigate('/')} 
         />
         <List>
@@ -95,7 +95,6 @@ const useStyles = makeStyles(() => ({
   toggleButton: {
     position: 'absolute',
     left: '10px',
-    top: '10px',
     zIndex: 1300,
   },
   listItem: {

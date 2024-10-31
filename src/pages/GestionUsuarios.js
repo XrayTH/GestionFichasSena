@@ -124,11 +124,8 @@ const GestionUsuarios = () => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#f5f5f5',
-          borderRadius: '8px',
+          //backgroundColor: '#878787',
           padding: '20px',
-          width: '90%',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
           margin: 'auto auto',
         }}
       >

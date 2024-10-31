@@ -119,7 +119,7 @@ const useStyles = makeStyles(() => ({
   },
   label: {
     fontWeight: 'bold',
-    color: '#2914ae',
+    color: '#5eb219',
     alignSelf: 'center',
     marginBottom: '5px',
   },

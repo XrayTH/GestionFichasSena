@@ -98,9 +98,6 @@ const GestionInstructores = () => {
         flexDirection: 'column',           
         alignItems: 'center',           
         justifyContent: 'center',     
-        backgroundColor: '#f5f5f5',
-        borderRadius: '8px',
-        width: '100%',
       }}>
         {mensaje && (
           <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>

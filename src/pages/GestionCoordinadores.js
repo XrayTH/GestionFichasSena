@@ -94,7 +94,7 @@ const GestionCoordinadores = () => {
   return (
     <>
       <Sidebar />
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f5f5f5', borderRadius: '8px', width: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
         {mensaje && (
           <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
             <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>

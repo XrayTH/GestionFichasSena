@@ -124,9 +124,6 @@ const GestionFichas = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#f5f5f5',
-        borderRadius: '8px',
-        width: '100%',
         margin: 'auto auto',
       }}>
         <br/>
