@@ -182,9 +182,6 @@ const Email = () => {
   return (
     <>
       <Sidebar />
-      <div className={classes.container}>
-        <div className={classes.formContainer}>
-          <div className={classes.leftSection}>
           <Button 
               onClick={handleRegresar} 
               sx={{
@@ -192,7 +189,7 @@ const Email = () => {
                 color: '#fff',
                 padding: '10px 20px',
                 borderRadius: '4px',
-                marginTop: '10px',
+                margin: '10px 10px',
                 '&:hover': {
                   backgroundColor: '#d32f2f',
                 },
@@ -202,8 +199,10 @@ const Email = () => {
               }}
             >
               Volver
-            </Button>            
-            <br />
+          </Button> 
+      <div className={classes.container}>
+        <div className={classes.formContainer}> 
+          <div className={classes.leftSection}>
             <label className={classes.label}>Asunto:</label>
             <br />
             <TextField
@@ -370,7 +369,7 @@ const useStyles = makeStyles(() => ({
   container: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    //alignItems: 'center',
     height: '100vh',
   },
   formContainer: {
@@ -388,6 +387,7 @@ const useStyles = makeStyles(() => ({
     flex: 1,
     marginRight: '20px',
     marginBottom: '20px',
+    minWidth: '300px',
   },
   rightSection: {
     flex: 1,

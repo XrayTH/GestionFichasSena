@@ -27,10 +27,11 @@ const Programa = ({ programa, onUpdate, onDelete }) => {
   return (
     <div style={{
       display: 'grid',
-      backgroundColor: '#f5f5f5',
+      backgroundColor: '#f0f0f0',
+      boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
       padding: '20px',
       borderRadius: '8px',
-      border: '2px solid #5eb219',
+      //border: '2px solid #5eb219',
       width: '30%',
       minWidth: '300px',
       margin: '10px auto',

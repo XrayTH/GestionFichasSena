@@ -105,10 +105,11 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
     gridGap: '10px',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f0f0f0',
+    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
     padding: '20px',
     borderRadius: '8px',
-    border: '2px solid #4cae14',
+    //border: '2px solid #4cae14',
     maxWidth: "70%"
   },
   fieldContainer: {

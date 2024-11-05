@@ -127,13 +127,13 @@ const NewInstructor = ({ onSave, onCancel }) => {
 const useStyles = makeStyles(() => ({
   container: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
     gridGap: '10px',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f0f0f0',
+    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
     borderRadius: '8px',
-    border: '2px solid #4cae14',
-    maxWidth: '800px',
-    width: '90%',
+    //border: '2px solid #4cae14',
+    width: '100%',
     margin: 'auto auto',
     padding: '10px',
     '@media (max-width: 768px)': {

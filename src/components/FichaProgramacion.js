@@ -342,10 +342,10 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
 const useStyles = makeStyles(() => ({
     container: {
         padding: '16px',
-        margin: '8px 0',
+        margin: '20px 0',
         backgroundColor: '#f0f0f0',
         borderRadius: '8px',
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
         alignItems: 'center',
         alignContent: 'center',
     },

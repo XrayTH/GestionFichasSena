@@ -325,9 +325,10 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     padding: '10px',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f0f0f0',
+    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
     borderRadius: '8px',
-    border: '2px solid #5eb219',
+    //border: '2px solid #5eb219',
   },
   grid: {
     display: 'grid',

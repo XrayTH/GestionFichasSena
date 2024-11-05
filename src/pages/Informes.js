@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { getFichas } from '../service/fichaService';
 import { getJornadas } from '../service/jornadaService';
@@ -28,6 +29,10 @@ const Informes = () => {
   const [fichas, setFichas] = useState([]);
   const [asignacionesFiltradas, setAsignacionesFiltradas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const currentYear = new Date().getFullYear();
+  const [fechaInicio, setFechaInicio] = useState(`${currentYear}-01-01`);
+  const [fechaFin, setFechaFin] = useState(`${currentYear}-12-31`);
+  const [modoFecha, setModoFecha] = useState('Todos');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,6 +95,56 @@ const Informes = () => {
   const addFiltroEstadistico = () => {
     setFiltrosEstadisticos([...filtrosEstadisticos, { campo: '', valor: '' }]);
   };
+
+  const handleFechaInicioChange = (e) => setFechaInicio(e.target.value);
+  const handleFechaFinChange = (e) => setFechaFin(e.target.value);
+
+  const toggleModoFecha = () => {
+    if (modoFecha === 'Todos') setModoFecha('Entre');
+    else if (modoFecha === 'Entre') setModoFecha('Cruzado');
+    else setModoFecha('Todos');
+  };
+
+  const filtrarAsignacionesPorFecha = () => {
+    let datosFiltrados;
+    const inicio = new Date(fechaInicio);
+    const fin = new Date(fechaFin);
+
+    if (modoFecha === 'Todos') {
+      datosFiltrados = asignaciones.map(asignacion => formatoAsignacion(asignacion));
+    } else if (modoFecha === 'Entre') {
+      datosFiltrados = asignaciones.filter(a =>
+        new Date(a.inicio) >= inicio && new Date(a.fin) <= fin
+      ).map(asignacion => formatoAsignacion(asignacion));
+    } else if (modoFecha === 'Cruzado') {
+      datosFiltrados = asignaciones.filter(a =>
+        (new Date(a.inicio) <= fin && new Date(a.fin) >= inicio)
+      ).map(asignacion => formatoAsignacion(asignacion));
+    }
+
+    setAsignacionesFiltradas(datosFiltrados);
+  };
+
+  const formatoAsignacion = (asignacion) => {
+    const ficha = fichas.find(f => f.codigo === asignacion.ficha);
+    return {
+      'Ficha': asignacion.ficha,
+      'Coordinador': ficha ? ficha.coordinador : 'N/A',
+      'Programa': ficha ? ficha.programa : 'N/A',
+      'Gestor': ficha ? ficha.gestor : 'N/A',
+      'Ambiente': ficha ? ficha.ambiente : 'N/A',
+      'Instructor': asignacion.instructor,
+      'Jornada': asignacion.jornada,
+      'Dia': asignacion.dia,
+      'Fecha Inicio': asignacion.inicio,
+      'Fecha Fin': asignacion.fin
+    };
+  };
+
+  useEffect(() => {
+    filtrarAsignacionesPorFecha();
+  }, [fechaInicio, fechaFin, modoFecha]);
+
 
   const handleFiltroChange = (index, key, value) => {
     const updatedFiltros = [...filtros];
@@ -272,6 +327,31 @@ return (
   <>
     <Sidebar/>
     <div style={{ padding: '20px' }}>
+
+    <TextField
+        type="date"
+        label="Fecha de Inicio"
+        value={fechaInicio}
+        onChange={handleFechaInicioChange}
+        InputLabelProps={{ shrink: true }}
+        style={{ marginRight: '10px' }}
+      />
+      <TextField
+        type="date"
+        label="Fecha de Fin"
+        value={fechaFin}
+        onChange={handleFechaFinChange}
+        InputLabelProps={{ shrink: true }}
+        style={{ marginRight: '10px' }}
+      />
+      <Button
+        variant="contained"
+        onClick={() => { toggleModoFecha(); filtrarAsignacionesPorFecha(); }}
+        style={{ marginRight: '10px', marginTop: '10px', backgroundColor: '#468513' }}
+      >
+        {modoFecha}
+      </Button>
+
       <Typography variant="h4" style={{ color: '#468513', margin: '20px 0' }}>Generar Informe</Typography>
 
       <Button variant="contained" style={{ backgroundColor: '#2119b2', color: 'white', margin: '5px' }} onClick={addFiltro}>

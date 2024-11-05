@@ -20,6 +20,7 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
   const [programaInput, setProgramaInput] = useState('');
   const [gestorInput, setGestorInput] = useState('');
   const [ambienteInput, setAmbienteInput] = useState('');
+  const [municipioInput, setMunicipioInput] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,9 +53,10 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
         display: 'flex', 
         flexDirection: 'column', 
         padding: '10px', 
-        backgroundColor: '#f5f5f5', 
+        backgroundColor: '#f0f0f0',
+        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
         borderRadius: '8px', 
-        border: '2px solid #5eb219', 
+        //border: '2px solid #5eb219', 
         width: '90%',
         margin: 'auto auto',
       }}
@@ -181,6 +183,37 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
                 {...params}
                 name="ambiente"
                 variant="outlined"
+                fullWidth
+              />
+            )}
+            freeSolo
+            disableClearable
+          />
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <label style={{ fontWeight: 'bold', color: '#5eb219', marginBottom: '5px' }}>Municipio</label>
+          <Autocomplete
+            value={formState.municipio || ''}
+            onChange={(event, newValue) => {
+              setFormState((prevState) => ({
+                ...prevState,
+                municipio: newValue,
+              }));
+            }}
+            inputValue={municipioInput}
+            onInputChange={(event, newInputValue) => {
+              setMunicipioInput(newInputValue);
+            }}
+            options={municipios}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="municipio"
+                variant="outlined"
+                InputProps={{
+                  ...params.InputProps,
+                }}
                 fullWidth
               />
             )}
