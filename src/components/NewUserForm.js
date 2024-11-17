@@ -8,8 +8,10 @@ const NewUserForm = ({ onSave, onCancel }) => {
     usuario: '',
     contraseña: '',
     rol: '',
-    editar: false,
-    crear: false,
+    tablas: false,
+    verProgramacion: false,
+    editProgramacion: "Ninguno",
+    email: false,
     gestionarUsuarios: false,
   });
 

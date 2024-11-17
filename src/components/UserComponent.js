@@ -1,13 +1,15 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Switch } from '@mui/material';
+import { TextField, Button, Switch, Autocomplete } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-const UserComponent = ({ user, onUpdate, onDelete }) => {
+const UserComponent = ({ user, coordinadores, onUpdate, onDelete }) => {
   const classes = useStyles();
 
   const [isEditable, setIsEditable] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formState, setFormState] = useState(user);
+  const [coordinadoresData, setCoordinadoresData] = useState(coordinadores || []);
 
   const handleEditClick = () => {
     if (isEditable) {
@@ -30,12 +32,11 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
 
   return (
     <div className={classes.container}>
-
       <div className={classes.textFields}>
-
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Usuario</label>
           <TextField
+            disabled={!isEditable}
             sx={{
               width: '100%',
             }}
@@ -66,6 +67,7 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
             </Button>
           </div>
           <TextField
+            disabled={!isEditable}
             sx={{
               width: '100%',
             }}
@@ -83,6 +85,7 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
         <div className={classes.fieldContainer}>
           <label className={classes.label}>Rol</label>
           <TextField
+            disabled={!isEditable}
             sx={{
               width: '100%',
             }}
@@ -126,19 +129,27 @@ const UserComponent = ({ user, onUpdate, onDelete }) => {
           />
         </div>
 
-        <div className={classes.switchContainer}>
           <label className={classes.label}>Editar Programación</label>
-          <Switch
+          <Autocomplete
+            options={coordinadoresData}
+            getOptionLabel={(option) => option.nombre}
             sx={{
-              alignSelf: 'center',
+              width: '100%',
             }}
-            checked={formState.editProgramacion}
+            value={coordinadoresData.find(
+              (coordinador) => coordinador.nombre === formState.editProgramacion
+            ) || ''}
             disabled={!isEditable}
-            onChange={() =>
-              setFormState({ ...formState, editProgramacion: !formState.editProgramacion })
+            onChange={(event, newValue) =>
+              setFormState({
+                ...formState,
+                editProgramacion: newValue ? newValue.nombre : null,
+              })
             }
+            renderInput={(params) => (
+              <TextField {...params} label="Coordinador" variant="outlined" />
+            )}
           />
-        </div>
 
         <div className={classes.switchContainer}>
           <label className={classes.label}>Enviar Emails</label>
@@ -216,9 +227,8 @@ const useStyles = makeStyles(() => ({
     boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
     padding: '10px',
     borderRadius: '8px',
-    //border: '2px solid #5eb219',
-    width: '100%',                
-    boxSizing: 'border-box',     
+    width: '100%',
+    boxSizing: 'border-box',
   },
   textFields: {
     display: 'grid',

@@ -50,6 +50,7 @@ const Programa = ({ programa, onUpdate, onDelete }) => {
           marginBottom: '5px',
         }}>Nombre</label>
         <TextField
+          disabled={!isEditable}
           sx={{
             width: '100%',
           }}
@@ -76,6 +77,7 @@ const Programa = ({ programa, onUpdate, onDelete }) => {
           marginBottom: '5px',
         }}>Nombre Corto</label>
         <TextField
+          disabled={!isEditable}
           sx={{
             width: '100%',
           }}

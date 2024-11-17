@@ -33,7 +33,10 @@ const GestionFichas = () => {
         setFichas(fichasData);
 
         const coordinadoresData = await getCoordinadores();
-        setCoordinadores(coordinadoresData);
+        const filteredCoordinadoresData = coordinadoresData.filter(
+          coord => coord.nombre !== "Ninguno" && coord.nombre !== "Todos"
+        );
+        setCoordinadores(filteredCoordinadoresData);        
 
         const instructoresData = await getInstructores();
         setInstructores(instructoresData);

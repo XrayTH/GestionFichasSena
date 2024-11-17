@@ -33,6 +33,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
           <label className={classes.label} sx={{ marginBottom: '5px' }}>Código</label>
           <TextField
+            disabled={!isEditable}
             className={classes.textField} 
             name="codigo"
             value={formState.codigo || ''}
@@ -47,6 +48,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
           <label className={classes.label} sx={{ marginBottom: '5px' }}>Coordinador</label>
           <Autocomplete
+            disabled={!isEditable}
             value={formState.coordinador || ''}
             onChange={(event, newValue) => {
               if (isEditable) {
@@ -83,6 +85,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
           <label className={classes.label} sx={{ marginBottom: '5px' }}>Gestor</label>
           <Autocomplete
+            disabled={!isEditable}
             value={formState.gestor || ''}
             onChange={(event, newValue) => {
               if (isEditable) {
@@ -119,6 +122,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
           <label className={classes.label} sx={{ marginBottom: '5px' }}>Programa</label>
           <Autocomplete
+            disabled={!isEditable}
             value={formState.programa || ''}
             onChange={(event, newValue) => {
               if (isEditable) {
@@ -155,6 +159,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
           <label className={classes.label} sx={{ marginBottom: '5px' }}>Ambiente</label>
           <Autocomplete
+            disabled={!isEditable}
             value={formState.ambiente || ''}
             onChange={(event, newValue) => {
               if (isEditable) {
@@ -191,6 +196,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
           <label className={classes.label} sx={{ marginBottom: '5px' }}>Municipio</label>
           <Autocomplete
+            disabled={!isEditable}
             value={formState.municipio || ''}
             onChange={(event, newValue) => {
               if (isEditable) {
@@ -227,6 +233,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
           <label className={classes.label} sx={{ marginBottom: '5px' }}>Avenida</label>
           <TextField
+            disabled={!isEditable}
             className={classes.textField} 
             name="avenida"
             value={formState.avenida || ''}
@@ -242,6 +249,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
           <label className={classes.label} sx={{ marginBottom: '5px' }}>Ubicación GPS</label>
           <TextField
+            disabled={!isEditable}
             className={classes.textField} 
             name="ubicacionGPS"
             value={formState.ubicacionGPS || ''}
@@ -257,6 +265,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
           <label className={classes.label} sx={{ marginBottom: '5px' }}>Inicio</label>
           <TextField
+            disabled={!isEditable}
             className={classes.textField} 
             name="inicio"
             type="date"
@@ -276,6 +285,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
           <label className={classes.label} sx={{ marginBottom: '5px' }}>Fin</label>
           <TextField
+            disabled={!isEditable}
             className={classes.textField} 
             name="fin"
             type="date"
@@ -295,6 +305,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
           <label className={classes.label} sx={{ marginBottom: '5px' }}>Requerimientos</label>
           <TextField
+            disabled={!isEditable}
             className={classes.textField} 
             name="requerimientos"
             value={formState.requerimientos || ''}

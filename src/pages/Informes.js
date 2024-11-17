@@ -37,6 +37,7 @@ const Informes = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+  
       const [fichasData, jornadas, instructores, coordinadores, ambientes, programas, asignaciones] = await Promise.all([
         getFichas(),
         getJornadas(),
@@ -46,28 +47,32 @@ const Informes = () => {
         obtenerProgramas(),
         getAllAsignaciones()
       ]);
-
+  
+      const filteredCoordinadores = coordinadores.filter(
+        coord => coord.nombre !== "Ninguno" && coord.nombre !== "Todos"
+      );
+  
       setOpcionesFiltro({
         ficha: fichasData,
         instructor: instructores,
-        coordinador: coordinadores,
+        coordinador: filteredCoordinadores,
         gestor: instructores,
         programa: programas,
         jornada: jornadas,
         dia: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'], 
         ambiente: ambientes
       });
-
+  
       setAsignaciones(asignaciones);
       setFichas(fichasData);
-
+  
       formatearAsignaciones(asignaciones, fichasData);
       setLoading(false);
     };
-
+  
     fetchData();
   }, []);
-
+  
   const formatearAsignaciones = (asignaciones, fichas) => {
     const datosFiltrados = asignaciones.map(asignacion => {
       const ficha = fichas.find(f => f.codigo === asignacion.ficha);

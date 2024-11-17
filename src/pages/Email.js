@@ -43,20 +43,24 @@ const Email = () => {
       try {
         const instructores = await getInstructores();
         const coordinadores = await getCoordinadores();
-
+  
+        const filteredCoordinadores = coordinadores.filter(
+          coord => coord.nombre !== "Ninguno" && coord.nombre !== "Todos"
+        );
+  
         const combinedOptions = [
           ...instructores.map(inst => ({ nombre: inst.nombre, email: inst.email })),
-          ...coordinadores.map(coord => ({ nombre: coord.nombre, email: coord.email }))
+          ...filteredCoordinadores.map(coord => ({ nombre: coord.nombre, email: coord.email }))
         ];
-
+  
         setOptions(combinedOptions);
       } catch (error) {
         console.error("Error al obtener instructores o coordinadores", error);
       }
     };
-
+  
     fetchOptions();
-  }, []);
+  }, []);  
 
   const handleAddRecipient = () => {
     if (selectedValue) {

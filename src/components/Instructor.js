@@ -57,6 +57,7 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
           marginBottom: '5px',
         }}>Documento</label>
         <TextField
+          disabled={!isEditable}
           sx={{
             width: '100%',
           }}
@@ -83,6 +84,7 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
           marginBottom: '5px',
         }}>Nombre</label>
         <TextField
+          disabled={!isEditable}
           sx={{
             width: '100%',
           }}
@@ -109,6 +111,7 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
           marginBottom: '5px',
         }}>Email</label>
         <TextField
+          disabled={!isEditable}
           sx={{
             width: '100%',
           }}
@@ -135,6 +138,7 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
           marginBottom: '5px',
         }}>Teléfono</label>
         <TextField
+          disabled={!isEditable}
           sx={{
             width: '100%',
           }}
@@ -161,6 +165,7 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
           marginBottom: '5px',
         }}>Área Temática</label>
         <TextField
+          disabled={!isEditable}
           sx={{
             width: '100%',
           }}

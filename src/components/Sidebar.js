@@ -68,8 +68,8 @@ const Sidebar = () => {
         <List>
           <MenuItem text="Inicio" path="/" permiso/>
           <MenuItem text="Gestión de Usuarios" path="/gestion-usuarios" permiso={permisos.gestionarUsuarios} />
-          <MenuItem text="Programar por Ficha" path="/programar" permiso={permisos.verProgramacion || permisos.editProgramacion} />
-          <MenuItem text="Programar por Instructor" path="/programar-instructor" permiso={permisos.verProgramacion || permisos.editProgramacion} />
+          <MenuItem text="Programar por Ficha" path="/programar" permiso={permisos.verProgramacion} />
+          <MenuItem text="Programar por Instructor" path="/programar-instructor" permiso={permisos.verProgramacion} />
           <MenuItem text="Crear Informe" path="/informe" permiso={permisos.verProgramacion} />
           <MenuItem text="Gestión de Fichas" path="/gestion-fichas" permiso={permisos.tablas} />
           <MenuItem text="Gestión de Coordinadores" path="/gestion-coordinadores" permiso={permisos.tablas} />

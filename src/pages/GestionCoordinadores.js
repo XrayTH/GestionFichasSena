@@ -17,8 +17,9 @@ const GestionCoordinadores = () => {
     const fetchCoordinadores = async () => {
       setLoading(true);
       try {
-        const data = await getCoordinadores(); 
-        setCoordinadores(data); 
+        const data = await getCoordinadores();
+        const filteredData = data.filter(coord => coord.nombre !== "Ninguno" && coord.nombre !== "Todos");
+        setCoordinadores(filteredData);
       } catch (error) {
         console.error('Error al obtener los coordinadores:', error);
         setMensaje({ text: error.message, severity: 'error' });
@@ -26,9 +27,9 @@ const GestionCoordinadores = () => {
         setLoading(false);
       }
     };
-
+  
     fetchCoordinadores();
-  }, []);
+  }, []);  
 
   const handleNewCoordinadorClick = () => setShowNewCoordinadorForm(true);
 

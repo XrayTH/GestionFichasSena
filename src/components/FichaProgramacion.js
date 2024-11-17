@@ -270,7 +270,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
                                                     }}
                                                     value={selectedInstructors[`${jornada.nombre}-${day}`] || ""}
                                                     className={classes.select}
-                                                    disabled={!tienePermisoEdicion}
+                                                    disabled={!(tienePermisoEdicion === ficha.coordinador || tienePermisoEdicion === "Todos")}
                                                 >
 
                                                     <MenuItem value="">

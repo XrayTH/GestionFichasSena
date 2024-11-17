@@ -1,13 +1,15 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Button, TextField, MenuItem, Select, FormControl, Snackbar, Alert, CircularProgress } from '@mui/material';
+import { Button, TextField, MenuItem, Select, FormControl, Snackbar, Alert, CircularProgress, AlertTitle } from '@mui/material';
 import UserComponent from '../components/UserComponent';
 import NewUserForm from '../components/NewUserForm';
 import { getUsuarios, createUsuario, updateUsuarioById, deleteUsuarioById } from '../service/userService';
+import { getCoordinadores } from '../service/coordinadorService';
 import Sidebar from '../components/Sidebar';
 import { encryptPassword, decryptPassword } from '../utils/encryption';
 
 const GestionUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
+  const [coordinadores, setCoordinadores] = useState([]);
   const [mostrarFormularioNuevoUsuario, setMostrarFormularioNuevoUsuario] = useState(false);
   const [textoBusqueda, setTextoBusqueda] = useState('');
   const [rolSeleccionado, setRolSeleccionado] = useState('');
@@ -24,6 +26,10 @@ const GestionUsuarios = () => {
           contraseña: decryptPassword(usuario.contraseña),
         }));
         setUsuarios(usuariosConContraseñasDesencriptadas);
+
+        const cooData = await getCoordinadores();
+        setCoordinadores(cooData)
+
       } catch (error) {
         console.error("Error al cargar usuarios:", error.message);
         setMensaje({ text: error.message, severity: 'error' });
@@ -129,6 +135,7 @@ const GestionUsuarios = () => {
           margin: 'auto auto',
         }}
       >
+
         {mensaje && (
           <Snackbar open={Boolean(mensaje)} autoHideDuration={6000} onClose={() => setMensaje(null)}>
             <Alert onClose={() => setMensaje(null)} severity={mensaje.severity}>
@@ -204,6 +211,20 @@ const GestionUsuarios = () => {
 
         {mostrarFormularioNuevoUsuario && <NewUserForm onSave={manejarGuardarNuevoUsuario} onCancel={manejarCancelarNuevoUsuario} />}
 
+        <div
+        style={{
+          margin: '20px 20px',
+          width: '100%',
+          maxWidth: '60%',
+          textAlign: 'center',
+        }}
+      >
+        <Alert severity="warning" style={{ backgroundColor: '#fff8e1', border: '1px solid #ffe082' }}>
+          <AlertTitle><strong>Advertencia</strong></AlertTitle>
+          Si altera los permisos de su sesión actual, saltará un error de autenticación y deberá loguearse nuevamente.
+        </Alert>
+      </div>
+
         {loading ? (
           <div
             style={{
@@ -233,7 +254,7 @@ const GestionUsuarios = () => {
                     transform: 'scale(1.02)',
                   },
                 }}>
-                  <UserComponent user={usuario} onUpdate={manejarActualizarUsuario} onDelete={manejarEliminarUsuario} />
+                  <UserComponent user={usuario} coordinadores={coordinadores} onUpdate={manejarActualizarUsuario} onDelete={manejarEliminarUsuario} />
                 </div>
               ))
             ) : (

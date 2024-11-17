@@ -33,6 +33,7 @@ const Coordinador = ({ coordinador, onUpdate, onDelete }) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Documento</label>
         <TextField
+          disabled={!isEditable}
           sx={{
             width: '100%',
           }}
@@ -49,6 +50,7 @@ const Coordinador = ({ coordinador, onUpdate, onDelete }) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Nombre</label>
         <TextField
+          disabled={!isEditable}
           sx={{
             width: '100%',
           }}
@@ -65,6 +67,7 @@ const Coordinador = ({ coordinador, onUpdate, onDelete }) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Email</label>
         <TextField
+          disabled={!isEditable}
           sx={{
             width: '100%',
           }}
@@ -81,6 +84,7 @@ const Coordinador = ({ coordinador, onUpdate, onDelete }) => {
       <div className={classes.fieldContainer}>
         <label className={classes.label}>Teléfono</label>
         <TextField
+          disabled={!isEditable}
           sx={{
             width: '100%',
           }}

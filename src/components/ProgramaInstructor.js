@@ -18,9 +18,12 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
   const [jornadaVisibility, setJornadaVisibility] = useState({});
   const [fechaAsignacionInicio, setFechaAsignacionInicio] = useState(fechaInicio); 
   const [fechaAsignacionFin, setFechaAsignacionFin] = useState(fechaFin); 
-  const classes = useStyles();
 
   const permisos = useSelector(selectUserPermisos);
+
+  const classes = useStyles({permisos});
+
+  const [fichasFiltradas, setFichasFiltradas] = useState([]);
 
   useEffect(() => {
     if (fichas.length > 0) {
@@ -42,6 +45,13 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
     setJornadaVisibility(initialVisibility);
   }, [jornadas, asignaciones, instructorActual]);
 
+  useEffect(() => {
+    const filtradas = permisos.editProgramacion === "Todos" 
+        ? fichas 
+        : fichas.filter(ficha => ficha.coordinador === permisos.editProgramacion);
+    setFichasFiltradas(filtradas);
+  }, [fichas, permisos.editProgramacion]);
+
   const asignacionesInstructor = asignaciones.filter(a => {
     const inicioAsignacion = new Date(a.inicio);
     const finAsignacion = a.fin ? new Date(a.fin) : null;
@@ -58,7 +68,7 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
   });
 
   const handleAbrirFormulario = (dia, jornada) => {
-    if (!permisos.editProgramacion) return; 
+    if (permisos.editProgramacion === "Ninguno") return; 
     setSelectedDia(dia);
     setSelectedJornada(jornada);
     setShowForm(true);
@@ -79,12 +89,21 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
     setShowForm(false);
   };
 
-  const handleEliminar = (idAsignacion) => {
-    if (!permisos.editProgramacion) return; 
+  const handleEliminar = (asignacion) => {
+    if (permisos.editProgramacion === "Ninguno") return; 
+  
+    const tienePermiso = fichasFiltradas.some(ficha => ficha.codigo === asignacion.ficha);
+  
+    if (!tienePermiso) {
+      alert("No tienes permisos sobre esta ficha");
+      return;
+    }
+  
     if (window.confirm('¿Estás seguro de que deseas eliminar esta asignación?')) {
-      onEliminarAsignacion(idAsignacion);
+      onEliminarAsignacion(asignacion.id);
     }
   };
+  
 
   const toggleJornadaVisibility = (jornada) => {
     setJornadaVisibility(prevState => ({
@@ -163,7 +182,7 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
                     return (
                       <td 
                         key={dia} 
-                        onClick={() => asignacion ? handleEliminar(asignacion.id) : handleAbrirFormulario(dia, jornada.nombre)}
+                        onClick={() => asignacion ? handleEliminar(asignacion) : handleAbrirFormulario(dia, jornada.nombre)}
                       >
                         {asignacion ? (
                           <div className={classes.asignacion}>
@@ -193,9 +212,9 @@ const ProgramaInstructor = ({ documentoInstructor, fichas, asignaciones, instruc
             <label>
               Ficha:<br/>
               <Autocomplete
-                options={fichas}
+                options={fichasFiltradas}
                 getOptionLabel={(option) => option.codigo}
-                value={fichas.find(ficha => ficha.codigo === selectedFicha) || null}
+                value={fichasFiltradas.find(ficha => ficha.codigo === selectedFicha) || null}
                 onChange={(event, newValue) => {
                   setSelectedFicha(newValue ? newValue.codigo : '');
                 }}
@@ -288,11 +307,17 @@ const useStyles = makeStyles({
     backgroundColor: '#d3f5bc',
     padding: '10px',
     borderRadius: '4px',
-    cursor: 'url("https://downloads.totallyfreecursors.com/thumbnails/trashcan.gif"), auto',
+    cursor: (props) =>
+      props.permisos.editProgramacion === 'Ninguno'
+        ? 'default' 
+        : 'url("https://downloads.totallyfreecursors.com/thumbnails/trashcan.gif"), auto', 
   },
   noAsignado: {
     color: '#999',
-    cursor: 'pointer',
+    cursor: (props) =>
+      props.permisos.editProgramacion === 'Ninguno'
+        ? 'default' 
+        : 'pointer', 
   },
   modalOverlay: {
     position: 'fixed',

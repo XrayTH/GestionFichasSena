@@ -8,7 +8,7 @@ const initialState = {
     permisos: {
       tablas: false,
       verProgramacion: false,
-      editProgramacion: false,
+      editProgramacion: "Ninguno",
       email: false,
       gestionarUsuarios: false,
     },
@@ -31,7 +31,7 @@ const userSlice = createSlice({
         permisos: {
           tablas: Boolean(tablas),
           verProgramacion: Boolean(verProgramacion),
-          editProgramacion: Boolean(editProgramacion),
+          editProgramacion: editProgramacion,
           email: Boolean(email),
           gestionarUsuarios: Boolean(gestionarUsuarios),
         },
@@ -48,7 +48,7 @@ const userSlice = createSlice({
         permisos: {
           tablas: false,
           verProgramacion: false,
-          editProgramacion: false,
+          editProgramacion: "Ninguno",
           email: false,
           gestionarUsuarios: false,
         },
@@ -64,7 +64,7 @@ const userSlice = createSlice({
         permisos: {
           tablas: false,
           verProgramacion: false,
-          editProgramacion: false,
+          editProgramacion: "Ninguno",
           email: false,
           gestionarUsuarios: false,
         },

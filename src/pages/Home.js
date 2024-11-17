@@ -53,7 +53,7 @@ const Home = () => {
           </button>
         )}
 
-        {(permisos.verProgramacion || permisos.editProgramacion) && (
+        {(permisos.verProgramacion) && (
           <>
             <button className={classes.button} onClick={handleProFicha}>
               Programación Por Ficha
