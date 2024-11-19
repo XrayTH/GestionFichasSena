@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
-import { FormControl, InputLabel, Select, MenuItem, Grid2, Typography, TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
+import { Autocomplete, FormControl, InputLabel, Select, MenuItem, Grid2, Typography, TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
 import { useSelector } from 'react-redux'; 
 import { selectUserPermisos } from '../features/userSlice'; 
 import { useNavigate } from 'react-router-dom';
@@ -119,7 +119,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
       
 
     const handleConfirm = () => {
-        if (newInstructor.instructor === "" || newInstructor.instructor === undefined) {
+        if (newInstructor.instructor === "Ninguno" || newInstructor.instructor === undefined) {
             onInstructorChange({
                 ficha: newInstructor.ficha,
                 dia: newInstructor.dia,
@@ -241,51 +241,53 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
                         <Grid2 item xs={12} key={jornada.id}>
                             <Typography className={classes.jornadaLabel}>{jornada.nombre}</Typography>
                             <Grid2 container spacing={2}>
-                                {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'].map((day) => (
-                                    <Grid2 item xs={12} sm={2} key={day}>
-                                        <FormControl fullWidth>
-                                            <InputLabel id={`select-${jornada.nombre}-${day}`} className={classes.label}>{day}</InputLabel>
-                                            <Tooltip
-                                                title={
-                                                    (obtenerNumeroAsignacionesPorInstructor(getInstructorForDay(jornada.nombre, day)) 
-                                                        ? `Asignaciones: ${obtenerNumeroAsignacionesPorInstructor(getInstructorForDay(jornada.nombre, day)) } | `
-                                                        : '') +
-                                                    (getInstructorForDay(jornada.nombre, day) && 
-                                                    filteredAsignaciones.find(asig => asig.instructor === getInstructorForDay(jornada.nombre, day))?.fin 
-                                                        ? `Fin: ${new Date(filteredAsignaciones.find(asig => asig.instructor === getInstructorForDay(jornada.nombre, day))?.fin).toLocaleDateString()}`
-                                                        : ''
-                                                    )
-                                                }
-                                                enterDelay={500}
-                                                leaveDelay={200}
-                                                placement="top" 
-                                            >
-                                                <Select
-                                                    labelId={`select-${jornada.nombre}-${day}`}
-                                                    onChange={(event) => {
-                                                        const asignacion = filteredAsignaciones.find(
-                                                            (asig) => asig.jornada === jornada.nombre && asig.dia === day
-                                                        );
-                                                        handleInstructorChangeChild(jornada.nombre, day, event, asignacion);
-                                                    }}
-                                                    value={selectedInstructors[`${jornada.nombre}-${day}`] || ""}
-                                                    className={classes.select}
-                                                    disabled={!(tienePermisoEdicion === ficha.coordinador || tienePermisoEdicion === "Todos")}
-                                                >
-
-                                                    <MenuItem value="">
-                                                        <em>Ninguno</em>
-                                                    </MenuItem>
-                                                    {instructores.map((instructor) => (
-                                                        <MenuItem key={instructor.documento} value={instructor.nombre}>
-                                                            {instructor.nombre}
-                                                        </MenuItem>
-                                                    ))}
-                                                </Select>
-                                            </Tooltip>
-                                        </FormControl>
-                                    </Grid2>
-                                ))}
+                            {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'].map((day) => (
+                                <Grid2 item xs={12} sm={2} key={day}>
+                                    <FormControl fullWidth>
+                                        <Tooltip
+                                            title={
+                                                (obtenerNumeroAsignacionesPorInstructor(getInstructorForDay(jornada.nombre, day)) 
+                                                    ? `Asignaciones: ${obtenerNumeroAsignacionesPorInstructor(getInstructorForDay(jornada.nombre, day)) } | `
+                                                    : '') +
+                                                (getInstructorForDay(jornada.nombre, day) && 
+                                                filteredAsignaciones.find(asig => asig.instructor === getInstructorForDay(jornada.nombre, day))?.fin 
+                                                    ? `Fin: ${new Date(filteredAsignaciones.find(asig => asig.instructor === getInstructorForDay(jornada.nombre, day))?.fin).toLocaleDateString()}`
+                                                    : ''
+                                                )
+                                            }
+                                            enterDelay={500}
+                                            leaveDelay={200}
+                                            placement="top" 
+                                        >
+                                            <Autocomplete
+                                                id={`autocomplete-${jornada.nombre}-${day}`}
+                                                className={classes.select}
+                                                options={['Ninguno', ...instructores.map((instructor) => instructor.nombre)]}  
+                                                value={selectedInstructors[`${jornada.nombre}-${day}`] || "Ninguno"}  
+                                                onChange={(event, newValue) => {
+                                                    const asignacion = filteredAsignaciones.find(
+                                                        (asig) => asig.jornada === jornada.nombre && asig.dia === day
+                                                    );
+                                                    handleInstructorChangeChild(jornada.nombre, day, { target: { value: newValue } }, asignacion);
+                                                }}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label={day}
+                                                        variant="outlined"
+                                                        fullWidth
+                                                        className={classes.textField}
+                                                        InputLabelProps={{ shrink: true }}
+                                                    />
+                                                )}
+                                                clearOnEscape={false}  
+                                                disableClearable 
+                                                disabled={!(tienePermisoEdicion === ficha.coordinador || tienePermisoEdicion === "Todos")}
+                                            />
+                                        </Tooltip>
+                                    </FormControl>
+                                </Grid2>
+                            ))}
                             </Grid2>
                         </Grid2>
                     )
@@ -295,7 +297,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
             <Dialog open={openModal} onClose={handleCancel}>
                 <DialogTitle>Confirmar Asignación</DialogTitle>
                 <DialogContent>
-                    {newInstructor.instructor === "" ? (
+                    {newInstructor.instructor === "Ninguno" ? (
                         <DialogContentText>
                             ¿Estás seguro de que deseas quitar la asignación de esta jornada/día?
                         </DialogContentText>
@@ -304,7 +306,7 @@ const FichaProgramacion = ({ ficha, asignaciones, instructores, jornadas, onInst
                             Por favor, ingresa la fecha de inicio y fin para la asignación.
                         </DialogContentText>
                     )}
-                    {newInstructor.instructor !== "" && (
+                    {newInstructor.instructor !== "Ninguno" && (
                         <>
                             <TextField
                                 label="Fecha de inicio"
@@ -365,6 +367,7 @@ const useStyles = makeStyles(() => ({
     },
     select: {
         backgroundColor: '#ffffff',
+        width: '200px',
         '& .MuiSelect-select': {
             color: '#5eb219',
         },
