@@ -199,16 +199,23 @@ const UserComponent = ({ user, coordinadores, onUpdate, onDelete }) => {
         </Button>
         <Button
           sx={{
-            backgroundColor: '#ae1499',
+            backgroundColor: isEditable ? '#d81b60' : '#ae1499',
             color: '#fff',
             marginTop: '10px',
             '&:hover': {
-              backgroundColor: '#d81b60',
+              backgroundColor: isEditable ? '#b71c50' : '#d81b60',
             },
           }}
-          onClick={() => onDelete(user.id)}
+          onClick={() => {
+            if (isEditable) {
+              setFormState(user);
+              setIsEditable(false);
+            } else {
+              onDelete(user.id);
+            }
+          }}
         >
-          Borrar
+          {isEditable ? 'Cancelar' : 'Borrar'}
         </Button>
       </div>
     </div>

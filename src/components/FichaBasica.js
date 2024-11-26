@@ -325,8 +325,24 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         <Button className={classes.button} sx={{ backgroundColor: '#5eb219', color: '#fff' }} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}
         </Button>
-        <Button className={classes.deleteButton} sx={{ backgroundColor: '#d32f2f', color: '#fff' }} onClick={() => onDelete(ficha.codigo)}>Borrar</Button>
-      </div>
+        <Button
+          className={classes.deleteButton}
+          sx={{
+            backgroundColor: isEditable ? '#d81b60' : '#d32f2f',
+            color: '#fff',
+          }}
+          onClick={() => {
+            if (isEditable) {
+              setIsEditable(false);
+              setFormState(ficha || {}); 
+            } else {
+              onDelete(ficha.codigo); 
+            }
+          }}
+        >
+          {isEditable ? 'Cancelar' : 'Borrar'}
+        </Button>
+        </div>
     </div>
   );
 };

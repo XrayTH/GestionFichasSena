@@ -12,11 +12,14 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
     setIsEditable(!isEditable);
   };
 
-  const handleDeleteClick = () => {
-    if (onDelete) {
-      onDelete(instructor.documento); 
+  const handleDeleteOrCancelClick = () => {
+    if (isEditable) {
+      setIsEditable(false);
+      setFormState(instructor || {});
+    } else if (onDelete) {
+      onDelete(instructor.documento);
     }
-  }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +38,6 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
       boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
       padding: '20px',
       borderRadius: '8px',
-      //border: '2px solid #5eb219',
       maxWidth: '700px',
       width: '90%',
       margin: 'auto auto',
@@ -43,7 +45,6 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         gridTemplateColumns: '1fr',
       },
     }}>
-
       <div style={{
         display: 'flex',
         flexDirection: 'column',
@@ -58,15 +59,11 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         }}>Documento</label>
         <TextField
           disabled={!isEditable}
-          sx={{
-            width: '100%',
-          }}
+          sx={{ width: '100%' }}
           name="documento"
           value={formState.documento || ''}
           variant="outlined"
-          InputProps={{
-            readOnly: true,
-          }}
+          InputProps={{ readOnly: true }}
           onChange={handleChange}
         />
       </div>
@@ -85,15 +82,11 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         }}>Nombre</label>
         <TextField
           disabled={!isEditable}
-          sx={{
-            width: '100%',
-          }}
+          sx={{ width: '100%' }}
           name="nombre"
           value={formState.nombre || ''}
           variant="outlined"
-          InputProps={{
-            readOnly: !isEditable,
-          }}
+          InputProps={{ readOnly: !isEditable }}
           onChange={handleChange}
         />
       </div>
@@ -112,15 +105,11 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         }}>Email</label>
         <TextField
           disabled={!isEditable}
-          sx={{
-            width: '100%',
-          }}
+          sx={{ width: '100%' }}
           name="email"
           value={formState.email || ''}
           variant="outlined"
-          InputProps={{
-            readOnly: !isEditable,
-          }}
+          InputProps={{ readOnly: !isEditable }}
           onChange={handleChange}
         />
       </div>
@@ -139,15 +128,11 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         }}>Teléfono</label>
         <TextField
           disabled={!isEditable}
-          sx={{
-            width: '100%',
-          }}
+          sx={{ width: '100%' }}
           name="telefono"
           value={formState.telefono || ''}
           variant="outlined"
-          InputProps={{
-            readOnly: !isEditable,
-          }}
+          InputProps={{ readOnly: !isEditable }}
           onChange={handleChange}
         />
       </div>
@@ -166,15 +151,11 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         }}>Área Temática</label>
         <TextField
           disabled={!isEditable}
-          sx={{
-            width: '100%',
-          }}
+          sx={{ width: '100%' }}
           name="areaTematica"
           value={formState.areaTematica || ''}
           variant="outlined"
-          InputProps={{
-            readOnly: !isEditable,
-          }}
+          InputProps={{ readOnly: !isEditable }}
           onChange={handleChange}
         />
       </div>
@@ -189,20 +170,20 @@ const Instructor = ({ instructor, onUpdate, onDelete }) => {
         <Button sx={{
           backgroundColor: '#5eb219',
           color: '#fff',
-          '&:hover': {
-            backgroundColor: '#4cae14',
-          },
+          '&:hover': { backgroundColor: '#4cae14' },
           marginRight: '10px',
         }} onClick={handleEditClick}>
           {isEditable ? 'Guardar' : 'Editar'}
         </Button>
         <Button sx={{
-          backgroundColor: '#b2195e',
+          backgroundColor: isEditable ? '#d81b60' : '#b2195e',
           color: '#fff',
           '&:hover': {
-            backgroundColor: '#d81b60',
+            backgroundColor: isEditable ? '#4cae14' : '#d81b60',
           },
-        }} onClick={handleDeleteClick}>Borrar</Button>
+        }} onClick={handleDeleteOrCancelClick}>
+          {isEditable ? 'Cancelar' : 'Borrar'}
+        </Button>
       </div>
     </div>
   );
