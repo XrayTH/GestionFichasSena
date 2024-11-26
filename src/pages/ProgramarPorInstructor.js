@@ -25,29 +25,28 @@ const ProgramarPorInstructor = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      try {
-        const fetchedFichas = await getFichas();
-        setFichas(fetchedFichas);
+        setLoading(true);
+        try {
+            const [fetchedFichas, fetchedJornadas, fetchedInstructores, fetchedAsignaciones] = await Promise.all([
+                getFichas(),
+                getJornadas(),
+                getInstructores(),
+                getAllAsignaciones()
+            ]);
 
-        const fetchedJornadas = await getJornadas();
-        setJornadas(fetchedJornadas);
-
-        const fetchedInstructores = await getInstructores();
-        setInstructores(fetchedInstructores);
-
-        const fetchedAsignaciones = await getAllAsignaciones();
-        setAsignaciones(fetchedAsignaciones);
-      } catch (error) {
-        console.error('Error al cargar los datos:', error);
-        setMensaje({ text: error.message, severity: 'error' });
-      } finally {
-        setLoading(false);
-      }
+            setFichas(fetchedFichas);
+            setJornadas(fetchedJornadas);
+            setInstructores(fetchedInstructores);
+            setAsignaciones(fetchedAsignaciones);
+        } catch (error) {
+            setMensaje({ text: error.message, severity: 'error' });
+        } finally {
+            setLoading(false);
+        }
     };
 
     fetchData();
-  }, []);
+}, []);
 
   useEffect(() => {
     setFechaInicio(getStartOfMonth());

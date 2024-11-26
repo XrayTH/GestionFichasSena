@@ -29,7 +29,7 @@ const Home = () => {
       <Typography
         variant="h4"
         component="h1"
-        sx={{ textAlign: "center", color:'#5eb219', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'}}
+        sx={{ textAlign: "center", color:'#5eb219', textShadow: '2px 2px 4px rgba(0, 100, 0, 0.5)'}}
       >
         {isSmallScreen ? 'SFG - SENA' : 'SISTEMA DE GESTIÓN DE FICHAS - SENA'}
       </Typography>

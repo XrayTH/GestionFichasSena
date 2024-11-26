@@ -27,36 +27,35 @@ const GestionFichas = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      try {
-        const fichasData = await getFichas();
-        setFichas(fichasData);
+        setLoading(true);
+        try {
+            const [fichasData, coordinadoresData, instructoresData, programasData, ambientesData] = await Promise.all([
+                getFichas(),
+                getCoordinadores(),
+                getInstructores(),
+                obtenerProgramas(),
+                obtenerAmbientes()
+            ]);
 
-        const coordinadoresData = await getCoordinadores();
-        const filteredCoordinadoresData = coordinadoresData.filter(
-          coord => coord.nombre !== "Ninguno" && coord.nombre !== "Todos"
-        );
-        setCoordinadores(filteredCoordinadoresData);        
+            setFichas(fichasData);
 
-        const instructoresData = await getInstructores();
-        setInstructores(instructoresData);
+            const filteredCoordinadoresData = coordinadoresData.filter(
+                coord => coord.nombre !== "Ninguno" && coord.nombre !== "Todos"
+            );
+            setCoordinadores(filteredCoordinadoresData);
 
-        const programasData = await obtenerProgramas();
-        setProgramas(programasData);
-
-        const ambientesData = await obtenerAmbientes();
-        setAmbientes(ambientesData);
-
-      } catch (error) {
-        console.error('Error al obtener los datos:', error);
-        setMensaje({ text: error.message, severity: 'error' });
-      } finally {
-        setLoading(false);
-      }
+            setInstructores(instructoresData);
+            setProgramas(programasData);
+            setAmbientes(ambientesData);
+        } catch (error) {
+            setMensaje({ text: error.message, severity: 'error' });
+        } finally {
+            setLoading(false);
+        }
     };
 
     fetchData();
-  }, []);
+}, []);
 
   const handleNewFichaClick = () => setShowNewFichaForm(true);
 

@@ -32,26 +32,29 @@ const Programar = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true); 
+            setLoading(true);
             try {
-                const fichasData = await getFichas();
-                const asignacionesData = await getAllAsignaciones();
-                const instructoresData = await getInstructores();
-                const jornadasData = await getJornadas();
+                const [fichasData, asignacionesData, instructoresData, jornadasData] = await Promise.all([
+                    getFichas(),
+                    getAllAsignaciones(),
+                    getInstructores(),
+                    getJornadas()
+                ]);
     
                 setFichas(fichasData);
                 setAsignaciones(asignacionesData);
                 setInstructores(instructoresData);
                 setJornadas(jornadasData);
             } catch (error) {
-                setMensaje({ text: 'Error al cargar los datos', severity: 'error' });
+                setMensaje({ text: `Error al cargar los datos: ${error.message}`, severity: 'error' });
             } finally {
-                setLoading(false); 
+                setLoading(false);
             }
         };
     
         fetchData();
-    }, [reload]);
+    }, [reload]);  
+    
 
     useEffect(() => {
         setStartDateFilter(getStartOfMonth());
