@@ -40,7 +40,7 @@ const Sidebar = () => {
             {open ? <ArrowBackIcon /> : <MenuIcon />}
           </IconButton>
           <Typography variant="h6" component="h1" className={classes.title}>
-            SISTEMA DE GESTIÓN DE FICHAS - SENA
+            HORARIOS - CENTRO AGROPECUARIO BUGA
           </Typography>
         </Toolbar>
       </AppBar>
