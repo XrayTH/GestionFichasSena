@@ -223,7 +223,7 @@ const NewFichaBasica = ({ onSave, onCancel, coordinadores = [], programas = [], 
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-          <label style={{ fontWeight: 'bold', color: '#5eb219', marginBottom: '5px' }}>Avenida</label>
+          <label style={{ fontWeight: 'bold', color: '#5eb219', marginBottom: '5px' }}>Vereda</label>
           <TextField
             sx={{ width: '100%' }}
             name="avenida"

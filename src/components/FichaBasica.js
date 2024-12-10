@@ -231,7 +231,7 @@ const FichaBasica = ({ ficha, onUpdate, onDelete, coordinadores = [], programas 
         </div>
 
         <div className={classes.fieldContainer} sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
-          <label className={classes.label} sx={{ marginBottom: '5px' }}>Avenida</label>
+          <label className={classes.label} sx={{ marginBottom: '5px' }}>Vereda</label>
           <TextField
             disabled={!isEditable}
             className={classes.textField} 
