@@ -115,6 +115,7 @@ const ConsultaPorInstructor = () => {
       padding: '5px',
       borderRadius: '4px',
       cursor: 'pointer',
+      textShadow: '1px 1px 1px rgba(0, 0, 0, 1)',
     },
   });
 
